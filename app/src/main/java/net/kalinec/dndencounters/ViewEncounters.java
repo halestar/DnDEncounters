@@ -2,12 +2,14 @@ package net.kalinec.dndencounters;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.SearchView;
@@ -15,13 +17,16 @@ import android.widget.SearchView;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.encounters.EncounterListAdapter;
 import net.kalinec.dndencounters.encounters.Encounters;
+import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.monsters.Monster;
+import net.kalinec.dndencounters.players.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewEncounters extends AppCompatActivity
 {
-	private List<Encounter> encounters;
+	private List<Encounter> encounters, currentEncounterList;
 	private EncounterListAdapter encounterAdapter;
 	private RecyclerView encounterRv;
 	private SearchView encounterSv;
@@ -41,17 +46,29 @@ public class ViewEncounters extends AppCompatActivity
 			public void onClick(View view)
 			{
 				Intent myIntent = new Intent(ViewEncounters.this, AddEncounter.class);
-				ViewEncounters.this.startActivity(myIntent);
+				startActivityForResult(myIntent, AddEncounter.REQUEST_NEW_ENCOUNTER);
 			}
 		});
 		
-		encounters = Encounters.getAllEncounters(getApplicationContext());
-		encounterAdapter = new EncounterListAdapter(getApplicationContext());
+		encounters = currentEncounterList = Encounters.getAllEncounters(getApplicationContext());
+		encounterAdapter = new EncounterListAdapter(getApplicationContext(), new RvClickListener()
+		{
+			@Override
+			public void onClick(View view, int position)
+			{
+				Encounter selectedEncounter = encounterAdapter.get(position);
+				Intent myIntent = new Intent(ViewEncounters.this, EditEncounter.class);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(Encounter.PASSED_ENCOUNTER, selectedEncounter);
+				myIntent.putExtras(bundle);
+				startActivityForResult(myIntent, AddEncounter.REQUEST_NEW_ENCOUNTER);
+			}
+		});
 		encounterAdapter.setEncounterList(encounters);
+		
 		encounterRv = (RecyclerView)findViewById(R.id.encounterRv);
 		encounterRv.setAdapter(encounterAdapter);
 		encounterRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-		
 		
 		encounterSv = (SearchView)findViewById(R.id.encounterSv);
 		encounterSv.setActivated(true);
@@ -82,8 +99,8 @@ public class ViewEncounters extends AppCompatActivity
 			@Override
 			public boolean onQueryTextChange(String newText)
 			{
-				final List<Encounter> filteredEncounterList = filter(encounters, newText);
-				encounterAdapter.setEncounterList(filteredEncounterList);
+				currentEncounterList = filter(encounters, newText);
+				encounterAdapter.setEncounterList(currentEncounterList);
 				encounterRv.scrollToPosition(0);
 				return true;
 			}
@@ -91,4 +108,13 @@ public class ViewEncounters extends AppCompatActivity
 		
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+	{
+		Log.d("ViewEncounter", "in activity result");
+		encounters = currentEncounterList = Encounters.getAllEncounters(getApplicationContext());
+		Log.d("ViewEncounter", "encounters=" + encounters);
+		encounterAdapter.setEncounterList(encounters);
+		encounterRv.scrollToPosition(0);
+	}
 }

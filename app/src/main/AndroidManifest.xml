@@ -34,7 +34,9 @@
             android:label="@string/title_activity_view_encounters"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddEncounter" />
-        <activity android:name=".SelectMonster"></activity>
+        <activity android:name=".SelectMonster" />
+        <activity android:name=".EditEncounter" />
+        <activity android:name=".CreateParty"></activity>
     </application>
 
 </manifest>

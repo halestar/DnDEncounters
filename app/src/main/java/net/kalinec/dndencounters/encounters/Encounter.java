@@ -2,6 +2,8 @@ package net.kalinec.dndencounters.encounters;
 
 import net.kalinec.dndencounters.monsters.Monster;
 
+import org.apache.commons.math3.fraction.Fraction;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +14,27 @@ public class Encounter implements Serializable
 	private String encounterName;
 	private List<Monster> monsters;
 	private int cr;
+	
+	private void updateCr()
+	{
+		double newCr = 0;
+		for(Monster m: monsters)
+		{
+			String crStr = m.getCr();
+			if(crStr == Monster.CR_ERROR)
+				continue;
+			String[] fractionCr = crStr.split("/");
+			if(fractionCr.length == 1)
+				newCr += Integer.parseInt(crStr);
+			else if(fractionCr.length == 2)
+			{
+				//fraction.
+				Fraction f = new Fraction(Integer.parseInt(fractionCr[0]), Integer.parseInt(fractionCr[1]));
+				newCr += f.doubleValue();
+			}
+		}
+		cr = (int)Math.ceil(newCr);
+	}
 	
 	public String getEncounterName()
 	{
@@ -31,6 +54,7 @@ public class Encounter implements Serializable
 	public void setMonsters(List<Monster> monsters)
 	{
 		this.monsters = monsters;
+		updateCr();
 	}
 	
 	public int getCr()
@@ -57,7 +81,16 @@ public class Encounter implements Serializable
 	@Override
 	public int hashCode()
 	{
-		
 		return Objects.hash(encounterName, monsters, cr);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Encounter{" +
+		       "encounterName='" + encounterName + '\'' +
+		       ", monsters=" + monsters +
+		       ", cr=" + cr +
+		       '}';
 	}
 }

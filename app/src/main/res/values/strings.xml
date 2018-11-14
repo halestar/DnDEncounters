@@ -66,4 +66,12 @@
     <string name="EncounterMonstersTxt">Encounter Monsters</string>
     <string name="ncounterCrTxt">Encounter CR</string>
     <string name="RemoveMonsterTxt">Delete Monster</string>
+    <string name="UpdateEncounterTxt">Update Encounter</string>
+    <string name="DeleteEncounterTxt">Delete Encounter</string>
+    <string name="CreatePartyTxt">Create Party</string>
+    <string name="PartyMembersTxt">Party Members</string>
+    <string name="NewPPCTxt">New Player and Character</string>
+    <string name="NewPCTxt">New Character</string>
+    <string name="ExistingPCTxt">Existing Character</string>
+    <string name="BeginSessionTxt">Start Adventure!</string>
 </resources>

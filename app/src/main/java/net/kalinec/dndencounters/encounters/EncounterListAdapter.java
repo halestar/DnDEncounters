@@ -14,6 +14,8 @@ import android.widget.TextView;
 import net.kalinec.dndencounters.EditCharacter;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
+import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.Comparator;
 import java.util.List;
@@ -66,29 +68,26 @@ public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdap
 	
 	private LayoutInflater layoutInflater;
 	private Context context;
-	private Intent destinationIntent;
+	private RvClickListener mListener;
 	
-	public Intent getDestinationIntent()
-	{
-		return destinationIntent;
-	}
-	
-	public void setDestinationIntent(Intent destinationIntent)
-	{
-		this.destinationIntent = destinationIntent;
-	}
-	
-	public EncounterListAdapter(Context context)
+	public EncounterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
 		this.context = context;
-		this.destinationIntent = null;//new Intent(context, EditCharacter.class);
+		mListener = listener;
 	}
 	
-	public void setEncounterList(List<Encounter> encounterList)
+	public void setEncounterList(List<Encounter> newList)
 	{
-		this.encounterList.addAll(encounterList);
+		encounterList.clear();
+		encounterList.addAll(newList);
 		notifyDataSetChanged();
+	}
+	
+	
+	public Encounter get(int position)
+	{
+		return encounterList.get(position);
 	}
 	
 	@NonNull
@@ -96,7 +95,7 @@ public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdap
 	public EncounterListAdapter.EncounterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
 	{
 		final View itemView = layoutInflater.inflate(R.layout.item_list_encounter, parent, false);
-		return new EncounterListAdapter.EncounterViewHolder(itemView);
+		return new EncounterListAdapter.EncounterViewHolder(itemView, mListener);
 	}
 	
 	@Override
@@ -111,21 +110,6 @@ public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdap
 		{
 			holder.EncounterNameTv.setText(encounter.getEncounterName());
 			holder.EncounterCrTv.setText(Integer.toString(encounter.getCr()));
-			
-			holder.itemView.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					if(destinationIntent != null)
-					{
-						Bundle bundle = new Bundle();
-						bundle.putSerializable(Encounter.PASSED_ENCOUNTER, encounter);
-						destinationIntent.putExtras(bundle);
-						context.startActivity(destinationIntent);
-					}
-				}
-			});
 		}
 	}
 	
@@ -142,15 +126,24 @@ public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdap
 		}
 	}
 	
-	static class EncounterViewHolder extends RecyclerView.ViewHolder
+	static class EncounterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 	{
 		private TextView EncounterNameTv, EncounterCrTv;
+		private RvClickListener mListener;
 		
-		public EncounterViewHolder(View itemView)
+		public EncounterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			EncounterNameTv = itemView.findViewById(R.id.EncounterNameTv);
 			EncounterCrTv = itemView.findViewById(R.id.EncounterCrTv);
+			mListener = listener;
+			itemView.setOnClickListener(this);
+		}
+		
+		@Override
+		public void onClick(View v)
+		{
+			mListener.onClick(v, getAdapterPosition());
 		}
 	}
 }

@@ -1,11 +1,9 @@
 package net.kalinec.dndencounters.encounters;
 
 import android.content.Context;
-
-import net.kalinec.dndencounters.monsters.Monster;
+import android.util.Log;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,24 +29,21 @@ public class Encounters
 	
 	private static void verifyDb(Context context)
 	{
-		if(Encounters.context == null)
-			Encounters.context = context;
+		Encounters.context = context;
 		if(encountersDB == null)
 		{
 			try
 			{
 				encountersDB = new ArrayList<>();
 				File fin = new File(context.getFilesDir(), fname);
-				if(fin.exists()){
-					
-					ObjectInputStream in = new ObjectInputStream(new FileInputStream(fin));
-					while (true)
-					{
-						Encounter encounter = (Encounter) in.readObject();
-						if (encounter == null)
-							break;
-						encountersDB.add(encounter);
-					}
+				Log.d("Encounters", "fin length is: " + fin.length());
+				if(fin.exists() && fin.length() > 0)
+				{
+					ObjectInputStream in = new ObjectInputStream(context.openFileInput(fname));
+					Integer numEncounters = (Integer)in.readObject();
+					for(int i = 0; i < numEncounters; i++)
+						encountersDB.add((Encounter) in.readObject());
+					in.close();
 				}
 			}
 			catch (IOException e)
@@ -64,16 +59,21 @@ public class Encounters
 		}
 	}
 	
-	private void writeEncounters()
+	private static void writeEncounters()
 	{
+		
+		Log.d("Encounters", "Wirintg obj file.  encountersDB: " + encountersDB);
 		FileOutputStream fos = null;
 		try
 		{
 			fos = context.openFileOutput(fname, Context.MODE_PRIVATE);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(new Integer(encountersDB.size()));
 			for(Encounter e: encountersDB)
 				oos.writeObject(e);
+			oos.flush();
 			oos.close();
+			Log.d("Encounters", "Objects written correctly. ");
 		}
 		catch (FileNotFoundException e)
 		{
@@ -96,5 +96,30 @@ public class Encounters
 		verifyDb(context);
 		encountersDB.add(e);
 		encountersDB.sort(ALPHABETICAL_COMPARATOR);
+		writeEncounters();
+	}
+	
+	public static void updateEncounter(Context context, Encounter oldEncounter, Encounter newEncounter)
+	{
+		verifyDb(context);
+		int pos = encountersDB.indexOf(oldEncounter);
+		Log.d("Encounters", "encountersDb=" + encountersDB);
+		Log.d("Encounters", "searching for=" + oldEncounter);
+		Log.d("Encounters", "to replace with=" + newEncounter);
+		Log.d("Encounters", "in update encounter, pos=" + pos);
+		if(pos >= 0)
+			encountersDB.set(pos, newEncounter);
+		else
+			encountersDB.add(newEncounter);
+		encountersDB.sort(ALPHABETICAL_COMPARATOR);
+		writeEncounters();
+	}
+	
+	public static void removeEncounter(Context context, Encounter e)
+	{
+		verifyDb(context);
+		encountersDB.remove(e);
+		encountersDB.sort(ALPHABETICAL_COMPARATOR);
+		writeEncounters();
 	}
 }

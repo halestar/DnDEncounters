@@ -34,7 +34,7 @@ public class EncounterMonsterListAdapter
 	private Context context;
 	private RvClickListener mListener;
 	
-	public EncounterMonsterListAdapter(Context context,RvClickListener listener)
+	public EncounterMonsterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
 		this.context = context;
@@ -59,6 +59,11 @@ public class EncounterMonsterListAdapter
 		monsterList.remove(monster);
 		monsterList.sort(ALPHABETICAL_COMPARATOR);
 		notifyDataSetChanged();
+	}
+	
+	public Monster get(int position)
+	{
+		return monsterList.get(position);
 	}
 	
 	@NonNull
