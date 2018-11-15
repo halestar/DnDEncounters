@@ -2,6 +2,7 @@ package net.kalinec.dndencounters;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,12 +15,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.kalinec.dndencounters.encounters.Encounter;
+import net.kalinec.dndencounters.monsters.Monster;
+import net.kalinec.dndencounters.parties.Party;
 import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.playsessions.PlaySession;
 
 public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener
 {
-	
+	private PlaySession activeSession = null;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -27,17 +34,6 @@ public class MainActivity extends AppCompatActivity
 		setContentView(R.layout.activity_main);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view)
-			{
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
-			}
-		});
 		
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -109,5 +105,27 @@ public class MainActivity extends AppCompatActivity
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
 		return true;
+	}
+
+	public void beginPlaySession(View v)
+	{
+		activeSession = new PlaySession();
+		Intent myIntent = new Intent(MainActivity.this, CreateParty.class);
+		myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
+		startActivityForResult(myIntent, CreateParty.REQUEST_NEW_PARTY);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+	{
+		if(requestCode == CreateParty.REQUEST_NEW_PARTY)
+		{
+			if(resultCode == RESULT_OK)
+			{
+				Party newParty = (Party)data.getSerializableExtra(Party.PASSED_PARTY);
+				activeSession.setPlayers(newParty);
+				//add encounters next.
+			}
+		}
 	}
 }

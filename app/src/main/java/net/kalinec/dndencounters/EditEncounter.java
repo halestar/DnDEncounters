@@ -16,7 +16,6 @@ import net.kalinec.dndencounters.encounters.EncounterMonsterListAdapter;
 import net.kalinec.dndencounters.encounters.Encounters;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monsters.Monster;
-import net.kalinec.dndencounters.players.Player;
 
 import org.apache.commons.math3.fraction.Fraction;
 
@@ -56,7 +55,7 @@ public class EditEncounter extends AppCompatActivity
 			public void onClick(View view, int position)
 			{
 				Monster selectedMonster = encounterMonsterListAdapter.get(position);
-				if(view.getId() == R.id.removeMonsterBtn)
+				if(view.getId() == R.id.removePartyMembeBtn)
 					removeMonsterFromEncounter(selectedMonster);
 				else if(view.getId() == R.id.dupeMonsterBtn)
 					addMonsterToEncounter(selectedMonster);

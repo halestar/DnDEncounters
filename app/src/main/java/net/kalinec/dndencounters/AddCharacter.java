@@ -1,5 +1,6 @@
 package net.kalinec.dndencounters;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,8 @@ import net.kalinec.dndencounters.players.Player;
 
 public class AddCharacter extends AppCompatActivity
 {
+
+	public static final int REQUEST_NEW_CHARACTER = 43;
 	protected Player owner;
 	private EditText characterNameTxt, characterRaceTxt, characterClassTxt,
 					characterAcTxt, characterHpTxt, characterPpTxt,
@@ -54,9 +57,18 @@ public class AddCharacter extends AppCompatActivity
 		newPc.setPp(Integer.parseInt(characterPpTxt.getText().toString()));
 		
 		newPc.setLevel(Integer.parseInt(characterLvTxt.getText().toString()));
-		newPc.setSpellDc(Integer.parseInt(characterDcTxt.getText().toString()));
+		try {
+			newPc.setSpellDc(Integer.parseInt(characterDcTxt.getText().toString()));
+		}
+		catch(NumberFormatException e)
+		{
+			newPc.setSpellDc(0);
+		}
 		
 		characterDao.insert(newPc);
+		Intent data = new Intent();
+		data.putExtra(Character.PASSED_CHARACTER, newPc);
+		setResult(RESULT_OK, data);
 		finish();
 	}
 }

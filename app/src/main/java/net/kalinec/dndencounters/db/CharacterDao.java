@@ -15,8 +15,11 @@ import java.util.List;
 @Dao
 public interface CharacterDao
 {
-	@Query("SELECT * FROM characters WHERE pid = :pid")
+	@Query("SELECT * FROM characters WHERE pid = :pid ORDER BY NAME")
 	Character getCharacterById(int pid);
+
+	@Query("SELECT * FROM characters WHERE playerId = :playerId ORDER BY name")
+	LiveData<List<Character>> getCharactersByPlayerId(int playerId);
 	
 	@Insert
 	long insert(Character character);

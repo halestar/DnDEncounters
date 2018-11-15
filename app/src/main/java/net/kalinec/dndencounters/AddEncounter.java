@@ -48,7 +48,7 @@ public class AddEncounter extends AppCompatActivity
 			public void onClick(View view, int position)
 			{
 				Monster selectedMonster = encounterMonsterListAdapter.get(position);
-				if(view.getId() == R.id.removeMonsterBtn)
+				if(view.getId() == R.id.removePartyMembeBtn)
 					removeMonsterFromEncounter(selectedMonster);
 				else if(view.getId() == R.id.dupeMonsterBtn)
 					addMonsterToEncounter(selectedMonster);

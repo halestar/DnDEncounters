@@ -12,37 +12,44 @@ import android.widget.TextView;
 
 import net.kalinec.dndencounters.EditCharacter;
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.lib.RvClickListener;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdapter.CharacterViewHolder>
 {
+	private static final Comparator<Character> ALPHABETICAL_COMPARATOR = new Comparator<Character>() {
+		@Override
+		public int compare(Character a, Character b) {
+			return a.getName().compareTo(b.getName());
+		}
+	};
+
 	private LayoutInflater layoutInflater;
 	private List<Character> characterList;
 	private Context context;
-	private Intent destinationIntent;
+	private RvClickListener mListener;
 	
-	public Intent getDestinationIntent()
-	{
-		return destinationIntent;
-	}
-	
-	public void setDestinationIntent(Intent destinationIntent)
-	{
-		this.destinationIntent = destinationIntent;
-	}
-	
-	public CharacterListAdapter(Context context)
+	public CharacterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
 		this.context = context;
-		this.destinationIntent = new Intent(context, EditCharacter.class);
+		this.mListener = listener;
+		this.characterList = new ArrayList<>();
 	}
 	
 	public void setCharacterList(List<Character> characterList)
 	{
+		this.characterList.clear();
 		this.characterList = characterList;
 		notifyDataSetChanged();
+	}
+
+	public Character get(int position)
+	{
+		return characterList.get(position);
 	}
 	
 	@NonNull
@@ -50,7 +57,7 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 	public CharacterListAdapter.CharacterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
 	{
 		final View itemView = layoutInflater.inflate(R.layout.item_list_player_character, parent, false);
-		return new CharacterListAdapter.CharacterViewHolder(itemView);
+		return new CharacterListAdapter.CharacterViewHolder(itemView, mListener);
 	}
 	
 	@Override
@@ -65,17 +72,6 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 		{
 			holder.characterNameTv.setText(character.nameAndDescription());
 			holder.characterLvTv.setText("Lv. " + Integer.toString(character.getLevel()));
-			holder.itemView.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					Bundle bundle = new Bundle();
-					bundle.putSerializable(Character.PASSED_CHARACTER, character);
-					destinationIntent.putExtras(bundle);
-					context.startActivity(destinationIntent);
-				}
-			});
 		}
 	}
 	
@@ -92,15 +88,23 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 		}
 	}
 	
-	static class CharacterViewHolder extends RecyclerView.ViewHolder
+	static class CharacterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 	{
 		private TextView characterNameTv, characterLvTv;
+		private RvClickListener mListener;
 		
-		public CharacterViewHolder(View itemView)
+		public CharacterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
+			mListener = listener;
 			characterNameTv = itemView.findViewById(R.id.characterNameTv);
 			characterLvTv = itemView.findViewById(R.id.characterLevelTv);
+			itemView.setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View v) {
+			mListener.onClick(v, getAdapterPosition());
 		}
 	}
 }

@@ -6,6 +6,8 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import net.kalinec.dndencounters.db.AppDatabase;
+import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.players.Player;
 
 import java.io.Serializable;
@@ -161,5 +163,10 @@ public class Character implements Serializable
 		return name + "(" +
 		       (characterRace != ""? characterRace + " ": "") +
 		       characterClass + ")";
+	}
+
+	@NonNull
+	public int getPlayerId() {
+		return playerId;
 	}
 }

@@ -2,7 +2,6 @@ package net.kalinec.dndencounters.encounters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,11 +112,11 @@ public class EncounterMonsterListAdapter
 		public MonsterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
-			encounterMonsterTv = itemView.findViewById(R.id.encounterMonsterTv);
+			encounterMonsterTv = itemView.findViewById(R.id.partyMemberNameTv);
 			encounterMonsterCrTv = itemView.findViewById(R.id.encounterMonsterCrTv);
 			mListener = listener;
 			
-			removeMonsterBtn = itemView.findViewById(R.id.removeMonsterBtn);
+			removeMonsterBtn = itemView.findViewById(R.id.removePartyMembeBtn);
 			dupeMonsterBtn = itemView.findViewById(R.id.dupeMonsterBtn);
 		}
 		

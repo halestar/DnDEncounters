@@ -39,7 +39,8 @@ public class EditPlayer extends AppCompatActivity
 		dciTxt = findViewById(R.id.editHumanDciTextInput);
 		dciTxt.setText(selectedPlayer.getDci());
 		portraitContainer = findViewById(R.id.editHumanPortraitIv);
-		portrait = BitmapFactory.decodeByteArray(selectedPlayer.getPortrait(), 0, selectedPlayer.getPortrait().length);
+		if(selectedPlayer.getPortrait() != null)
+			portrait = BitmapFactory.decodeByteArray(selectedPlayer.getPortrait(), 0, selectedPlayer.getPortrait().length);
 		portraitContainer.setImageBitmap(portrait);
 	}
 	

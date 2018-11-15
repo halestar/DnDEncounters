@@ -1,32 +1,58 @@
 package net.kalinec.dndencounters;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.kalinec.dndencounters.db.AppDatabase;
+import net.kalinec.dndencounters.db.PlayerDao;
+import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.players.Player;
-import net.kalinec.dndencounters.players.PlayerListFragment;
+import net.kalinec.dndencounters.players.PlayerListAdapter;
 
-import java.io.Serializable;
+import java.util.List;
 
 public class Players extends AppCompatActivity
 {
-	
+	private RecyclerView recyclerview_players;
+	private LiveData<List<Player>> playerList;
+	private PlayerListAdapter playerListAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_players);
-		
-		showFragment(PlayerListFragment.newInstance());
+		PlayerDao playerDao = AppDatabase.getDatabase(getApplicationContext()).playerDao();
+		playerList = playerDao.getAllPlayers();
+
+		playerListAdapter = new PlayerListAdapter(getApplicationContext(), new RvClickListener() {
+			@Override
+			public void onClick(View view, int position) {
+				Player p = playerListAdapter.get(position);
+				viewPlayer(p);
+			}
+		});
+		playerList.observe(this, new Observer<List<Player>>() {
+			@Override
+			public void onChanged(@Nullable List<Player> players) {
+				playerListAdapter.setPlayerList(players);
+			}
+		});
+
+		recyclerview_players = findViewById(R.id.recyclerview_players);
+		recyclerview_players.setAdapter(playerListAdapter);
+		recyclerview_players.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 	}
 	
 	@Override
@@ -59,11 +85,13 @@ public class Players extends AppCompatActivity
 		Intent myIntent = new Intent(Players.this, AddPlayer.class);
 		Players.this.startActivity(myIntent);
 	}
-	
-	private void showFragment(final Fragment fragment)
+
+	public void viewPlayer(Player p)
 	{
-		FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-		fragmentTransaction.replace(R.id.fragmentHolder, fragment);
-		fragmentTransaction.commitNow();
+		Intent myIntent = new Intent(Players.this, ViewPlayer.class);
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(Player.PASSED_PLAYER, p);
+		myIntent.putExtras(bundle);
+		Players.this.startActivity(myIntent);
 	}
 }

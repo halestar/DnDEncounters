@@ -74,4 +74,6 @@
     <string name="NewPCTxt">New Character</string>
     <string name="ExistingPCTxt">Existing Character</string>
     <string name="BeginSessionTxt">Start Adventure!</string>
+    <string name="PartyNameTxt">Party Name</string>
+    <string name="NumPcTxt">NumPcs</string>
 </resources>

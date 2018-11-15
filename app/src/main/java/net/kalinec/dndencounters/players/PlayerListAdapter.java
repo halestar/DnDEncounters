@@ -15,8 +15,11 @@ import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.ViewPlayer;
+import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.db.AppDatabase;
+import net.kalinec.dndencounters.lib.RvClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerViewHolder>
@@ -24,31 +27,32 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 	private LayoutInflater layoutInflater;
 	private List<Player> playerList;
 	private Context context;
-	private Intent destinationIntent;
-	
-	public Intent getDestinationIntent()
-	{
-		return destinationIntent;
-	}
-	
-	public void setDestinationIntent(Intent destinationIntent)
-	{
-		this.destinationIntent = destinationIntent;
-	}
+	private RvClickListener mListener;
 	
 	
-	public PlayerListAdapter(Context context)
+	public PlayerListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
 		this.context = context;
-		this.destinationIntent = new Intent(context, ViewPlayer.class);
+		this.mListener = listener;
+		this.playerList = new ArrayList<>();
 		
 	}
 	
 	public void setPlayerList(List<Player> playerList)
 	{
+		this.playerList.clear();
 		this.playerList = playerList;
 		notifyDataSetChanged();
+	}
+
+	public List<Player> getPlayerList() {
+		return playerList;
+	}
+
+	public Player get(int position)
+	{
+		return playerList.get(position);
 	}
 	
 	@NonNull
@@ -56,7 +60,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 	public PlayerListAdapter.PlayerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
 	{
 		final View itemView = layoutInflater.inflate(R.layout.item_list_player, parent, false);
-		return new PlayerListAdapter.PlayerViewHolder(itemView);
+		return new PlayerListAdapter.PlayerViewHolder(itemView, mListener);
 	}
 	
 	@Override
@@ -72,9 +76,11 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 			holder.PlayerNameTv.setText(player.getName());
 			int numPcs = AppDatabase.getDatabase(context).playerDao().numPcs(player.getUid());
 			holder.PlayerNumPcs.setText(Integer.toString(numPcs) + " PC(s)");
-			Bitmap bmp = BitmapFactory.decodeByteArray(player.getPortrait(), 0, player.getPortrait().length);
-			holder.PlayerPortraitIv.setImageBitmap(bmp);
-			holder.itemView.setOnClickListener(new View.OnClickListener()
+			if(player.getPortrait() != null) {
+				Bitmap bmp = BitmapFactory.decodeByteArray(player.getPortrait(), 0, player.getPortrait().length);
+				holder.PlayerPortraitIv.setImageBitmap(bmp);
+			}
+			/*holder.itemView.setOnClickListener(new View.OnClickListener()
 			{
 				@Override
 				public void onClick(View v)
@@ -84,7 +90,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 					destinationIntent.putExtras(bundle);
 					context.startActivity(destinationIntent);
 				}
-			});
+			});*/
 		}
 	}
 	
@@ -101,17 +107,25 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 		}
 	}
 	
-	static class PlayerViewHolder extends RecyclerView.ViewHolder
+	static class PlayerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 	{
 		private TextView PlayerNameTv, PlayerNumPcs;
 		private ImageView PlayerPortraitIv;
+		private RvClickListener mListener;
 		
-		public PlayerViewHolder(View itemView)
+		public PlayerViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			PlayerNameTv = itemView.findViewById(R.id.PlayerNameTv);
 			PlayerNumPcs = itemView.findViewById(R.id.PlayerNumPcs);
 			PlayerPortraitIv = itemView.findViewById(R.id.PlayerPortraitIv);
+			mListener = listener;
+			itemView.setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View v) {
+			mListener.onClick(v, getAdapterPosition());
 		}
 	}
 }

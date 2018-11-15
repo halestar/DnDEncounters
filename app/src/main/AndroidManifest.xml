@@ -36,7 +36,10 @@
         <activity android:name=".AddEncounter" />
         <activity android:name=".SelectMonster" />
         <activity android:name=".EditEncounter" />
-        <activity android:name=".CreateParty"></activity>
+        <activity android:name=".CreateParty" />
+        <activity android:name=".SelectCharacter" />
+        <activity android:name=".CreatePlayerAndCharacter" />
+        <activity android:name=".SelectPlayer"></activity>
     </application>
 
 </manifest>
