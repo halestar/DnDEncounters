@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".AddMonsterToken"
+    tools:context=".EditMonsterToken"
     android:scrollbarStyle="outsideOverlay">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,53 +22,12 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/AddMonsterTokenTxt"
+            android:text="@string/EditMonsterTokenTxt"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <RadioGroup
-            android:id="@+id/TokenTypeRg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addTokenMonsterTokenNameEt">
-
-            <RadioButton
-                android:id="@+id/singleNumberRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/MonsterTokenTypeNumberTxt" />
-
-            <RadioButton
-                android:id="@+id/SingleColorRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/MonsterTokenTypeColorTxt" />
-
-            <RadioButton
-                android:id="@+id/ColoredNumberRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/MonsterTokenTypeColoredNumberTxt" />
-
-            <RadioButton
-                android:id="@+id/MiniRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/MonsterTokenTypeMiniTxt" />
-        </RadioGroup>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/SingleNumberLy"
@@ -80,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/TokenTypeRg">
+            app:layout_constraintTop_toBottomOf="@+id/addTokenMonsterTokenNameEt">
 
             <EditText
                 android:id="@+id/SingleNumberEt"
@@ -95,12 +54,12 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <android.support.constraint.Group
                 android:id="@+id/SingleNumberGroup"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:constraint_referenced_ids="SingleNumberEt"
-                />
+                app:constraint_referenced_ids="SingleNumberEt" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -233,8 +192,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:onClick="addToken"
-            android:text="@string/AddMonsterTokenTxt"
+            android:onClick="updateMonsterToken"
+            android:text="@string/UpdateMonsterTokenTxt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MiniLy" />
@@ -252,6 +211,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/colorAccent"
+            android:onClick="deleteMonsterToken"
+            android:text="@string/DeleteMonsterTokenTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addMonsterTokenBtn" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

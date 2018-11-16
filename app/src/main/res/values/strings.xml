@@ -99,4 +99,7 @@
     <string name="PickTokenColorTxt">Pick Token Color</string>
     <string name="TakePortraitOfMiniTxt">Take Picture of Mini</string>
     <string name="MonsterTokensTxt">Monster Tokens</string>
+    <string name="EditMonsterTokenTxt">Edit Monster Token</string>
+    <string name="UpdateMonsterTokenTxt">Update Monster Token</string>
+    <string name="DeleteMonsterTokenTxt">Delete Monster Token</string>
 </resources>

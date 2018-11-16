@@ -122,7 +122,7 @@ public class MonsterTokens
 		writeEncounters();
 	}
 	
-	public static void removeEncounter(Context context, MonsterToken e)
+	public static void removeMonsterToken(Context context, MonsterToken e)
 	{
 		verifyDb(context);
 		tokensDb.remove(e);

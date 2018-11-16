@@ -47,7 +47,8 @@
             android:name=".ViewMonsterTokens"
             android:label="@string/title_activity_view_monster_tokens"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddMonsterToken"></activity>
+        <activity android:name=".AddMonsterToken" />
+        <activity android:name=".EditMonsterToken"></activity>
     </application>
 
 </manifest>

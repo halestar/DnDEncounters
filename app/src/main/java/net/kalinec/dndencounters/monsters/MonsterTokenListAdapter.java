@@ -80,6 +80,11 @@ public class MonsterTokenListAdapter extends RecyclerView.Adapter<MonsterTokenLi
 		notifyDataSetChanged();
 	}
 
+	public MonsterToken get(int i)
+	{
+		return monsterList.get(i);
+	}
+
 	@NonNull
 	@Override
 	public MonsterTokenListAdapter.MonsterTokenViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)

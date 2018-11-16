@@ -1,6 +1,7 @@
 package net.kalinec.dndencounters.monsters;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 
 import net.kalinec.dndencounters.lib.SelectableItem;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -20,11 +22,12 @@ public class MonsterToken implements Serializable, SelectableItem
     public static final int TOKEN_TYPE_NUMBER = 2;
     public static final int TOKEN_TYPE_MINI = 3;
     public static final int TOKEN_TYPE_COLOR = 4;
-    private Bitmap miniPortrait;
-    private String tokenName;
-    private int tokenType;
-    private Color tokenColor;
-    private int tokenNumber;
+    public static final String PASSED_MONSTER_TOKEN = "PASSED_MONSTER_TOKEN";
+    private byte[] miniPortrait;
+    private String tokenName = "Random Token";
+    private int tokenType = TOKEN_TYPE_NUMBER;
+    private int tokenColor = Color.WHITE;
+    private int tokenNumber = 0;
     private boolean isSelected = false;
 
     public MonsterToken(int tokenType)
@@ -33,14 +36,19 @@ public class MonsterToken implements Serializable, SelectableItem
     }
 
     public Bitmap getMiniPortrait() {
-        return miniPortrait;
+        Bitmap bmp = BitmapFactory.decodeByteArray(miniPortrait, 0, miniPortrait.length);
+        return bmp;
     }
 
     public void setMiniPortrait(Bitmap miniPortrait) {
-        this.miniPortrait = miniPortrait;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        miniPortrait.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        this.miniPortrait = stream.toByteArray();
     }
 
     public String getTokenName() {
+        if(tokenName == null)
+            return "";
         return tokenName;
     }
 
@@ -48,11 +56,11 @@ public class MonsterToken implements Serializable, SelectableItem
         this.tokenName = tokenName;
     }
 
-    public Color getTokenColor() {
+    public int getTokenColor() {
         return tokenColor;
     }
 
-    public void setTokenColor(Color tokenColor) {
+    public void setTokenColor(int tokenColor) {
         this.tokenColor = tokenColor;
     }
 
@@ -146,7 +154,7 @@ public class MonsterToken implements Serializable, SelectableItem
     {
         if(tokenType == MonsterToken.TOKEN_TYPE_MINI)
         {
-            holder.setImageBitmap(miniPortrait);
+            holder.setImageBitmap(getMiniPortrait());
         }
         else if(tokenType == MonsterToken.TOKEN_TYPE_NUMBER)
         {
@@ -154,11 +162,11 @@ public class MonsterToken implements Serializable, SelectableItem
         }
         else if(tokenType == MonsterToken.TOKEN_TYPE_COLORED_NUMBER)
         {
-            holder.setImageBitmap(drawText(Integer.toString(tokenNumber), 20, Color.BLACK, tokenColor.toArgb()));
+            holder.setImageBitmap(drawText(Integer.toString(tokenNumber), 20, Color.BLACK, tokenColor));
         }
         else if(tokenType == MonsterToken.TOKEN_TYPE_COLOR)
         {
-            holder.setBackgroundColor(tokenColor.toArgb());
+            holder.setBackgroundColor(tokenColor);
         }
     }
 }
