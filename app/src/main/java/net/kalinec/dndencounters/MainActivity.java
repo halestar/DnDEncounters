@@ -3,6 +3,7 @@ package net.kalinec.dndencounters;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.monsters.Monster;
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener
 {
 	private PlaySession activeSession = null;
+	private Button continueSessionBtn;
+	private ConstraintLayout activeSessionView;
+	private TextView partyNameTv, activeSessionNumPartyTv, activeSessionAplTv;
 
 
 	@Override
@@ -43,6 +49,31 @@ public class MainActivity extends AppCompatActivity
 		
 		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
+		activeSession = PlaySession.existingSession(getApplicationContext());
+
+		activeSessionView = (ConstraintLayout) findViewById(R.id.activeSessionView);
+		continueSessionBtn = (Button) findViewById(R.id.continueSessionBtn);
+		partyNameTv = (TextView) findViewById(R.id.partyNameTv);
+		activeSessionNumPartyTv = (TextView) findViewById(R.id.activeSessionNumPartyTv);
+		activeSessionAplTv = (TextView) findViewById(R.id.activeSessionAplTv);
+
+		if(activeSession == null) {
+			continueSessionBtn.setVisibility(View.GONE);
+			activeSessionView.setVisibility(View.GONE);
+		}
+		else {
+			continueSessionBtn.setVisibility(View.VISIBLE);
+			activeSessionView.setVisibility(View.VISIBLE);
+			partyNameTv.setText(activeSession.getPlayers().getName());
+			activeSessionNumPartyTv.setText(Integer.toString(activeSession.getPlayers().getMembers().size()));
+			activeSessionAplTv.setText(Integer.toString(activeSession.getPlayers().getApl()));
+			continueSessionBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					continueAdventure();
+				}
+			});
+		}
 	}
 	
 	@Override
@@ -101,7 +132,11 @@ public class MainActivity extends AppCompatActivity
 			Intent myIntent = new Intent(MainActivity.this, ViewEncounters.class);
 			MainActivity.this.startActivity(myIntent);
 		}
-		
+		else if(id == R.id.nav_monster_tokens)
+		{
+			Intent myIntent = new Intent(MainActivity.this, ViewMonsterTokens.class);
+			MainActivity.this.startActivity(myIntent);
+		}
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
 		return true;
@@ -109,10 +144,18 @@ public class MainActivity extends AppCompatActivity
 
 	public void beginPlaySession(View v)
 	{
-		activeSession = new PlaySession();
+		if(activeSession == null)
+			activeSession = new PlaySession();
 		Intent myIntent = new Intent(MainActivity.this, CreateParty.class);
 		myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
 		startActivityForResult(myIntent, CreateParty.REQUEST_NEW_PARTY);
+	}
+
+	public void continueAdventure()
+	{
+		Intent myIntent = new Intent(MainActivity.this, PlayAdventure.class);
+		myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
+		MainActivity.this.startActivity(myIntent);
 	}
 
 	@Override
@@ -124,7 +167,10 @@ public class MainActivity extends AppCompatActivity
 			{
 				Party newParty = (Party)data.getSerializableExtra(Party.PASSED_PARTY);
 				activeSession.setPlayers(newParty);
-				//add encounters next.
+				//go to play.
+				Intent myIntent = new Intent(MainActivity.this, PlayAdventure.class);
+				myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
+				MainActivity.this.startActivity(myIntent);
 			}
 		}
 	}

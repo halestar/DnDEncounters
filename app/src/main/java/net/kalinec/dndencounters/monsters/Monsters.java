@@ -2,8 +2,6 @@ package net.kalinec.dndencounters.monsters;
 
 import android.content.Context;
 
-import net.kalinec.dndencounters.lib.SerializableJsonObj;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -74,7 +72,7 @@ public class Monsters
 			{
 				try
 				{
-					allMonsters.add(new Monster(i, new SerializableJsonObj(monsterDb.getJSONObject(i).toString())));
+					allMonsters.add(new Monster(i, monsterDb.getJSONObject(i)));
 				}
 				catch (JSONException e)
 				{
@@ -92,7 +90,7 @@ public class Monsters
 	{
 		try
 		{
-			return new Monster(index, new SerializableJsonObj(monsterDb.getJSONObject(index).toString()));
+			return new Monster(index, monsterDb.getJSONObject(index));
 		}
 		catch (JSONException e)
 		{

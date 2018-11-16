@@ -3,6 +3,8 @@ package net.kalinec.dndencounters.encounters;
 import android.content.Context;
 import android.util.Log;
 
+import net.kalinec.dndencounters.lib.SelectableItem;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -89,6 +91,17 @@ public class Encounters
 	{
 		verifyDb(context);
 		return encountersDB;
+	}
+
+	public static List<SelectableItem> getAllAsSelectibles(Context context)
+	{
+		verifyDb(context);
+		List<SelectableItem> selectableEncounters = new ArrayList<>();
+		for(Encounter e: encountersDB)
+		{
+			selectableEncounters.add((SelectableItem) e);
+		}
+		return selectableEncounters;
 	}
 	
 	public static void addEncounter(Context context, Encounter e)

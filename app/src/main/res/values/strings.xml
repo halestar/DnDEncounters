@@ -10,6 +10,7 @@
     <!-- Font Awesome -->
     <string name="fa_times_circle">&#xf057;</string>
     <string name="fa_copy">&#xf0c5;</string>
+    <string name="fa_play">&#xf144;</string>
 
 
     <!-- Dialogs -->
@@ -76,4 +77,26 @@
     <string name="BeginSessionTxt">Start Adventure!</string>
     <string name="PartyNameTxt">Party Name</string>
     <string name="NumPcTxt">NumPcs</string>
+    <string name="TotalPartyMembersTxt"># Party Members:</string>
+    <string name="AplTxt">APL:</string>
+    <string name="ContinueAdventureTxt">Continue Previous Adventure</string>
+    <string name="PlaySingleEncounterTxt">Play Single Encounter</string>
+    <string name="CompleteAdventureTxt">Finish Adventure</string>
+    <string name="AddEncounterToAdventureTxt">Add Encounter(s) to Adventure</string>
+    <string name="UnplayedHeaderTxt">Unplayed Encounters (click to play)</string>
+    <string name="PlayedEncountersTxt">Completed Encounters (click to view)</string>
+    <string name="ContinueEncounter">Continue Existing Encounter</string>
+    <string name="ChangePartyTxt">Change Party</string>
+    <string name="AddEncountersTxt">Add Encounter(s)</string>
+    <string name="title_activity_view_monster_tokens">ViewMonsterTokens</string>
+    <string name="MonsterTokenNameTxt">Monster Token Name</string>
+    <string name="AddMonsterTokenTxt">Add a New Monster Token</string>
+    <string name="MonsterTokenTypeNumberTxt">Single Number Token</string>
+    <string name="MonsterTokenTypeColorTxt">Single Color Token</string>
+    <string name="MonsterTokenTypeColoredNumberTxt">Token with Color and Number</string>
+    <string name="MonsterTokenTypeMiniTxt">Image of a Mini</string>
+    <string name="TokenNumberTxt">Token Number</string>
+    <string name="PickTokenColorTxt">Pick Token Color</string>
+    <string name="TakePortraitOfMiniTxt">Take Picture of Mini</string>
+    <string name="MonsterTokensTxt">Monster Tokens</string>
 </resources>

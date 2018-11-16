@@ -43,11 +43,13 @@ public class Party implements Serializable
 	public void addMember(Character pc)
 	{
 		members.add(pc);
+		updateApl();
 	}
 
 	public void removeMember(Character pc)
 	{
 		members.remove(pc);
+		updateApl();
 	}
 	
 	public String getName()

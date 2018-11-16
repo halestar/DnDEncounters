@@ -5,9 +5,8 @@ package net.kalinec.dndencounters.monsters;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-import net.kalinec.dndencounters.lib.SerializableJsonObj;
-
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -36,7 +35,7 @@ public class Monster implements Serializable
 		return cr;
 	}
 	
-	public Monster(int mid, SerializableJsonObj stats)
+	public Monster(int mid, JSONObject stats)
 	{
 		this.mid = mid;
 		try

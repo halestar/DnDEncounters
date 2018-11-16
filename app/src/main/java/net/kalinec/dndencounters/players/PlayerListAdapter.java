@@ -1,10 +1,8 @@
 package net.kalinec.dndencounters.players;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.ViewPlayer;
-import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.lib.RvClickListener;
 
@@ -118,7 +114,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 			super(itemView);
 			PlayerNameTv = itemView.findViewById(R.id.PlayerNameTv);
 			PlayerNumPcs = itemView.findViewById(R.id.PlayerNumPcs);
-			PlayerPortraitIv = itemView.findViewById(R.id.PlayerPortraitIv);
+			PlayerPortraitIv = itemView.findViewById(R.id.MonsterTokenPortrait);
 			mListener = listener;
 			itemView.setOnClickListener(this);
 		}

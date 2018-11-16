@@ -12,6 +12,10 @@
             android:id="@+id/nav_encounters"
             android:icon="@drawable/encounter_icon"
             android:title="@string/EncountersTxt" />
+        <item
+            android:id="@+id/nav_monster_tokens"
+            android:icon="@drawable/monster_icon"
+            android:title="@string/MonsterTokensTxt" />
     </group>
 
 </menu>

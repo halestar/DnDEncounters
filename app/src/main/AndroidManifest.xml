@@ -39,7 +39,15 @@
         <activity android:name=".CreateParty" />
         <activity android:name=".SelectCharacter" />
         <activity android:name=".CreatePlayerAndCharacter" />
-        <activity android:name=".SelectPlayer"></activity>
+        <activity android:name=".SelectPlayer" />
+        <activity android:name=".PlayAdventure" />
+        <activity android:name=".SelectEncounters" />
+        <activity android:name=".PlayEncounter" />
+        <activity
+            android:name=".ViewMonsterTokens"
+            android:label="@string/title_activity_view_monster_tokens"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".AddMonsterToken"></activity>
     </application>
 
 </manifest>

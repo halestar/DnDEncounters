@@ -1,19 +1,36 @@
 package net.kalinec.dndencounters.encounters;
 
+import net.kalinec.dndencounters.lib.SelectableItem;
 import net.kalinec.dndencounters.monsters.Monster;
 
 import org.apache.commons.math3.fraction.Fraction;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Encounter implements Serializable
+public class Encounter implements Serializable, SelectableItem
 {
 	public final static String PASSED_ENCOUNTER = "PASSED_ENCOUNTER";
+	public final static String PASSED_ENCOUNTERS = "PASSED_ENCOUNTERS";
 	private String encounterName;
 	private List<Monster> monsters;
 	private int cr;
+	private boolean isSelected = false;
+
+	public Encounter(String name, List<Monster> monsters)
+	{
+		this.encounterName = name;
+		this.monsters = monsters;
+		updateCr();
+	}
+
+	public Encounter()
+	{
+		this.encounterName = "";
+		this.monsters = new ArrayList<>();
+	}
 	
 	private void updateCr()
 	{
@@ -92,5 +109,20 @@ public class Encounter implements Serializable
 		       ", monsters=" + monsters +
 		       ", cr=" + cr +
 		       '}';
+	}
+
+	@Override
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	@Override
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
+	}
+
+	@Override
+	public String getSelectableText() {
+		return this.encounterName + "(CR: " + this.cr + ")";
 	}
 }
