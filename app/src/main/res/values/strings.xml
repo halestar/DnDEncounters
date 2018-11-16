@@ -11,6 +11,8 @@
     <string name="fa_times_circle">&#xf057;</string>
     <string name="fa_copy">&#xf0c5;</string>
     <string name="fa_play">&#xf144;</string>
+    <string name="fa_times">&#xf00d;</string>
+    <string name="fa_check">&#xf00c;</string>
 
 
     <!-- Dialogs -->
@@ -102,4 +104,14 @@
     <string name="EditMonsterTokenTxt">Edit Monster Token</string>
     <string name="UpdateMonsterTokenTxt">Update Monster Token</string>
     <string name="DeleteMonsterTokenTxt">Delete Monster Token</string>
+    <string name="MonsterTokensAssignedTxt">Monster Tokens Assigned</string>
+    <string name="AssignMonsterTokensTxt">Assign Monster Tokens</string>
+    <string name="PlayerInitiativeAssignedTxt">Player Initiative Assigned</string>
+    <string name="AssignPlayerInitiativeTxt">Assign Player Initiative</string>
+    <string name="UseIndividualMonsterInitiativeTxt">Use Individual Monster Initiative</string>
+    <string name="AssignIndividualMonsterInitiativeTxt">Assign Individual Monster Initiative</string>
+    <string name="AssignGroupMonsterInitiativeTxt">Assign Group Monster Initiative</string>
+    <string name="RollForMonsterHp">Roll for Each Monster\'s HP</string>
+    <string name="StartEncounterTxt">Start Encounter</string>
+    <string name="DoneAssigningTokensTxt">Done Assigning Tokens</string>
 </resources>

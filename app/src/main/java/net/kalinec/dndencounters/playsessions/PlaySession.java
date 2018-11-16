@@ -2,6 +2,7 @@ package net.kalinec.dndencounters.playsessions;
 
 import android.content.Context;
 
+import net.kalinec.dndencounters.encounter.AdventureEncounter;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.parties.Party;
 
@@ -21,7 +22,22 @@ public class PlaySession implements Serializable
 	private Party players;
 	private ArrayList<Encounter> encounters = new ArrayList<>();
 	private Encounter currentEncounter = null;
+	private AdventureEncounter adventureEncounter;
 	private Date started, completed;
+
+	public Encounter getCurrentEncounter() {
+		return currentEncounter;
+	}
+
+	public void setCurrentEncounter(Encounter currentEncounter) {
+		this.currentEncounter = currentEncounter;
+		if(currentEncounter != null)
+			adventureEncounter = new AdventureEncounter(players, currentEncounter);
+	}
+
+	public AdventureEncounter getAdventureEncounter() {
+		return adventureEncounter;
+	}
 
 	public PlaySession()
 	{

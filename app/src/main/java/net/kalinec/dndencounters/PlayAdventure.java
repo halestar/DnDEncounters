@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import net.kalinec.dndencounters.encounter.AdventureEncounter;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.encounters.PlayingEncounterListAdapter;
 import net.kalinec.dndencounters.lib.RvClickListener;
@@ -26,6 +27,7 @@ public class PlayAdventure extends AppCompatActivity {
     private Button continueLastEncounterBtn, PlaySingleEncounterBtn, AddEncounterToAdventureBtn, FinishAdventureBtn;
     private RecyclerView AdventureEncountersRv, CompletedEncountersRv;
     private PlayingEncounterListAdapter playingEncounterListAdapter;
+    private AdventureEncounter adventureEncounter = null;
 
 
 
@@ -47,21 +49,21 @@ public class PlayAdventure extends AppCompatActivity {
         playingEncounterListAdapter = new PlayingEncounterListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if(view.getId() == R.id.playEncounterBtn)
-                {
 
-                }
+                Encounter e = activeSession.getEncounters().get(position);
+                if(view.getId() == R.id.playEncounterBtn)
+                    playEncounter(e);
                 else if(view.getId() == R.id.removeEncounterBtn)
-                {
-                    Encounter e = activeSession.getEncounters().get(position);
                     removePlayingEncounter(e);
-                }
             }
         });
         playingEncounterListAdapter.setEncounterList(activeSession.getEncounters());
         AdventureEncountersRv = findViewById(R.id.AdventureEncountersRv);
         AdventureEncountersRv.setAdapter(playingEncounterListAdapter);
         AdventureEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        continueLastEncounterBtn = findViewById(R.id.continueLastEncounterBtn);
+        continueLastEncounterBtn.setVisibility(View.GONE);
 
     }
 
@@ -75,20 +77,17 @@ public class PlayAdventure extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
-        if(requestCode == CreateParty.REQUEST_NEW_PARTY)
+        if(requestCode == CreateParty.REQUEST_NEW_PARTY && resultCode == RESULT_OK)
         {
-            if(resultCode == RESULT_OK)
-            {
-                Party newParty = (Party)data.getSerializableExtra(Party.PASSED_PARTY);
+            Party newParty = (Party)data.getSerializableExtra(Party.PASSED_PARTY);
 
-                activeSession.setPlayers(newParty);
-                activeSession.saveSession(getApplicationContext());
-                aplTxt.setText(Integer.toString(activeSession.getPlayers().getApl()));
-                NumMembersTxt.setText(Integer.toString(activeSession.getPlayers().getMembers().size()));
-                PlayAdventurePartyNameTv.setText(activeSession.getPlayers().getName());
-            }
+            activeSession.setPlayers(newParty);
+            activeSession.saveSession(getApplicationContext());
+            aplTxt.setText(Integer.toString(activeSession.getPlayers().getApl()));
+            NumMembersTxt.setText(Integer.toString(activeSession.getPlayers().getMembers().size()));
+            PlayAdventurePartyNameTv.setText(activeSession.getPlayers().getName());
         }
-        else if(requestCode == SelectEncounters.REQUEST_ENCOUNTER_LIST)
+        else if(requestCode == SelectEncounters.REQUEST_ENCOUNTER_LIST && resultCode == RESULT_OK)
         {
             try {
                 List<Encounter> newEncounters = (List<Encounter>) data.getSerializableExtra(Encounter.PASSED_ENCOUNTERS);
@@ -100,6 +99,11 @@ public class PlayAdventure extends AppCompatActivity {
             {
 
             }
+        }
+        else if(requestCode == SelectEncounter.REQUEST_SELECT_ENCOUNTER && resultCode == RESULT_OK)
+        {
+            Encounter encounter = (Encounter)data.getSerializableExtra(Encounter.PASSED_ENCOUNTER);
+            playEncounter(encounter);
         }
     }
 
@@ -114,6 +118,20 @@ public class PlayAdventure extends AppCompatActivity {
     {
         Intent myIntent = new Intent(PlayAdventure.this, SelectEncounters.class);
         startActivityForResult(myIntent, SelectEncounters.REQUEST_ENCOUNTER_LIST);
+    }
+
+    public void playEncounter(Encounter e)
+    {
+        activeSession.setCurrentEncounter(e);
+        Intent myIntent = new Intent(PlayAdventure.this, PlayEncounter.class);
+        myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
+        startActivityForResult(myIntent, PlayEncounter.PLAY_ENCOUNTER);
+    }
+
+    public void selectEncounterToPlay(View v)
+    {
+        Intent myIntent = new Intent(PlayAdventure.this, SelectEncounter.class);
+        startActivityForResult(myIntent, SelectEncounter.REQUEST_SELECT_ENCOUNTER);
     }
 
 }
