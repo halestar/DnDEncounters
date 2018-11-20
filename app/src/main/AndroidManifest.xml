@@ -23,35 +23,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Players" />
-        <activity android:name=".AddPlayer" />
-        <activity android:name=".ViewPlayer" />
-        <activity android:name=".AddCharacter" />
-        <activity android:name=".EditPlayer" />
-        <activity android:name=".EditCharacter" />
+        <activity android:name=".activities.players.Players" />
+        <activity android:name=".activities.players.AddPlayer" />
+        <activity android:name=".activities.players.ViewPlayer" />
+        <activity android:name=".activities.characters.AddCharacter" />
+        <activity android:name=".activities.players.EditPlayer" />
+        <activity android:name=".activities.characters.EditCharacter" />
         <activity
-            android:name=".ViewEncounters"
+            android:name=".activities.encounters.ViewEncounters"
             android:label="@string/title_activity_view_encounters"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddEncounter" />
-        <activity android:name=".SelectMonster" />
-        <activity android:name=".EditEncounter" />
-        <activity android:name=".CreateParty" />
-        <activity android:name=".SelectCharacter" />
-        <activity android:name=".CreatePlayerAndCharacter" />
-        <activity android:name=".SelectPlayer" />
-        <activity android:name=".PlayAdventure" />
-        <activity android:name=".SelectEncounters" />
-        <activity android:name=".PlayEncounter" />
+        <activity android:name=".activities.encounters.AddEncounter" />
+        <activity android:name=".activities.monsters.SelectMonster" />
+        <activity android:name=".activities.encounters.EditEncounter" />
+        <activity android:name=".activities.parties.CreateParty" />
+        <activity android:name=".activities.characters.SelectCharacter" />
+        <activity android:name=".activities.players.CreatePlayerAndCharacter" />
+        <activity android:name=".activities.players.SelectPlayer" />
+        <activity android:name=".activities.adventure_encounters.PlayAdventure" />
+        <activity android:name=".activities.encounters.SelectEncounters" />
+        <activity android:name=".activities.encounters.PlayEncounter" />
         <activity
-            android:name=".ViewMonsterTokens"
+            android:name=".activities.monster_tokens.ViewMonsterTokens"
             android:label="@string/title_activity_view_monster_tokens"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddMonsterToken" />
-        <activity android:name=".EditMonsterToken" />
-        <activity android:name=".SetupEncounter" />
-        <activity android:name=".SelectEncounter" />
-        <activity android:name=".AssignMonsterTokens"></activity>
+        <activity android:name=".activities.monster_tokens.AddMonsterToken" />
+        <activity android:name=".activities.monster_tokens.EditMonsterToken" />
+        <activity android:name=".activities.adventure_encounters.SetupEncounter" />
+        <activity android:name=".activities.encounters.SelectEncounter" />
+        <activity android:name=".activities.monster_tokens.AssignMonsterTokens" />
+        <activity android:name=".activities.adventure_encounters.AssignPlayerInitiative"></activity>
     </application>
 
 </manifest>

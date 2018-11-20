@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectPlayer">
+    tools:context=".activities.players.SelectPlayer">
     <SearchView
         android:id="@+id/playerSearchSv"
         android:layout_width="match_parent"

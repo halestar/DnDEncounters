@@ -1,8 +1,6 @@
 package net.kalinec.dndencounters.characters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
@@ -11,11 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.kalinec.dndencounters.EditCharacter;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.PlayerDao;
-import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.players.Player;
 

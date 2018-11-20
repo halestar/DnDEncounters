@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,10 +16,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
-import net.kalinec.dndencounters.encounters.Encounter;
-import net.kalinec.dndencounters.monsters.Monster;
+import net.kalinec.dndencounters.activities.adventure_encounters.PlayAdventure;
+import net.kalinec.dndencounters.activities.encounters.ViewEncounters;
+import net.kalinec.dndencounters.activities.monster_tokens.ViewMonsterTokens;
+import net.kalinec.dndencounters.activities.parties.CreateParty;
+import net.kalinec.dndencounters.activities.players.Players;
 import net.kalinec.dndencounters.parties.Party;
-import net.kalinec.dndencounters.players.Player;
 import net.kalinec.dndencounters.playsessions.PlaySession;
 
 public class MainActivity extends AppCompatActivity

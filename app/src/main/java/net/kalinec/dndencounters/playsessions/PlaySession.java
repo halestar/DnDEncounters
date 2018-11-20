@@ -2,7 +2,7 @@ package net.kalinec.dndencounters.playsessions;
 
 import android.content.Context;
 
-import net.kalinec.dndencounters.encounter.AdventureEncounter;
+import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.parties.Party;
 
