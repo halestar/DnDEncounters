@@ -3,8 +3,13 @@ package net.kalinec.dndencounters.adventure_encounters;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.players.Player;
 
-public class AdventureEncounterPlayer implements AdventureEncounterActor
+import java.io.Serializable;
+
+public class AdventureEncounterPlayer implements AdventureEncounterActor, Serializable
 {
+
+    public static final String PASSED_ENCOUNTER_PLAYER = "PASSED_ENCOUNTER_PLAYER";
+    public static final String PASSED_ENCOUNTER_PLAYERS = "PASSED_ENCOUNTER_PLAYERS";
     private Character pc;
     private Player player;
     private int initiative, status;
@@ -13,6 +18,7 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor
     public AdventureEncounterPlayer(Character pc, Player player) {
         this.pc = pc;
         this.player = player;
+        this.initiative = 0;
     }
     @Override
     public int getInitiative() {
@@ -52,5 +58,15 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor
     @Override
     public void setHasActed(boolean hasActed) {
         this.hasActed = hasActed;
+    }
+
+    @Override
+    public String toString() {
+        return "AdventureEncounterPlayer{" +
+                "pc=" + pc +
+                ", initiative=" + initiative +
+                ", status=" + status +
+                ", hasActed=" + hasActed +
+                '}';
     }
 }

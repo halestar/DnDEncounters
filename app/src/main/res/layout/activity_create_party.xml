@@ -113,6 +113,7 @@
         android:ems="10"
         android:hint="@string/PartyNameTxt"
         android:inputType="textPersonName"
+        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />

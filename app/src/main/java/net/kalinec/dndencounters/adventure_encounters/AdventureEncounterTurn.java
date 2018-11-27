@@ -1,8 +1,9 @@
 package net.kalinec.dndencounters.adventure_encounters;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class AdventureEncounterTurn
+public class AdventureEncounterTurn implements Serializable
 {
     private List<AdventureEncounterActor> actors;
     private int turnNumber;
@@ -63,5 +64,16 @@ public class AdventureEncounterTurn
         currentActor = getActiveActor();
         if(currentActor == null)
             completed = true;
+    }
+
+    @Override
+    public String toString() {
+        return "AdventureEncounterTurn{" +
+                "actors=" + actors +
+                ", turnNumber=" + turnNumber +
+                ", currentInitiative=" + currentInitiative +
+                ", currentActor=" + currentActor +
+                ", completed=" + completed +
+                '}';
     }
 }

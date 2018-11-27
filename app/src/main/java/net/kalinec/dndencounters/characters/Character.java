@@ -11,6 +11,7 @@ import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.players.Player;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity(tableName = "characters",
 		foreignKeys = @ForeignKey(entity = Player.class,
@@ -36,7 +37,16 @@ public class Character implements Serializable
 	@NonNull
 	public String characterClass;
 	public String characterRace;
-	
+
+	@Override
+	public String toString() {
+		return "Character{" +
+				"name='" + name + '\'' +
+				", characterClass='" + characterClass + '\'' +
+				", characterRace='" + characterRace + '\'' +
+				'}';
+	}
+
 	@NonNull
 	public int ac;
 	@NonNull
@@ -168,5 +178,20 @@ public class Character implements Serializable
 	@NonNull
 	public int getPlayerId() {
 		return playerId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Character character = (Character) o;
+		return pid == character.pid &&
+				playerId == character.playerId;
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(pid, playerId);
 	}
 }

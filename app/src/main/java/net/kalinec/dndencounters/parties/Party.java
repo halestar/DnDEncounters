@@ -76,5 +76,14 @@ public class Party implements Serializable
 			level += pc.getLevel();
 		apl = (int)Math.floor(level/members.size());
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Party{" +
+				"created=" + created +
+				", members=" + members +
+				", name='" + name + '\'' +
+				", apl=" + apl +
+				'}';
+	}
 }

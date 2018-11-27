@@ -14,6 +14,7 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
     private MonsterToken token;
     private int initiative, status;
     private boolean hasActed;
+    private int hp;
 
     public AdventureEncounterMonster(Monster monster, MonsterToken token) {
         this.monster = monster;
@@ -58,5 +59,25 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
 
     public MonsterToken getToken() {
         return token;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    @Override
+    public String toString() {
+        return "AdventureEncounterMonster{" +
+                "monster=" + monster +
+                ", token=" + token +
+                ", initiative=" + initiative +
+                ", status=" + status +
+                ", hasActed=" + hasActed +
+                ", hp=" + hp +
+                '}';
     }
 }

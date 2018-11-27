@@ -52,7 +52,8 @@
         <activity android:name=".activities.adventure_encounters.SetupEncounter" />
         <activity android:name=".activities.encounters.SelectEncounter" />
         <activity android:name=".activities.monster_tokens.AssignMonsterTokens" />
-        <activity android:name=".activities.adventure_encounters.AssignPlayerInitiative"></activity>
+        <activity android:name=".activities.adventure_encounters.AssignPlayerInitiative" />
+        <activity android:name=".activities.encounter_turn.PlayerTurn"></activity>
     </application>
 
 </manifest>

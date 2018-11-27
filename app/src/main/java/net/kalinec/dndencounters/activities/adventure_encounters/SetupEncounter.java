@@ -7,14 +7,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.monster_tokens.AssignMonsterTokens;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
+import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterPlayer;
+import net.kalinec.dndencounters.dice.InitiativeRoller;
+import net.kalinec.dndencounters.encounters.Encounter;
 
 import java.util.ArrayList;
 
@@ -27,7 +32,7 @@ public class SetupEncounter extends AppCompatActivity {
     private AdventureEncounter selectedEncounter;
     private ArrayList<AdventureEncounterMonster> encounterMonsterList;
     private ArrayList<AdventureEncounterPlayer> encounterPlayers;
-    private boolean completedMonsterTokens, completedPlayerInitiative;
+    private boolean completedMonsterTokens, completedPlayerInitiative, individualInitiative, rollForHp;
 
 
     @Override
@@ -39,8 +44,27 @@ public class SetupEncounter extends AppCompatActivity {
 
         monsterTokensCompletedIconTv = findViewById(R.id.monsterTokensCompletedIconTv);
         playerInitiativeCompletedIconTv = findViewById(R.id.playerInitiativeCompletedIconTv);
+
+        individualInitiative = false;
         assignIndividualMonsterInitiativeSw = findViewById(R.id.assignIndividualMonsterInitiativeSw);
+        assignIndividualMonsterInitiativeSw.setChecked(individualInitiative);
+        assignIndividualMonsterInitiativeSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                individualInitiative = isChecked;
+            }
+        });
+
+        rollForHp = false;
         rollMonsterHp = findViewById(R.id.rollMonsterHp);
+        rollMonsterHp.setChecked(rollForHp);
+        rollMonsterHp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                rollForHp = isChecked;
+            }
+        });
+
         StartEncounterBtn = findViewById(R.id.StartEncounterBtn);
         completedMonsterTokens = completedPlayerInitiative = false;
 
@@ -104,6 +128,22 @@ public class SetupEncounter extends AppCompatActivity {
             completedMonsterTokens = false;
         setMonstersCompletedIcon();
     }
+
+    public void setupPcInitiative(View v)
+    {
+        Intent myIntent = new Intent(SetupEncounter.this, AssignPlayerInitiative.class);
+        myIntent.putExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER, selectedEncounter);
+        startActivityForResult(myIntent, AssignPlayerInitiative.REQUEST_PLAYER_INITIATIVE);
+    }
+
+    public void completePlayerInitiative()
+    {
+        if(encounterPlayers.size() == selectedEncounter.getParty().getMembers().size())
+            completedPlayerInitiative = true;
+        else
+            completedPlayerInitiative = false;
+        setPcsCompletedIcon();
+    }
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
@@ -112,6 +152,59 @@ public class SetupEncounter extends AppCompatActivity {
         {
             encounterMonsterList = (ArrayList<AdventureEncounterMonster>)data.getSerializableExtra(AdventureEncounterMonster.PASSED_ENCOUNTER_MONSTERS);
             completeMonsterTokens();
+        }
+        if(requestCode == AssignPlayerInitiative.REQUEST_PLAYER_INITIATIVE && resultCode == RESULT_OK)
+        {
+            encounterPlayers = (ArrayList<AdventureEncounterPlayer>)data.getSerializableExtra(AdventureEncounterPlayer.PASSED_ENCOUNTER_PLAYERS);
+            completePlayerInitiative();
+        }
+    }
+
+    public void completeSetup(View v)
+    {
+        selectedEncounter.clearActors();
+        for(AdventureEncounterPlayer pc: encounterPlayers)
+        {
+            pc.setHasActed(false);
+            pc.setStatus(AdventureEncounterActor.ALIVE);
+            selectedEncounter.addActor(pc);
+        }
+        int max_mod = -10;
+        for(AdventureEncounterMonster monster: encounterMonsterList)
+        {
+            if(monster.getMonster().getDex_mod() > max_mod)
+                max_mod = monster.getMonster().getDex_mod();
+        }
+        InitiativeRoller initiativeDice = new InitiativeRoller(max_mod);
+        int initiative = initiativeDice.roll();
+        for(AdventureEncounterMonster monster: encounterMonsterList)
+        {
+            monster.setHasActed(false);
+            monster.setStatus(AdventureEncounterActor.ALIVE);
+            if(individualInitiative)
+            {
+                initiativeDice.setModifier(monster.getMonster().getDex_mod());
+                monster.setInitiative(initiativeDice.roll());
+            }
+            else
+                monster.setInitiative(initiative);
+            if(rollForHp)
+                monster.setHp(monster.getMonster().rollHp());
+            else
+                monster.setHp(monster.getMonster().getHp());
+            selectedEncounter.addActor(monster);
+        }
+        if(selectedEncounter.isSetup())
+        {
+            selectedEncounter.beginEncounter();
+            Intent data = new Intent();
+            data.putExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER, selectedEncounter);
+            setResult(RESULT_OK, data);
+            finish();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Error setting up! Did you enter all the information?", Toast.LENGTH_LONG).show();
         }
     }
 }

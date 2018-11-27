@@ -13,6 +13,10 @@
     <string name="fa_play">&#xf144;</string>
     <string name="fa_times">&#xf00d;</string>
     <string name="fa_check">&#xf00c;</string>
+    <string name="fa_arrow_circle_left">&#xf0a8;</string>
+    <string name="fa_arrow_circle_right">&#xf35a;</string>
+    <string name="fa_arrow_circle_up">&#xf35b;</string>
+    <string name="fa_arrow_circle_down">&#xf0ab;</string>
 
 
     <!-- Dialogs -->
@@ -114,4 +118,24 @@
     <string name="RollForMonsterHp">Roll for Each Monster\'s HP</string>
     <string name="StartEncounterTxt">Start Encounter</string>
     <string name="DoneAssigningTokensTxt">Done Assigning Tokens</string>
+    <string name="InitiativeTxt">Initiative</string>
+    <string name="PcAcColonTxt">AC:</string>
+    <string name="PcSpellDcColonTxt">Spell DC: </string>
+    <string name="PossibleTargetsTxt">Available Targets</string>
+    <string name="FinishPlayerTurnTxt">Finish Player Turn</string>
+    <string name="HpColonTxt">HP:</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="MonsterSizeTxt">Size</string>
+    <string name="MonsterTypeTxt">Type</string>
+    <string name="StrColonTxt">STR:</string>
+    <string name="DexColonTxt">DEX:</string>
+    <string name="ConColonTxt">CON:</string>
+    <string name="IntColonTxt">INT:</string>
+    <string name="WisColonTxt">WIS:</string>
+    <string name="ChaColonTxt">CHA:</string>
+    <string name="SpecialAbilitiesTxt">Special Abilities</string>
+    <string name="AbilityNameTxt">Ability Name</string>
+    <string name="AbilityDescriptionTxt">Ability Description</string>
+    <string name="ActionsTxt">Actions</string>
 </resources>
