@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
@@ -19,7 +20,7 @@ import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
 
 import java.util.List;
 
-public class ViewMonsterTokens extends AppCompatActivity {
+public class ViewMonsterTokens extends DnDEncountersActivity {
 
     private List<MonsterToken> monsterTokens;
     private RecyclerView MonsterTokenRv;

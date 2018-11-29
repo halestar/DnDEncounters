@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.PlayerDao;
@@ -21,7 +22,7 @@ import net.kalinec.dndencounters.players.PlayerListAdapter;
 
 import java.util.List;
 
-public class Players extends AppCompatActivity
+public class Players extends DnDEncountersActivity
 {
 	private RecyclerView recyclerview_players;
 	private LiveData<List<Player>> playerList;

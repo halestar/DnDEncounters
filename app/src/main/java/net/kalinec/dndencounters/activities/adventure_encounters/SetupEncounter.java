@@ -12,6 +12,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.monster_tokens.AssignMonsterTokens;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
@@ -23,7 +24,7 @@ import net.kalinec.dndencounters.encounters.Encounter;
 
 import java.util.ArrayList;
 
-public class SetupEncounter extends AppCompatActivity {
+public class SetupEncounter extends DnDEncountersActivity {
 
     public static final int SETUP_ADVENTURE_ENCOUNTER = 63;
     private TextView monsterTokensCompletedIconTv, playerInitiativeCompletedIconTv;

@@ -54,7 +54,9 @@
         <activity android:name=".activities.monster_tokens.AssignMonsterTokens" />
         <activity android:name=".activities.adventure_encounters.AssignPlayerInitiative" />
         <activity android:name=".activities.encounter_turn.PlayerTurn" />
-        <activity android:name=".activities.encounter_turn.MonsterTurn"></activity>
+        <activity android:name=".activities.encounter_turn.MonsterTurn" />
+        <activity android:name=".activities.spells.SearchSpells" />
+        <activity android:name=".activities.spells.ViewSpell"></activity>
     </application>
 
 </manifest>

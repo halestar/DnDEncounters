@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.encounters.PlayEncounter;
 import net.kalinec.dndencounters.activities.encounters.SelectEncounter;
@@ -25,7 +26,7 @@ import net.kalinec.dndencounters.playsessions.SimpleEncounterListAdapter;
 
 import java.util.List;
 
-public class PlayAdventure extends AppCompatActivity {
+public class PlayAdventure extends DnDEncountersActivity {
 
     private PlaySession activeSession;
     private TextView aplTxt, NumMembersTxt, PlayAdventurePartyNameTv;

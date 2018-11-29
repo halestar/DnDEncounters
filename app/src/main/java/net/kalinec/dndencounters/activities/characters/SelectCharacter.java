@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.SearchView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.characters.PcListAdapter;
@@ -23,7 +24,7 @@ import net.kalinec.dndencounters.monsters.MonsterListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectCharacter extends AppCompatActivity {
+public class SelectCharacter extends DnDEncountersActivity {
 
     public static final int REQUEST_SELECT_CHARACTER = 40;
     private LiveData<List<Character>> pcs;

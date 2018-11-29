@@ -1,13 +1,13 @@
 package net.kalinec.dndencounters.activities.monsters;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.SearchView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monsters.Monster;
@@ -17,7 +17,7 @@ import net.kalinec.dndencounters.monsters.Monsters;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectMonster extends AppCompatActivity
+public class SelectMonster extends DnDEncountersActivity
 {
 	public static final int REQUEST_SELECT_MONSTER = 1;
 	private List<Monster> monsters, currentMonsterList;
@@ -49,7 +49,7 @@ public class SelectMonster extends AppCompatActivity
 		monsterSearchRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 		
 		
-		monsterSearchSv = (SearchView)findViewById(R.id.monsterSearchSv);
+		monsterSearchSv = (SearchView)findViewById(R.id.SpellSearchSv);
 		monsterSearchSv.setActivated(true);
 		monsterSearchSv.onActionViewExpanded();
 		monsterSearchSv.setIconified(false);

@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.CharacterDao;
 
-public class EditCharacter extends AppCompatActivity
+public class EditCharacter extends DnDEncountersActivity
 {
 	private Character selectedCharacter;
 	private EditText characterNameTxt, characterRaceTxt, characterClassTxt,

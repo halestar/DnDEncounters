@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.monsters.SelectMonster;
 import net.kalinec.dndencounters.encounters.Encounter;
@@ -23,7 +24,7 @@ import org.apache.commons.math3.fraction.Fraction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddEncounter extends AppCompatActivity
+public class AddEncounter extends DnDEncountersActivity
 {
 	public static final int REQUEST_NEW_ENCOUNTER = 15;
 	private List<Monster> monsters;

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
@@ -20,7 +21,7 @@ import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssignMonsterTokens extends AppCompatActivity {
+public class AssignMonsterTokens extends DnDEncountersActivity {
     public static final int REQUEST_ENCOUNTER_MONSTERS = 68;
 
     private AdventureEncounter adventureEncounter;

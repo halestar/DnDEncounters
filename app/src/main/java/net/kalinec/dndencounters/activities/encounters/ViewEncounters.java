@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.encounters.EncounterListAdapter;
@@ -21,7 +22,7 @@ import net.kalinec.dndencounters.lib.RvClickListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewEncounters extends AppCompatActivity
+public class ViewEncounters extends DnDEncountersActivity
 {
 	private List<Encounter> encounters, currentEncounterList;
 	private EncounterListAdapter encounterAdapter;

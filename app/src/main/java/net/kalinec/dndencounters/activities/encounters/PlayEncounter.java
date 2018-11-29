@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.adventure_encounters.SetupEncounter;
 import net.kalinec.dndencounters.activities.encounter_turn.MonsterTurn;
@@ -22,7 +23,7 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterTurn;
 import net.kalinec.dndencounters.monsters.Monster;
 import net.kalinec.dndencounters.playsessions.PlaySession;
 
-public class PlayEncounter extends AppCompatActivity {
+public class PlayEncounter extends DnDEncountersActivity {
     public static final int PLAY_ENCOUNTER = 60;
     private PlaySession activeSession;
     private AdventureEncounter adventureEncounter;

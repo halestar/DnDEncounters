@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
@@ -21,7 +22,7 @@ import net.kalinec.dndencounters.players.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssignPlayerInitiative extends AppCompatActivity
+public class AssignPlayerInitiative extends DnDEncountersActivity
 {
 	public static final int REQUEST_PLAYER_INITIATIVE = 70;
 	private AdventureEncounter adventureEncounter;

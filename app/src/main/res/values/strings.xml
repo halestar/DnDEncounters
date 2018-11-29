@@ -160,4 +160,6 @@
     <string name="AdventureNameTxt">Adventure Name</string>
     <string name="CreatedOnTxt">Created:</string>
     <string name="AdventureTxt">Adventure</string>
+    <string name="SpellNameTxt">Spell Name</string>
+    <string name="action_spells">Lookup Spells</string>
 </resources>

@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.characters.AddCharacter;
 import net.kalinec.dndencounters.activities.characters.EditCharacter;
@@ -26,7 +27,7 @@ import net.kalinec.dndencounters.players.Player;
 
 import java.util.List;
 
-public class ViewPlayer extends AppCompatActivity
+public class ViewPlayer extends DnDEncountersActivity
 {
 	protected Player selectedPlayer;
 	protected TextView playerNameTv;

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.monsters.SelectMonster;
 import net.kalinec.dndencounters.encounters.Encounter;
@@ -24,7 +25,7 @@ import org.apache.commons.math3.fraction.Fraction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditEncounter extends AppCompatActivity
+public class EditEncounter extends DnDEncountersActivity
 {
 	public static final int REQUEST_UPDATED_ENCOUNTER = 16;
 	private List<Monster> monsters;

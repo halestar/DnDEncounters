@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
@@ -20,7 +21,7 @@ import net.kalinec.dndencounters.fragments.MonsterTarget;
 
 import java.util.ArrayList;
 
-public class MonsterTurn extends AppCompatActivity implements MonsterTarget.OnMonsterCompletedListener{
+public class MonsterTurn extends DnDEncountersActivity implements MonsterTarget.OnMonsterCompletedListener{
 
     public static final int MONSTER_TURN = 72;
     private AdventureEncounter selectedEncounter;

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.encounters.Encounters;
@@ -19,7 +20,7 @@ import net.kalinec.dndencounters.monsters.Monster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectEncounters extends AppCompatActivity {
+public class SelectEncounters extends DnDEncountersActivity {
 
     public static final int REQUEST_ENCOUNTER_LIST = 44;
     private RecyclerView encounterListRv;

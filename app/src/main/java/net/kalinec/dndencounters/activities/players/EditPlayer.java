@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.PlayerDao;
@@ -17,7 +18,7 @@ import net.kalinec.dndencounters.players.Player;
 
 import java.io.ByteArrayOutputStream;
 
-public class EditPlayer extends AppCompatActivity
+public class EditPlayer extends DnDEncountersActivity
 {
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	private EditText nameTxt, dciTxt;

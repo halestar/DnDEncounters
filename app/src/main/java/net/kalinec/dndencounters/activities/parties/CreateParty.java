@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.characters.AddCharacter;
 import net.kalinec.dndencounters.activities.characters.SelectCharacter;
@@ -21,7 +22,7 @@ import net.kalinec.dndencounters.parties.PartyListAdapter;
 import net.kalinec.dndencounters.players.Player;
 import net.kalinec.dndencounters.playsessions.PlaySession;
 
-public class CreateParty extends AppCompatActivity
+public class CreateParty extends DnDEncountersActivity
 {
 	public static final int REQUEST_NEW_PARTY = 30;
 	private RecyclerView partyMemberListRv;

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.db.AppDatabase;
@@ -13,7 +14,7 @@ import net.kalinec.dndencounters.db.CharacterDao;
 import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.players.Player;
 
-public class CreatePlayerAndCharacter extends AppCompatActivity {
+public class CreatePlayerAndCharacter extends DnDEncountersActivity {
 
     public static final int REQUEST_NEW_CHARACTER = 41;
     private EditText addPPCNameEt, addPPCDciEt, addPPCPcNameTxt, addPPCPcClassTxt, addPPCPcRaceTxt, addPPCPAcTxt, addPPCPcHpTxt, addPPCPcPpTxt, addPPCPcLvTxt,addPPCPcDcTxt;

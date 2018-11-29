@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.SearchView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.characters.PcListAdapter;
@@ -24,7 +25,7 @@ import net.kalinec.dndencounters.players.PlayerListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectPlayer extends AppCompatActivity {
+public class SelectPlayer extends DnDEncountersActivity {
 
     public static final int REQUEST_SELECT_PLAYER = 42;
     private LiveData<List<Player>> players;

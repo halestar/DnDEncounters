@@ -13,13 +13,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
-public class EditMonsterToken extends AppCompatActivity {
+public class EditMonsterToken extends DnDEncountersActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_NEW_MONSTER_TOKEN = 50;
