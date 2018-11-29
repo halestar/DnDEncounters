@@ -16,7 +16,10 @@ public class AdventureEncounterTurn implements Serializable
         int highest = 0;
         for(AdventureEncounterActor p: actors)
         {
-            if(highest < p.getInitiative() && !p.hasActed())
+            if(highest <= p.getInitiative() &&
+                    !p.hasActed() &&
+                    (p.getActorType() == AdventureEncounterActor.PLAYER_ACTOR ||
+                            (p.getActorType() == AdventureEncounterActor.MONSTER_ACTOR && p.getStatus() == AdventureEncounterActor.ALIVE)))
                 highest = p.getInitiative();
         }
         return highest;
@@ -26,7 +29,10 @@ public class AdventureEncounterTurn implements Serializable
     {
         for(AdventureEncounterActor a: actors)
         {
-            if(a.getInitiative() == currentInitiative && !a.hasActed())
+            if(a.getInitiative() == currentInitiative &&
+                    !a.hasActed()&&
+                    (a.getActorType() == AdventureEncounterActor.PLAYER_ACTOR ||
+                            (a.getActorType() == AdventureEncounterActor.MONSTER_ACTOR && a.getStatus() == AdventureEncounterActor.ALIVE)))
                 return a;
         }
         return null;
@@ -36,9 +42,9 @@ public class AdventureEncounterTurn implements Serializable
         this.actors = actors;
         this.turnNumber = turnNumber;
 
-        currentInitiative = this.highestInitiative();
-        currentActor = this.getActiveActor();
-        completed = this.currentActor.hasActed();
+        this.currentInitiative = this.highestInitiative();
+        this.currentActor = this.getActiveActor();
+        this.completed = this.currentActor.hasActed();
     }
 
     public int getTurnNumber() {

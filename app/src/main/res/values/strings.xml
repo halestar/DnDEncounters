@@ -138,4 +138,22 @@
     <string name="AbilityNameTxt">Ability Name</string>
     <string name="AbilityDescriptionTxt">Ability Description</string>
     <string name="ActionsTxt">Actions</string>
+    <string name="HealingTxt">Healing</string>
+    <string name="DamageTxt">Damage</string>
+    <string name="TokenPortraitTxt">Token Portrait</string>
+    <string name="FinishMonsterTxt">Finish with Monster</string>
+    <string name="MakeDeadMonsterTxt">Mark Monster Dead</string>
+    <string name="PcPpColonTxt">PP:</string>
+    <string name="AvailablePlayersTxt">Available Players</string>
+    <string name="FinishMonsterTurnTxt">Finishg Monster Turn</string>
+    <string name="VsTxt">Vs.</string>
+    <string name="RoundNumTxt">Turn #</string>
+    <string name="NextUpTxt">Next Up:</string>
+    <string name="ContinueTurnTxt">Continue Turn</string>
+    <string name="TurnOverTxt">Turn Over!</string>
+    <string name="NextTurnTxt">Next Turn</string>
+    <string name="FinishEncounterTxt">Finish Encounter</string>
+    <string name="InitiativeColonTxt">Initiative:</string>
+    <string name="DeadTxt">Dead</string>
+    <string name="EncounterOverTxt">Encounter Over (No More Monsters)!</string>
 </resources>

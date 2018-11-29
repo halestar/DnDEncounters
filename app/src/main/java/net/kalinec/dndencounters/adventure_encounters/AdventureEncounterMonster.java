@@ -4,6 +4,7 @@ import net.kalinec.dndencounters.monsters.Monster;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class AdventureEncounterMonster implements AdventureEncounterActor, Serializable
 {
@@ -15,10 +16,22 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
     private int initiative, status;
     private boolean hasActed;
     private int hp;
+    private UUID uuid;
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    private int maxHp;
 
     public AdventureEncounterMonster(Monster monster, MonsterToken token) {
         this.monster = monster;
         this.token = token;
+        uuid = UUID.randomUUID();
     }
 
     public int getInitiative() {
@@ -51,6 +64,16 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
     @Override
     public void setHasActed(boolean hasActed) {
         this.hasActed = hasActed;
+    }
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    @Override
+    public String getName() {
+        return monster.getName();
     }
 
     public Monster getMonster() {

@@ -1,6 +1,9 @@
 package net.kalinec.dndencounters.adventure_encounters;
 
-public interface AdventureEncounterActor
+import java.io.Serializable;
+import java.util.UUID;
+
+public interface AdventureEncounterActor extends Serializable
 {
 
     public static final int ALIVE = 1;
@@ -15,4 +18,7 @@ public interface AdventureEncounterActor
     public int getActorType();
     public boolean hasActed();
     public void setHasActed(boolean hasActed);
+    public UUID getUuid();
+    public String getName();
+    public int getHp();
 }

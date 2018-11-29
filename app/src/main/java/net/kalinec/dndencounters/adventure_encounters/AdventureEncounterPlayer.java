@@ -4,6 +4,7 @@ import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.players.Player;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class AdventureEncounterPlayer implements AdventureEncounterActor, Serializable
 {
@@ -14,11 +15,13 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
     private Player player;
     private int initiative, status;
     private boolean hasActed;
+    private UUID uuid;
 
     public AdventureEncounterPlayer(Character pc, Player player) {
         this.pc = pc;
         this.player = player;
         this.initiative = 0;
+        this.uuid = UUID.randomUUID();
     }
     @Override
     public int getInitiative() {
@@ -58,6 +61,21 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
     @Override
     public void setHasActed(boolean hasActed) {
         this.hasActed = hasActed;
+    }
+
+    @Override
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    @Override
+    public String getName() {
+        return pc.getName();
+    }
+
+    @Override
+    public int getHp() {
+        return pc.getHp();
     }
 
     @Override

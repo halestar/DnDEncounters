@@ -10,14 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
 import net.kalinec.dndencounters.monsters.MonsterAbilitiesListAdapter;
 
-public class MonsterTarget extends Fragment {
+public class MonsterTarget extends Fragment implements View.OnClickListener {
 
     private static final String ACTIVE_MONSTER = "ACTIVE_MONSTER";
 
@@ -27,8 +30,11 @@ public class MonsterTarget extends Fragment {
     private ImageView MonsterInfoPortraitIv;
     private RecyclerView MonsterInfoSpecialAbilitiesRv, MonsterInfoActionsRv;
     private MonsterAbilitiesListAdapter monsterAbilitiesListAdapter, monsterActionsListAdapter;
-    private Button ActionsHideBt, SpecialAbilitiesHideBt;
+    private Button ActionsHideBt, SpecialAbilitiesHideBt, hpmod1, hpmod2, hpmod3, hpmod4, hpmod5, hpmod6, hpmod7, hpmod8,
+            hpmod9, hpmod10, FinishMonsterBt, MarkMonsterDeadBt;
+    private ToggleButton HpModTypeTb;
     private boolean hidingActions, hidingAbilities;
+    private EditText MonsterCurrentHpEt;
 
     public MonsterTarget() {
         // Required empty public constructor
@@ -131,6 +137,88 @@ public class MonsterTarget extends Fragment {
                 }
             }
         });
+        //current HP
+        MonsterCurrentHpEt = v.findViewById(R.id.MonsterCurrentHpEt);
+        MonsterCurrentHpEt.setText(Integer.toString(activeMonster.getHp()));
+        //hp modifier widget
+        HpModTypeTb = v.findViewById(R.id.HpModTypeTb);
+        hpmod1 = v.findViewById(R.id.hpmod1);
+        hpmod1.setOnClickListener(this);
+        hpmod2 = v.findViewById(R.id.hpmod2);
+        hpmod2.setOnClickListener(this);
+        hpmod3 = v.findViewById(R.id.hpmod3);
+        hpmod3.setOnClickListener(this);
+        hpmod4 = v.findViewById(R.id.hpmod4);
+        hpmod4.setOnClickListener(this);
+        hpmod5 = v.findViewById(R.id.hpmod5);
+        hpmod5.setOnClickListener(this);
+        hpmod6 = v.findViewById(R.id.hpmod6);
+        hpmod6.setOnClickListener(this);
+        hpmod7 = v.findViewById(R.id.hpmod7);
+        hpmod7.setOnClickListener(this);
+        hpmod8 = v.findViewById(R.id.hpmod8);
+        hpmod8.setOnClickListener(this);
+        hpmod9 = v.findViewById(R.id.hpmod9);
+        hpmod9.setOnClickListener(this);
+        hpmod10 = v.findViewById(R.id.hpmod10);
+        hpmod10.setOnClickListener(this);
+        //finish monster buttons
+        FinishMonsterBt = v.findViewById(R.id.FinishMonsterBt);
+        FinishMonsterBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeMonster.setHp(Integer.parseInt(MonsterCurrentHpEt.getText().toString()));
+                mListener.onMonsterCompletedListener(activeMonster);
+            }
+        });
+        MarkMonsterDeadBt = v.findViewById(R.id.MarkMonsterDeadBt);
+        MarkMonsterDeadBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activeMonster.setHp(0);
+                activeMonster.setStatus(AdventureEncounterActor.DEAD);
+                mListener.onMonsterCompletedListener(activeMonster);
+            }
+        });
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        //HP button press.
+        Button presseed = (Button)v;
+        int hpMod = Integer.parseInt(presseed.getText().toString());
+        int curHp = Integer.parseInt(MonsterCurrentHpEt.getText().toString());
+        if(HpModTypeTb.isChecked())
+        {
+            //damage
+            curHp -= hpMod;
+            if(curHp < 0)
+                curHp = 0;
+        }
+        else
+        {
+            //healing
+            curHp += hpMod;
+            if(curHp > activeMonster.getMaxHp())
+                curHp = activeMonster.getMaxHp();
+        }
+        MonsterCurrentHpEt.setText(Integer.toString(curHp));
+    }
+
+    public interface OnMonsterCompletedListener
+    {
+        public void onMonsterCompletedListener(AdventureEncounterMonster activeMonster);
+    }
+
+    private MonsterTarget.OnMonsterCompletedListener mListener;
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (MonsterTarget.OnMonsterCompletedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnArticleSelectedListener");
+        }
     }
 }

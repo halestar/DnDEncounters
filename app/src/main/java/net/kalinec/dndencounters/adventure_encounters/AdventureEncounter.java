@@ -13,15 +13,15 @@ import java.util.List;
 
 public class AdventureEncounter implements Serializable {
 
-    public void setActors(List<AdventureEncounterActor> actors) {
+    public void setActors(ArrayList<AdventureEncounterActor> actors) {
         this.actors = actors;
     }
 
     public final static String PASSED_ADVENTURE_ENCOUNTER = "PASSED_ADVENTURE_ENCOUNTER";
     private Party pcs;
     private Encounter encounter;
-    private List<AdventureEncounterActor> actors;
-    private List<AdventureEncounterTurn> completedTurns;
+    private ArrayList<AdventureEncounterActor> actors;
+    private ArrayList<AdventureEncounterTurn> completedTurns;
     private AdventureEncounterTurn currentTurn;
     private boolean completed, setup;
 
@@ -35,12 +35,19 @@ public class AdventureEncounter implements Serializable {
         return currentTurn;
     }
 
-    public boolean isCompleted() {
+    public boolean isCompleted()
+    {
+        //easy, check that there is at least one alive monster
+        completed = true;
+        for(AdventureEncounterActor actor: actors)
+        {
+            if(actor.getActorType() == AdventureEncounterActor.MONSTER_ACTOR && actor.getStatus() == AdventureEncounterActor.ALIVE)
+            {
+                completed = false;
+                break;
+            }
+        }
         return completed;
-    }
-
-    public boolean isSetup() {
-        return setup;
     }
 
     public int getTurnNumber() {
@@ -61,6 +68,10 @@ public class AdventureEncounter implements Serializable {
         completed = setup = false;
         turnNumber = 1;
 
+    }
+
+    public boolean isSetup() {
+        return setup;
     }
 
     private boolean isSetUp()
@@ -132,20 +143,14 @@ public class AdventureEncounter implements Serializable {
 
     public AdventureEncounterTurn nextTurn()
     {
-        if(currentTurn.isCompleted() && !completed)
-        {
-            completedTurns.add(currentTurn);
-            turnNumber++;
-            currentTurn = new AdventureEncounterTurn(actors, turnNumber);
-        }
         return currentTurn;
     }
 
-    public void complete()
+    public void finishEncounter()
     {
+        completed = true;
         completedTurns.add(currentTurn);
         currentTurn = null;
-        completed = true;
     }
 
     @Override
@@ -170,5 +175,45 @@ public class AdventureEncounter implements Serializable {
                 availableMonsters.add((AdventureEncounterMonster)a);
         }
         return availableMonsters;
+    }
+
+    public ArrayList<AdventureEncounterPlayer> getAvailablePlayers()
+    {
+        ArrayList<AdventureEncounterPlayer> availablePlayers = new ArrayList<>();
+        for(AdventureEncounterActor a: actors)
+        {
+            if(a.getActorType() == AdventureEncounterActor.PLAYER_ACTOR)
+                availablePlayers.add((AdventureEncounterPlayer)a);
+        }
+        return availablePlayers;
+    }
+
+    public void updateActor(AdventureEncounterActor actor)
+    {
+        for(int i = 0; i < actors.size(); i++)
+        {
+            if(actors.get(i).getUuid().equals(actor.getUuid()))
+            {
+                actors.set(i, actor);
+                break;
+            }
+        }
+    }
+
+    public List<AdventureEncounterActor> getActors() {
+        return actors;
+    }
+
+    public void finishTurn()
+    {
+        if(currentTurn.isCompleted())
+        {
+            completedTurns.add(currentTurn);
+            turnNumber++;
+            //make all the actors not act.
+            for(AdventureEncounterActor actor: actors)
+                actor.setHasActed(false);
+            currentTurn = new AdventureEncounterTurn(actors, turnNumber);
+        }
     }
 }

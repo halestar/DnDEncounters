@@ -189,9 +189,15 @@ public class SetupEncounter extends AppCompatActivity {
             else
                 monster.setInitiative(initiative);
             if(rollForHp)
+            {
                 monster.setHp(monster.getMonster().rollHp());
+                monster.setMaxHp(monster.getMonster().rollHp());
+            }
             else
+            {
                 monster.setHp(monster.getMonster().getHp());
+                monster.setMaxHp(monster.getMonster().getHp());
+            }
             selectedEncounter.addActor(monster);
         }
         if(selectedEncounter.isSetup())

@@ -4,6 +4,8 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
@@ -61,5 +63,11 @@ public class Player implements Serializable
 	public void setName(String name)
 	{
 		this.name = name;
+	}
+
+	public Bitmap getMiniPortrait() {
+		if(portrait != null)
+			return BitmapFactory.decodeByteArray(portrait, 0, portrait.length);
+		return null;
 	}
 }

@@ -23,6 +23,7 @@ public class PlaySession implements Serializable
 	private ArrayList<Encounter> encounters = new ArrayList<>();
 	private Encounter currentEncounter = null;
 	private AdventureEncounter adventureEncounter;
+	private ArrayList<AdventureEncounter> completedEncounters = new ArrayList<>();
 	private Date started, completed;
 
 	public Encounter getCurrentEncounter() {
@@ -106,6 +107,10 @@ public class PlaySession implements Serializable
 		writeSession(context);
 	}
 
+	public ArrayList<AdventureEncounter> getCompletedEncounters() {
+		return completedEncounters;
+	}
+
 	public static PlaySession existingSession(Context context)
 	{
 		PlaySession activeSession = null;
@@ -125,6 +130,14 @@ public class PlaySession implements Serializable
 		{
 			return null;
 		}
+
 		return activeSession;
+	}
+
+	public void completeCurrentEncounter()
+	{
+		currentEncounter = null;
+		completedEncounters.add(adventureEncounter);
+		adventureEncounter = null;
 	}
 }

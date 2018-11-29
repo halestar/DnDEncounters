@@ -1,13 +1,11 @@
 package net.kalinec.dndencounters.activities.encounter_turn;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
@@ -17,12 +15,11 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterPlayer;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterTurn;
 import net.kalinec.dndencounters.fragments.AvailableMonsters;
 import net.kalinec.dndencounters.fragments.MonsterTarget;
-import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class PlayerTurn extends AppCompatActivity implements AvailableMonsters.OnMonsterSelectedListener {
+public class PlayerTurn extends AppCompatActivity implements AvailableMonsters.OnMonsterSelectedListener, MonsterTarget.OnMonsterCompletedListener {
     public static final int PLAYER_TURN = 71;
     private AdventureEncounter selectedEncounter;
     private AdventureEncounterTurn currentTurn;
@@ -63,10 +60,40 @@ public class PlayerTurn extends AppCompatActivity implements AvailableMonsters.O
 
     @Override
     public void onMonsterSelectedListener(AdventureEncounterMonster selectedMonster) {
+        showSelectedMonster(selectedMonster);
+    }
+
+    @Override
+    public void onMonsterCompletedListener(AdventureEncounterMonster activeMonster) {
+        selectedEncounter.updateActor(activeMonster);
+        showAvailableMonsters();
+    }
+
+    private void showAvailableMonsters()
+    {
+        fManager = getSupportFragmentManager();
+        fTransaction = fManager.beginTransaction();
+        availableMonsters = selectedEncounter.getAvailableMonsters();
+        availableMonstersFragment = AvailableMonsters.newInstance(availableMonsters);
+        fTransaction.replace(R.id.FragmentContainerSv, availableMonstersFragment);
+        fTransaction.commit();
+    }
+
+    private void showSelectedMonster(AdventureEncounterMonster selectedMonster)
+    {
         monsterTarget = MonsterTarget.newInstance(selectedMonster);
         fTransaction = fManager.beginTransaction();
         fTransaction.replace(R.id.FragmentContainerSv, monsterTarget);
         fTransaction.addToBackStack(null);
         fTransaction.commit();
+    }
+
+    public void finishTurn(View v)
+    {
+        selectedEncounter.getCurrentTurn().completeRound();
+        Intent data = new Intent();
+        data.putExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER, selectedEncounter);
+        setResult(RESULT_OK, data);
+        finish();
     }
 }

@@ -21,6 +21,7 @@ import net.kalinec.dndencounters.playsessions.PlayingEncounterListAdapter;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.parties.Party;
 import net.kalinec.dndencounters.playsessions.PlaySession;
+import net.kalinec.dndencounters.playsessions.SimpleEncounterListAdapter;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class PlayAdventure extends AppCompatActivity {
     private Button continueLastEncounterBtn, PlaySingleEncounterBtn, AddEncounterToAdventureBtn, FinishAdventureBtn;
     private RecyclerView AdventureEncountersRv, CompletedEncountersRv;
     private PlayingEncounterListAdapter playingEncounterListAdapter;
+    private SimpleEncounterListAdapter simpleEncounterListAdapter;
     private AdventureEncounter adventureEncounter = null;
 
 
@@ -65,6 +67,17 @@ public class PlayAdventure extends AppCompatActivity {
         AdventureEncountersRv = findViewById(R.id.AdventureEncountersRv);
         AdventureEncountersRv.setAdapter(playingEncounterListAdapter);
         AdventureEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        CompletedEncountersRv = findViewById(R.id.CompletedEncountersRv);
+        simpleEncounterListAdapter = new SimpleEncounterListAdapter(getApplicationContext(), new RvClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+            }
+        });
+        simpleEncounterListAdapter.setEncounterList(activeSession.getCompletedEncounters());
+        CompletedEncountersRv.setAdapter(simpleEncounterListAdapter);
+        CompletedEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         continueLastEncounterBtn = findViewById(R.id.continueLastEncounterBtn);
         continueLastEncounterBtn.setVisibility(View.GONE);
@@ -108,6 +121,12 @@ public class PlayAdventure extends AppCompatActivity {
         {
             Encounter encounter = (Encounter)data.getSerializableExtra(Encounter.PASSED_ENCOUNTER);
             playEncounter(encounter);
+        }
+        else if(requestCode == PlayEncounter.PLAY_ENCOUNTER && resultCode == RESULT_OK)
+        {
+            activeSession = (PlaySession)data.getSerializableExtra(PlaySession.PASSED_SESSION);
+            activeSession.saveSession(getApplicationContext());
+            simpleEncounterListAdapter.setEncounterList(activeSession.getCompletedEncounters());
         }
     }
 
