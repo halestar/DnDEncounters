@@ -107,11 +107,15 @@ public class PlayEncounter extends AppCompatActivity {
 
             if(!adventureEncounter.isSetup())
                 setupEncounter();
+            activeSession.updateAdventureEncounter(adventureEncounter);
+            activeSession.saveSession(getApplicationContext());
             updateTurn();
         }
         else if((requestCode == PlayerTurn.PLAYER_TURN || requestCode == MonsterTurn.MONSTER_TURN) && resultCode == RESULT_OK)
         {
             adventureEncounter = (AdventureEncounter)data.getSerializableExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
+            activeSession.updateAdventureEncounter(adventureEncounter);
+            activeSession.saveSession(getApplicationContext());
             playEncounter();
         }
     }

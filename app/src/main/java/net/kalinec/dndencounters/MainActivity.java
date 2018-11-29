@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Group;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,8 +24,13 @@ import net.kalinec.dndencounters.activities.encounters.ViewEncounters;
 import net.kalinec.dndencounters.activities.monster_tokens.ViewMonsterTokens;
 import net.kalinec.dndencounters.activities.parties.CreateParty;
 import net.kalinec.dndencounters.activities.players.Players;
+import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.parties.Party;
 import net.kalinec.dndencounters.playsessions.PlaySession;
+import net.kalinec.dndencounters.playsessions.PlaySessionManager;
+import net.kalinec.dndencounters.playsessions.PlaySessionsListAdapter;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 		implements NavigationView.OnNavigationItemSelectedListener
@@ -31,6 +39,10 @@ public class MainActivity extends AppCompatActivity
 	private Button continueSessionBtn;
 	private ConstraintLayout activeSessionView;
 	private TextView partyNameTv, activeSessionNumPartyTv, activeSessionAplTv;
+	private Group activeSessionGroup, activeAdventruesGroup;
+	private RecyclerView ActiveAdventuresRv;
+	private ArrayList<PlaySession> activeAdventures;
+	private PlaySessionsListAdapter playSessionsListAdapter;
 
 
 	@Override
@@ -47,23 +59,24 @@ public class MainActivity extends AppCompatActivity
 		drawer.addDrawerListener(toggle);
 		toggle.syncState();
 		
-		NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
-		activeSession = PlaySession.existingSession(getApplicationContext());
+		activeSession = PlaySessionManager.getCurrentSession(getApplicationContext());
 
-		activeSessionView = (ConstraintLayout) findViewById(R.id.activeSessionView);
-		continueSessionBtn = (Button) findViewById(R.id.continueSessionBtn);
-		partyNameTv = (TextView) findViewById(R.id.partyNameTv);
-		activeSessionNumPartyTv = (TextView) findViewById(R.id.activeSessionNumPartyTv);
-		activeSessionAplTv = (TextView) findViewById(R.id.activeSessionAplTv);
+		activeSessionView = findViewById(R.id.activeSessionView);
+		continueSessionBtn = findViewById(R.id.continueSessionBtn);
+		partyNameTv = findViewById(R.id.partyNameTv);
+		activeSessionNumPartyTv = findViewById(R.id.activeSessionNumPartyTv);
+		activeSessionAplTv = findViewById(R.id.activeSessionAplTv);
+		activeSessionGroup = findViewById(R.id.activeSessionGroup);
+		activeAdventruesGroup = findViewById(R.id.activeAdventruesGroup);
+		ActiveAdventuresRv = findViewById(R.id.ActiveAdventuresRv);
 
 		if(activeSession == null) {
-			continueSessionBtn.setVisibility(View.GONE);
-			activeSessionView.setVisibility(View.GONE);
+			activeSessionGroup.setVisibility(View.GONE);
 		}
 		else {
-			continueSessionBtn.setVisibility(View.VISIBLE);
-			activeSessionView.setVisibility(View.VISIBLE);
+			activeSessionGroup.setVisibility(View.VISIBLE);
 			partyNameTv.setText(activeSession.getPlayers().getName());
 			activeSessionNumPartyTv.setText(Integer.toString(activeSession.getPlayers().getMembers().size()));
 			activeSessionAplTv.setText(Integer.toString(activeSession.getPlayers().getApl()));
@@ -73,6 +86,32 @@ public class MainActivity extends AppCompatActivity
 					continueAdventure();
 				}
 			});
+		}
+
+		//any saved adventures?
+		activeAdventures = PlaySessionManager.getActiveSessions(getApplicationContext());
+		if(activeAdventures == null || activeAdventures.size() == 0)
+		{
+			//no adventures to show, so hide all
+			activeAdventruesGroup.setVisibility(View.GONE);
+		}
+		else
+		{
+			activeAdventruesGroup.setVisibility(View.VISIBLE);
+			playSessionsListAdapter = new PlaySessionsListAdapter(getApplicationContext(), new RvClickListener() {
+				@Override
+				public void onClick(View view, int position) {
+					PlaySession wantToPlay = playSessionsListAdapter.get(position);
+					if(activeSession != null)
+						PlaySessionManager.saveCurrentSession(getApplicationContext());
+					PlaySessionManager.removeFromActiveSessions(getApplicationContext(), wantToPlay);
+					activeSession = wantToPlay;
+					continueAdventure();
+				}
+			});
+			playSessionsListAdapter.setSessionList(activeAdventures);
+			ActiveAdventuresRv.setAdapter(playSessionsListAdapter);
+			ActiveAdventuresRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 		}
 	}
 	
@@ -144,8 +183,10 @@ public class MainActivity extends AppCompatActivity
 
 	public void beginPlaySession(View v)
 	{
-		if(activeSession == null)
-			activeSession = new PlaySession();
+		if(activeSession != null)
+			PlaySessionManager.saveCurrentSession(getApplicationContext());
+
+		activeSession = new PlaySession();
 		Intent myIntent = new Intent(MainActivity.this, CreateParty.class);
 		myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
 		startActivityForResult(myIntent, CreateParty.REQUEST_NEW_PARTY);
@@ -168,9 +209,7 @@ public class MainActivity extends AppCompatActivity
 				Party newParty = (Party)data.getSerializableExtra(Party.PASSED_PARTY);
 				activeSession.setPlayers(newParty);
 				//go to play.
-				Intent myIntent = new Intent(MainActivity.this, PlayAdventure.class);
-				myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
-				MainActivity.this.startActivity(myIntent);
+				continueAdventure();
 			}
 		}
 	}

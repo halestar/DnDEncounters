@@ -29,7 +29,7 @@ public class PlayAdventure extends AppCompatActivity {
 
     private PlaySession activeSession;
     private TextView aplTxt, NumMembersTxt, PlayAdventurePartyNameTv;
-    private Button continueLastEncounterBtn, PlaySingleEncounterBtn, AddEncounterToAdventureBtn, FinishAdventureBtn;
+    private Button continueLastEncounterBtn, FinishAdventureBtn;
     private RecyclerView AdventureEncountersRv, CompletedEncountersRv;
     private PlayingEncounterListAdapter playingEncounterListAdapter;
     private SimpleEncounterListAdapter simpleEncounterListAdapter;
@@ -80,7 +80,13 @@ public class PlayAdventure extends AppCompatActivity {
         CompletedEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         continueLastEncounterBtn = findViewById(R.id.continueLastEncounterBtn);
-        continueLastEncounterBtn.setVisibility(View.GONE);
+        if(activeSession.encounterInProgress())
+        {
+            continueLastEncounterBtn.setVisibility(View.VISIBLE);
+            adventureEncounter = activeSession.getAdventureEncounter();
+        }
+        else
+            continueLastEncounterBtn.setVisibility(View.GONE);
 
     }
 
@@ -155,6 +161,13 @@ public class PlayAdventure extends AppCompatActivity {
     {
         Intent myIntent = new Intent(PlayAdventure.this, SelectEncounter.class);
         startActivityForResult(myIntent, SelectEncounter.REQUEST_SELECT_ENCOUNTER);
+    }
+
+    public void continueEncounter(View v)
+    {
+        Intent myIntent = new Intent(PlayAdventure.this, PlayEncounter.class);
+        myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
+        startActivityForResult(myIntent, PlayEncounter.PLAY_ENCOUNTER);
     }
 
 }

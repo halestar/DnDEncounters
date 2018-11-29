@@ -14,17 +14,39 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class PlaySession implements Serializable
 {
 	public final static String PASSED_SESSION = "PASSED_SESSION";
-	private final static String fname = "current_session.srl";
 	private Party players;
 	private ArrayList<Encounter> encounters = new ArrayList<>();
 	private Encounter currentEncounter = null;
 	private AdventureEncounter adventureEncounter;
 	private ArrayList<AdventureEncounter> completedEncounters = new ArrayList<>();
 	private Date started, completed;
+	private UUID uuid;
+
+	public void updateAdventureEncounter(AdventureEncounter adventureEncounter)
+	{
+		this.adventureEncounter = adventureEncounter;
+	}
+
+	public String getSessionName()
+	{
+		return players.getName() + " Adventure";
+	}
+
+	public UUID getUuid() {
+		return uuid;
+	}
+
+	public void completeSession()
+	{
+		completed = new Date();
+		if(encounterInProgress())
+			completeCurrentEncounter();
+	}
 
 	public Encounter getCurrentEncounter() {
 		return currentEncounter;
@@ -43,6 +65,7 @@ public class PlaySession implements Serializable
 	public PlaySession()
 	{
 		players = new Party();
+		uuid = UUID.randomUUID();
 	}
 
 	public Party getPlayers() {
@@ -80,58 +103,22 @@ public class PlaySession implements Serializable
 		return completed;
 	}
 
-	private void writeSession(Context context)
-	{
-		File fout = new File(context.getFilesDir(), fname);
-		try {
-			if (!fout.exists())
-				fout.createNewFile();
-			ObjectOutputStream oos = new ObjectOutputStream(context.openFileOutput(fname, Context.MODE_PRIVATE));
-			oos.writeObject(this);
-			oos.close();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
 	public void beginSession(Context context)
 	{
-		started = new Date();
-		writeSession(context);
+		if(!isSessionStarted())
+		{
+			started = new Date();
+			PlaySessionManager.saveCurrentSession(context, this);
+		}
 	}
 
 	public void saveSession(Context context)
 	{
-		writeSession(context);
+		PlaySessionManager.saveCurrentSession(context, this);
 	}
 
 	public ArrayList<AdventureEncounter> getCompletedEncounters() {
 		return completedEncounters;
-	}
-
-	public static PlaySession existingSession(Context context)
-	{
-		PlaySession activeSession = null;
-		try
-		{
-			File fout = new File(context.getFilesDir(), fname);
-			if(!fout.exists())
-				return null;
-			ObjectInputStream ois = new ObjectInputStream(context.openFileInput(fname));
-			activeSession = (PlaySession)ois.readObject();
-		}
-		catch(IOException e)
-		{
-			return null;
-		}
-		catch(ClassNotFoundException e)
-		{
-			return null;
-		}
-
-		return activeSession;
 	}
 
 	public void completeCurrentEncounter()
@@ -139,5 +126,15 @@ public class PlaySession implements Serializable
 		currentEncounter = null;
 		completedEncounters.add(adventureEncounter);
 		adventureEncounter = null;
+	}
+
+	public boolean encounterInProgress()
+	{
+		return (currentEncounter != null && adventureEncounter != null);
+	}
+
+	public boolean isSessionStarted()
+	{
+		return (started != null);
 	}
 }

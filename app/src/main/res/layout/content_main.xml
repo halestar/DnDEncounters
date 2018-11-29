@@ -39,35 +39,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
-    <Button
-        android:id="@+id/continueSessionBtn"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/activeSessionView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/ContinueAdventureTxt"
-        app:layout_constraintBottom_toTopOf="@+id/activeSessionView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/beingAdventureBtn" />
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/activeSessionView"
-        android:layout_width="0dp"
-        android:layout_height="311dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/highlight_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/beingAdventureBtn">
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/ParyNameHeaderTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -86,38 +72,38 @@
             android:layout_marginTop="8dp"
             android:text="TextView"
             android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/textView16"
+            app:layout_constraintStart_toEndOf="@+id/ParyNameHeaderTv"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/NumMembersHeaderTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/TotalPartyMembersTxt"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+            app:layout_constraintTop_toBottomOf="@+id/ParyNameHeaderTv" />
 
         <TextView
             android:id="@+id/activeSessionNumPartyTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/textView18"
+            app:layout_constraintStart_toEndOf="@+id/NumMembersHeaderTv"
             app:layout_constraintTop_toBottomOf="@+id/partyNameTv" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/AplHeaderTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/AplTxt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+            app:layout_constraintStart_toEndOf="@+id/activeSessionNumPartyTv"
+            app:layout_constraintTop_toBottomOf="@+id/partyNameTv" />
 
         <TextView
             android:id="@+id/activeSessionAplTv"
@@ -126,8 +112,71 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/textView20"
-            app:layout_constraintTop_toBottomOf="@+id/activeSessionNumPartyTv" />
+            app:layout_constraintStart_toEndOf="@+id/AplHeaderTv"
+            app:layout_constraintTop_toBottomOf="@+id/partyNameTv" />
+
+        <Button
+            android:id="@+id/continueSessionBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/ContinueAdventureTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activeSessionAplTv" />
+
+        <android.support.constraint.Group
+            android:id="@+id/activeSessionGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:constraint_referenced_ids="activeSessionView,ParyNameHeaderTv,partyNameTv,NumMembersHeaderTv,activeSessionNumPartyTv,AplHeaderTv,activeSessionAplTv,continueSessionBtn" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ActiveAdvenuresCl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/activeSessionView">
+
+        <TextView
+            android:id="@+id/ActiveAdventruesHeaderTv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/ActiveAdventuresTxt"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ActiveAdventuresRv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ActiveAdventruesHeaderTv" />
+
+        <android.support.constraint.Group
+        android:id="@+id/activeAdventruesGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:constraint_referenced_ids="ActiveAdvenuresCl,ActiveAdventruesHeaderTv,ActiveAdventuresRv" />
+
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

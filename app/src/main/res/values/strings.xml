@@ -156,4 +156,8 @@
     <string name="InitiativeColonTxt">Initiative:</string>
     <string name="DeadTxt">Dead</string>
     <string name="EncounterOverTxt">Encounter Over (No More Monsters)!</string>
+    <string name="ActiveAdventuresTxt">Active Adventures</string>
+    <string name="AdventureNameTxt">Adventure Name</string>
+    <string name="CreatedOnTxt">Created:</string>
+    <string name="AdventureTxt">Adventure</string>
 </resources>
