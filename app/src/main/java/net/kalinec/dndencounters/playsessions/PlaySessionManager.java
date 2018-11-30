@@ -120,7 +120,7 @@ public class PlaySessionManager
     {
         PlaySession currentSession = PlaySessionManager.getCurrentSession(context);
         PlaySessionManager.saveActiveSession(context, currentSession);
-        File fin = new File(context.getFilesDir(), completedFname);
+        File fin = new File(context.getFilesDir(), currentFname);
         fin.delete();
     }
 
@@ -140,6 +140,8 @@ public class PlaySessionManager
                 oos.writeObject(e);
             oos.flush();
             oos.close();
+            File fin = new File(context.getFilesDir(), currentFname);
+            fin.delete();
         }
         catch (IOException e)
         {

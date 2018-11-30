@@ -28,6 +28,7 @@ import java.util.Locale;
 
 public class PlayAdventure extends DnDEncountersActivity {
 
+    public static final int PLAY_ADVENTURE = 80;
     private PlaySession activeSession;
     private TextView aplTxt, NumMembersTxt, PlayAdventurePartyNameTv;
     private PlayingEncounterListAdapter playingEncounterListAdapter;

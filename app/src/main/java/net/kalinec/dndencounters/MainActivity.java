@@ -55,7 +55,12 @@ public class MainActivity extends DnDEncountersActivity
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
 		activeSession = PlaySessionManager.getCurrentSession(getApplicationContext());
+		updateFront();
 		
+	}
+	
+	private void updateFront()
+	{
 		Button continueSessionBtn = findViewById(R.id.continueSessionBtn);
 		TextView partyNameTv = findViewById(R.id.partyNameTv);
 		TextView activeSessionNumPartyTv = findViewById(R.id.activeSessionNumPartyTv);
@@ -63,7 +68,7 @@ public class MainActivity extends DnDEncountersActivity
 		Group activeSessionGroup = findViewById(R.id.activeSessionGroup);
 		Group activeAdventruesGroup = findViewById(R.id.activeAdventruesGroup);
 		RecyclerView activeAdventuresRv = findViewById(R.id.ActiveAdventuresRv);
-
+		
 		if(activeSession == null) {
 			activeSessionGroup.setVisibility(View.GONE);
 		}
@@ -81,7 +86,7 @@ public class MainActivity extends DnDEncountersActivity
 				}
 			});
 		}
-
+		
 		//any saved adventures?
 		ArrayList<PlaySession> activeAdventures = PlaySessionManager
 				.getActiveSessions(getApplicationContext());
@@ -166,7 +171,7 @@ public class MainActivity extends DnDEncountersActivity
 	{
 		Intent myIntent = new Intent(MainActivity.this, PlayAdventure.class);
 		myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
-		MainActivity.this.startActivity(myIntent);
+		startActivityForResult(myIntent, PlayAdventure.PLAY_ADVENTURE);
 	}
 
 	@Override
@@ -183,5 +188,7 @@ public class MainActivity extends DnDEncountersActivity
 				continueAdventure();
 			}
 		}
+		updateFront();
+		
 	}
 }

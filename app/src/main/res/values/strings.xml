@@ -187,4 +187,6 @@
     <string name="EightTxt">8</string>
     <string name="NineTxt">9</string>
     <string name="TenTxt">10</string>
+    <string name="PlayerTurnTxt">Player Turn</string>
+    <string name="MonsterTurnTxt">Monster Turn</string>
 </resources>

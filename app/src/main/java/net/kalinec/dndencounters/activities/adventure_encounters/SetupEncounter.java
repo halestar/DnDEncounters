@@ -188,8 +188,9 @@ public class SetupEncounter extends DnDEncountersActivity {
                 monster.setInitiative(initiative);
             if(rollForHp)
             {
-                monster.setHp(monster.getMonster().rollHp());
-                monster.setMaxHp(monster.getMonster().rollHp());
+                int monsterHp = monster.getMonster().rollHp();
+                monster.setHp(monsterHp);
+                monster.setMaxHp(monsterHp);
             }
             else
             {
