@@ -1,6 +1,7 @@
 package net.kalinec.dndencounters;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -150,6 +151,11 @@ public class MainActivity extends DnDEncountersActivity
 		{
 			Intent myIntent = new Intent(MainActivity.this, ViewMonsterTokens.class);
 			MainActivity.this.startActivity(myIntent);
+		}
+		else if(id == R.id.nav_project_link)
+		{
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/halestar/DnDEncounters"));
+			startActivity(browserIntent);
 		}
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);

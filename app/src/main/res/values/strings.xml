@@ -189,4 +189,5 @@
     <string name="TenTxt">10</string>
     <string name="PlayerTurnTxt">Player Turn</string>
     <string name="MonsterTurnTxt">Monster Turn</string>
+    <string name="ViewGitHubTxt">View Project on GitHub</string>
 </resources>
