@@ -1,7 +1,6 @@
 package net.kalinec.dndencounters.activities.characters;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.CharacterDao;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.players.Player;
 
 public class AddCharacter extends DnDEncountersActivity
@@ -29,6 +27,7 @@ public class AddCharacter extends DnDEncountersActivity
 		super.onCreate(savedInstanceState);
 		
 		Bundle bundle = getIntent().getExtras();
+		assert bundle != null;
 		owner = (Player)bundle.getSerializable(Player.PASSED_PLAYER);
 		
 		setContentView(R.layout.activity_add_character);

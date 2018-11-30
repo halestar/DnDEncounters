@@ -162,4 +162,29 @@
     <string name="AdventureTxt">Adventure</string>
     <string name="SpellNameTxt">Spell Name</string>
     <string name="action_spells">Lookup Spells</string>
+    <string name="SpellDescriptionTxt">Spell Description</string>
+    <string name="SpellPageTxt">Page:</string>
+    <string name="SpellRangeTxt">Range:</string>
+    <string name="ComponentsTxt">Components:</string>
+    <string name="SpellMaterialsTxt">Materials:</string>
+    <string name="SpellRitualTxt">Ritual</string>
+    <string name="SpellConcentrationTxt">Concentration</string>
+    <string name="SpellDurationTxt">Duration:</string>
+    <string name="CastingTimeTxt">Casting Time:</string>
+    <string name="SpellClassTxt">Classes:</string>
+    <string name="SpellSchoolTxt">School:</string>
+    <string name="SlashTxt">/</string>
+    <string name="AddMonsterToEncounterTxt">Add Monster to Encounter</string>
+
+
+    <string name="OneTxt">1</string>
+    <string name="TwoTxt">2</string>
+    <string name="ThreeTxt">3</string>
+    <string name="FourTxt">4</string>
+    <string name="FiveTxt">5</string>
+    <string name="SixTxt">6</string>
+    <string name="SevenTxt">7</string>
+    <string name="EightTxt">8</string>
+    <string name="NineTxt">9</string>
+    <string name="TenTxt">10</string>
 </resources>

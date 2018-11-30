@@ -1,8 +1,10 @@
 package net.kalinec.dndencounters.lib;
 
 public interface SelectableItem {
-    public boolean isSelected();
-    public void setSelected(boolean isSelected);
-    public String getSelectableText();
+	boolean isSelected();
+	
+	void setSelected(boolean isSelected);
+	
+	String getSelectableText();
 
 }

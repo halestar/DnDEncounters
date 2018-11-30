@@ -1,5 +1,6 @@
 package net.kalinec.dndencounters.dice;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.Serializable;
@@ -7,25 +8,13 @@ import java.util.Random;
 
 public class DiceRoller implements Serializable
 {
-    protected int numSides, modifier, numDice;
-    protected char rollSign;
+	protected int modifier;
+	private int numSides, numDice;
+	private char rollSign;
     protected static final Random random = new Random();
-
-    public DiceRoller(int numSides, int modifier, int numDice, char rollSign) {
-        this.numSides = numSides;
-        this.modifier = modifier;
-        this.numDice = numDice;
-        this.rollSign = (rollSign == '-')? '-': '+';
-    }
-
-    public DiceRoller(int numSides, int modifier, int numDice) {
-        this.numSides = numSides;
-        this.modifier = modifier;
-        this.numDice = numDice;
-        this.rollSign = '+';
-    }
-
-    public DiceRoller(int numSides, int numDice) {
+	
+	DiceRoller(int numSides, int numDice)
+	{
         this.numSides = numSides;
         this.numDice = numDice;
     }
@@ -37,12 +26,9 @@ public class DiceRoller implements Serializable
     public void setModifier(int modifier) {
         this.modifier = modifier;
     }
-
-    public char getRollSign() {
-        return rollSign;
-    }
-
-    public void setRollSign(char rollSign) {
+	
+	void setRollSign(char rollSign)
+	{
         this.rollSign = rollSign;
     }
 
@@ -62,7 +48,8 @@ public class DiceRoller implements Serializable
         Log.d("DiceRoller", "total roll " + Integer.toString(roll));
         return roll;
     }
-
+	
+	@NonNull
     @Override
     public String toString() {
         return (rollSign == '-'? "-": "") + Integer.toString(numDice) + "d" + numSides + (modifier != 0? (modifier < 0? "-" + Integer.toString(modifier): "+" + modifier): "");

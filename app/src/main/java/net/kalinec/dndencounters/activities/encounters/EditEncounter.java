@@ -1,9 +1,8 @@
 package net.kalinec.dndencounters.activities.encounters;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,14 +23,13 @@ import org.apache.commons.math3.fraction.Fraction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class EditEncounter extends DnDEncountersActivity
 {
-	public static final int REQUEST_UPDATED_ENCOUNTER = 16;
 	private List<Monster> monsters;
 	private EditText encounterName;
 	private TextView encounterCr;
-	private RecyclerView encounterMonstersRv;
 	private EncounterMonsterListAdapter encounterMonsterListAdapter;
 	private Encounter selectedEncounter;
 	
@@ -40,16 +38,17 @@ public class EditEncounter extends DnDEncountersActivity
 	{
 		super.onCreate(savedInstanceState);
 		Bundle bundle = getIntent().getExtras();
+		assert bundle != null;
 		selectedEncounter = (Encounter) bundle.getSerializable(Encounter.PASSED_ENCOUNTER);
 		Log.d("EditEncounter", "selected encounter=" + selectedEncounter);
 		setContentView(R.layout.activity_edit_encounter);
 		
 		encounterName = findViewById(R.id.editEncounterNameEt);
 		encounterCr = findViewById(R.id.encounterCrDisplayTv);
-		encounterMonstersRv = findViewById(R.id.encounterMonstersRv);
+		RecyclerView encounterMonstersRv = findViewById(R.id.encounterMonstersRv);
 		
 		encounterName.setText(selectedEncounter.getEncounterName());
-		encounterCr.setText(Integer.toString(selectedEncounter.getCr()));
+		encounterCr.setText(String.format(Locale.getDefault(), "%d", selectedEncounter.getCr()));
 		if(monsters == null)
 			monsters = new ArrayList<>(selectedEncounter.getMonsters());
 		encounterMonsterListAdapter = new EncounterMonsterListAdapter(getApplicationContext(), new RvClickListener()
@@ -81,7 +80,7 @@ public class EditEncounter extends DnDEncountersActivity
 		for(Monster m: monsters)
 		{
 			String crStr = m.getCr();
-			if(crStr == Monster.CR_ERROR)
+			if (crStr.equals(Monster.CR_ERROR))
 				continue;
 			String[] fractionCr = crStr.split("/");
 			if(fractionCr.length == 1)
@@ -95,7 +94,7 @@ public class EditEncounter extends DnDEncountersActivity
 			}
 		}
 		cr = Math.ceil(cr);
-		encounterCr.setText(Double.toString(cr));
+		encounterCr.setText(String.format(Locale.getDefault(), "%d", (int) cr));
 	}
 	
 	private void addMonsterToEncounter(Monster m)
@@ -121,6 +120,7 @@ public class EditEncounter extends DnDEncountersActivity
 		{
 			if(resultCode == RESULT_OK)
 			{
+				assert data != null;
 				Monster selectedMonster = (Monster)data.getSerializableExtra(Monster.PASSED_MONSTER);
 				Log.d("EditEncounter", "after selected_monster got: " + selectedMonster);
 				addMonsterToEncounter(selectedMonster);

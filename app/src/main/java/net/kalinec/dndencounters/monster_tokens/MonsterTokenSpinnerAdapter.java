@@ -8,24 +8,21 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.kalinec.dndencounters.R;
+
+import java.util.List;
 
 public class MonsterTokenSpinnerAdapter extends BaseAdapter
 {
-    private List<MonsterToken> monsterTokens = new ArrayList<>();
+    private List<MonsterToken> monsterTokens;
     private Context context;
-
-    public MonsterTokenSpinnerAdapter(Context context) {
+    
+    MonsterTokenSpinnerAdapter(Context context)
+    {
         this.context = context;
         monsterTokens = MonsterTokens.getAllMonsterTokens(context);
     }
-
-    public List<MonsterToken> getMonsterTokens() {
-        return monsterTokens;
-    }
-
+    
     @Override
     public int getCount() {
         return monsterTokens.size();
@@ -46,8 +43,8 @@ public class MonsterTokenSpinnerAdapter extends BaseAdapter
     {
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_monster_tokens, parent, false);
         MonsterToken monsterToken = (MonsterToken)getItem(position);
-        TextView MonsterTokenName = (TextView) convertView.findViewById(R.id.MonsterTokenName);
-        ImageView MonsterTokenPortrait = (ImageView) convertView.findViewById(R.id.MonsterTokenPortrait);
+        TextView MonsterTokenName = convertView.findViewById(R.id.MonsterTokenName);
+        ImageView MonsterTokenPortrait = convertView.findViewById(R.id.MonsterTokenPortrait);
         MonsterTokenName.setText(monsterToken.getTokenName());
         monsterToken.makePortrait(MonsterTokenPortrait);
         return convertView;

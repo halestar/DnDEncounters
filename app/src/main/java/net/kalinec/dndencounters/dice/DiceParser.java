@@ -5,7 +5,6 @@ import android.util.Log;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.regex.Pattern;
 
 public class DiceParser implements Serializable
 {
@@ -16,12 +15,12 @@ public class DiceParser implements Serializable
         StringTokenizer diceTokenizer = new StringTokenizer(diceStr, "+-", true);
         DiceRoller currentDice = null;
         char currentSign = '+';
-        int currentMod = 0;
+	    int currentMod;
         while(diceTokenizer.hasMoreTokens())
         {
             String token = diceTokenizer.nextToken();
             //3 choices: #?d#, #, +|-
-            if(token.matches("\\+|-"))
+	        if (token.matches("[+\\-]"))
             {
                 //set the correct sign
                 currentSign = token.charAt(0);
@@ -39,7 +38,7 @@ public class DiceParser implements Serializable
                 }
                 currentSign = '+';
             }
-            else if(token.matches("\\d*(d|D)\\d+"))
+	        else if (token.matches("\\d*([dD])\\d+"))
             {
                 StringTokenizer diceExpr = new StringTokenizer(token, "dD");
                 if(diceExpr.countTokens() == 2)
@@ -47,7 +46,6 @@ public class DiceParser implements Serializable
                     if(currentDice != null)
                     {
                         dice.add(currentDice);
-                        currentDice = null;
                     }
                     int numDice = Integer.parseInt(diceExpr.nextToken());
                     int numFaces = Integer.parseInt(diceExpr.nextToken());

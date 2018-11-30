@@ -2,11 +2,9 @@ package net.kalinec.dndencounters.players;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -17,7 +15,6 @@ public class Player implements Serializable
 	public final static String PASSED_PLAYER = "PASSED_PLAYER";
 	
 	@PrimaryKey(autoGenerate = true)
-	@NonNull
 	public int uid;
 	public String name;
 	public String dci;
@@ -49,7 +46,6 @@ public class Player implements Serializable
 		this.name = name;
 	}
 	
-	@NonNull
 	public int getUid()
 	{
 		return uid;

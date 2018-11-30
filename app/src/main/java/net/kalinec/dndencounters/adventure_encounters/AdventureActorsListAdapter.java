@@ -7,36 +7,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.characters.Character;
-import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class AdventureActorsListAdapter extends RecyclerView.Adapter<AdventureActorsListAdapter.AdventureActorsViewHolder>
 {
 	private static final Comparator<AdventureEncounterActor> INITIATIVE_COMPARATOR = new Comparator<AdventureEncounterActor>() {
 		@Override
 		public int compare(AdventureEncounterActor a, AdventureEncounterActor b) {
-			return (-1) * Integer.valueOf(a.getInitiative()).compareTo(Integer.valueOf(b.getInitiative()));
+			return (-1) * Integer.compare(a.getInitiative(), b.getInitiative());
 		}
 	};
 
 	private final List<AdventureEncounterActor> actorList = new ArrayList<>();
 
 	private LayoutInflater layoutInflater;
-	private Context context;
-
+	
 	public AdventureActorsListAdapter(Context context)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 	}
 
 	public void setActorList(List<AdventureEncounterActor> actorList)
@@ -63,16 +59,12 @@ public class AdventureActorsListAdapter extends RecyclerView.Adapter<AdventureAc
 	@Override
 	public void onBindViewHolder(@NonNull AdventureActorsListAdapter.AdventureActorsViewHolder holder, int position)
 	{
-		if (actorList == null)
-		{
-			return;
-		}
 		final AdventureEncounterActor actor = actorList.get(position);
 		if (actor != null)
 		{
 			holder.ActorNameTv.setText(actor.getName());
-			holder.ActorHpTv.setText(Integer.toString(actor.getHp()));
-			holder.ActorInitiativeTv.setText(Integer.toString(actor.getInitiative()));
+			holder.ActorInitiativeTv.setText(String.format(Locale.getDefault(), "%d", actor
+					.getInitiative()));
 			if(actor.getStatus() == AdventureEncounterActor.DEAD)
 				holder.ActorDeadTv.setVisibility(View.VISIBLE);
 			else
@@ -93,26 +85,18 @@ public class AdventureActorsListAdapter extends RecyclerView.Adapter<AdventureAc
 	@Override
 	public int getItemCount()
 	{
-		if (actorList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return actorList.size();
-		}
+		return actorList.size();
 	}
-
-	public static class AdventureActorsViewHolder extends RecyclerView.ViewHolder
+	
+	static class AdventureActorsViewHolder extends RecyclerView.ViewHolder
 	{
-		private TextView ActorNameTv, ActorHpTv, ActorInitiativeTv, ActorDeadTv;
+		private TextView ActorNameTv, ActorInitiativeTv, ActorDeadTv;
 		private ImageView ActorPortraitIv;
-
-		public AdventureActorsViewHolder(View itemView)
+		
+		AdventureActorsViewHolder(View itemView)
 		{
 			super(itemView);
 			ActorNameTv = itemView.findViewById(R.id.ActorNameTv);
-			ActorHpTv = itemView.findViewById(R.id.ActorHpTv);
 			ActorInitiativeTv = itemView.findViewById(R.id.ActorInitiativeTv);
 			ActorDeadTv = itemView.findViewById(R.id.ActorDeadTv);
 			ActorPortraitIv = itemView.findViewById(R.id.ActorPortraitIv);

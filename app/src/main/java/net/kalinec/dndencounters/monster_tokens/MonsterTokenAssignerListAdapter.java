@@ -13,32 +13,22 @@ import android.widget.TextView;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
 import net.kalinec.dndencounters.lib.RvItemClickListener;
-import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class MonsterTokenAssignerListAdapter extends RecyclerView.Adapter<MonsterTokenAssignerListAdapter.MonsterTokenAssigngerViewHolder>
 {
-	private static final Comparator<Monster> ALPHABETICAL_COMPARATOR = new Comparator<Monster>() {
-		@Override
-		public int compare(Monster a, Monster b) {
-			return a.getName().compareTo(b.getName());
-		}
-	};
 
 	private final List<AdventureEncounterMonster> monsterList = new ArrayList<>();
 
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvItemClickListener mListener;
 	private MonsterTokenSpinnerAdapter monsterTokenSpinnerAdapter;
 
 	public MonsterTokenAssignerListAdapter(Context context, RvItemClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		this.mListener = listener;
 		this.monsterTokenSpinnerAdapter = new MonsterTokenSpinnerAdapter(context);
 	}
@@ -66,10 +56,6 @@ public class MonsterTokenAssignerListAdapter extends RecyclerView.Adapter<Monste
 	@Override
 	public void onBindViewHolder(@NonNull MonsterTokenAssignerListAdapter.MonsterTokenAssigngerViewHolder holder, int position)
 	{
-		if (monsterList == null)
-		{
-			return;
-		}
 		final AdventureEncounterMonster monster = monsterList.get(position);
 		if (monster != null)
 		{
@@ -81,14 +67,7 @@ public class MonsterTokenAssignerListAdapter extends RecyclerView.Adapter<Monste
 	@Override
 	public int getItemCount()
 	{
-		if (monsterList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return monsterList.size();
-		}
+		return monsterList.size();
 	}
 	
 	static class MonsterTokenAssigngerViewHolder extends RecyclerView.ViewHolder implements AdapterView.OnItemSelectedListener
@@ -97,7 +76,7 @@ public class MonsterTokenAssignerListAdapter extends RecyclerView.Adapter<Monste
 		private Spinner monsterTokenSp;
 		private RvItemClickListener mListener;
 		
-		public MonsterTokenAssigngerViewHolder(View itemView, RvItemClickListener listener)
+		MonsterTokenAssigngerViewHolder(View itemView, RvItemClickListener listener)
 		{
 			super(itemView);
 			encounterMonsterNameTv = itemView.findViewById(R.id.encounterMonsterNameTv);

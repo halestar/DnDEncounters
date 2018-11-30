@@ -6,10 +6,6 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.parties.Party;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,27 +27,24 @@ public class PlaySession implements Serializable
 	{
 		this.adventureEncounter = adventureEncounter;
 	}
-
-	public String getSessionName()
+	
+	String getSessionName()
 	{
 		return players.getName() + " Adventure";
 	}
-
-	public UUID getUuid() {
+	
+	UUID getUuid()
+	{
 		return uuid;
 	}
-
-	public void completeSession()
+	
+	void completeSession()
 	{
 		completed = new Date();
 		if(encounterInProgress())
 			completeCurrentEncounter();
 	}
-
-	public Encounter getCurrentEncounter() {
-		return currentEncounter;
-	}
-
+	
 	public void setCurrentEncounter(Encounter currentEncounter) {
 		this.currentEncounter = currentEncounter;
 		if(currentEncounter != null)
@@ -75,12 +68,7 @@ public class PlaySession implements Serializable
 	public void setPlayers(Party players) {
 		this.players = players;
 	}
-
-	public void addEncounter(Encounter e)
-	{
-		encounters.add(e);
-	}
-
+	
 	public void addEncounters(List<Encounter> eList)
 	{
 		encounters.addAll(eList);
@@ -94,13 +82,10 @@ public class PlaySession implements Serializable
 	public List<Encounter> getEncounters() {
 		return encounters;
 	}
-
-	public Date getStarted() {
+	
+	Date getStarted()
+	{
 		return started;
-	}
-
-	public Date getCompleted() {
-		return completed;
 	}
 
 	public void beginSession(Context context)
@@ -132,8 +117,8 @@ public class PlaySession implements Serializable
 	{
 		return (currentEncounter != null && adventureEncounter != null);
 	}
-
-	public boolean isSessionStarted()
+	
+	private boolean isSessionStarted()
 	{
 		return (started != null);
 	}

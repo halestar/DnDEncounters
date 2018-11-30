@@ -10,16 +10,17 @@ import net.kalinec.dndencounters.R;
 
 
 public class SelectableViewHolder extends RecyclerView.ViewHolder {
-    public static final int MULTI_SELECT = 2;
-    public static final int SINGLE_SELECT = 1;
-    protected SelectableItem mItem;
+	static final int MULTI_SELECT = 2;
+	static final int SINGLE_SELECT = 1;
+	SelectableItem mItem;
     protected RvSelectListener mListener;
     protected CheckedTextView textView;
-
-    public SelectableViewHolder(@NonNull View itemView, RvSelectListener listener) {
+	
+	SelectableViewHolder(@NonNull View itemView, RvSelectListener listener)
+	{
         super(itemView);
         mListener = listener;
-        textView = (CheckedTextView)itemView.findViewById(R.id.checked_text_item);
+		textView = itemView.findViewById(R.id.checked_text_item);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

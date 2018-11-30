@@ -1,8 +1,8 @@
 package net.kalinec.dndencounters.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,18 +20,16 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
 import net.kalinec.dndencounters.monsters.MonsterAbilitiesListAdapter;
 
+import java.util.Locale;
+
 public class MonsterTarget extends Fragment implements View.OnClickListener {
 
     private static final String ACTIVE_MONSTER = "ACTIVE_MONSTER";
 
     private AdventureEncounterMonster activeMonster;
-    private TextView MonsterInfoNameTv, MonsterInfoSizeTv, MonsterInfoTypeTv, MonsterInfoAcTv, MonsterInfoStrTv, MonsterInfoDexTv,
-            MonsterInfoConTv, MonsterInfoIntTv, MonsterInfoWisTv, MonsterInfoChaTv;
-    private ImageView MonsterInfoPortraitIv;
     private RecyclerView MonsterInfoSpecialAbilitiesRv, MonsterInfoActionsRv;
-    private MonsterAbilitiesListAdapter monsterAbilitiesListAdapter, monsterActionsListAdapter;
-    private Button ActionsHideBt, SpecialAbilitiesHideBt, hpmod1, hpmod2, hpmod3, hpmod4, hpmod5, hpmod6, hpmod7, hpmod8,
-            hpmod9, hpmod10, FinishMonsterBt, MarkMonsterDeadBt;
+	private Button ActionsHideBt;
+	private Button SpecialAbilitiesHideBt;
     private ToggleButton HpModTypeTb;
     private boolean hidingActions, hidingAbilities;
     private EditText MonsterCurrentHpEt;
@@ -57,45 +55,52 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(
+		    @NonNull LayoutInflater inflater, ViewGroup container,
+		    Bundle savedInstanceState
+                            )
+    {
 
         View v = inflater.inflate(R.layout.fragment_monster_target, container, false);
         //monster portrait
-        MonsterInfoPortraitIv = v.findViewById(R.id.MonsterInfoPortraitIv);
-        activeMonster.getToken().makePortrait(MonsterInfoPortraitIv);
+	    ImageView monsterInfoPortraitIv = v.findViewById(R.id.MonsterInfoPortraitIv);
+	    activeMonster.getToken().makePortrait(monsterInfoPortraitIv);
 
         //fill in monster info
-        MonsterInfoNameTv = v.findViewById(R.id.MonsterInfoNameTv);
-        MonsterInfoNameTv.setText(activeMonster.getMonster().getName());
-        MonsterInfoSizeTv = v.findViewById(R.id.MonsterInfoSizeTv);
-        MonsterInfoSizeTv.setText(activeMonster.getMonster().getMonsterSize());
-        MonsterInfoTypeTv = v.findViewById(R.id.MonsterInfoTypeTv);
-        MonsterInfoTypeTv.setText(activeMonster.getMonster().getMonsterType());
-        MonsterInfoAcTv = v.findViewById(R.id.MonsterInfoAcTv);
-        MonsterInfoAcTv.setText(Integer.toString(activeMonster.getMonster().getAc()));
+	    TextView monsterInfoNameTv = v.findViewById(R.id.MonsterInfoNameTv);
+	    monsterInfoNameTv.setText(activeMonster.getMonster().getName());
+	    TextView monsterInfoSizeTv = v.findViewById(R.id.MonsterInfoSizeTv);
+	    monsterInfoSizeTv.setText(activeMonster.getMonster().getMonsterSize());
+	    TextView monsterInfoTypeTv = v.findViewById(R.id.MonsterInfoTypeTv);
+	    monsterInfoTypeTv.setText(activeMonster.getMonster().getMonsterType());
+	    TextView monsterInfoAcTv = v.findViewById(R.id.MonsterInfoAcTv);
+	    monsterInfoAcTv.setText(String.format(Locale.getDefault(), "%d", activeMonster.getMonster()
+			    .getAc()));
         //monster stats block
-        MonsterInfoStrTv = v.findViewById(R.id.MonsterInfoStrTv);
-        MonsterInfoStrTv.setText(activeMonster.getMonster().getStrMod());
-        MonsterInfoDexTv = v.findViewById(R.id.MonsterInfoDexTv);
-        MonsterInfoDexTv.setText(activeMonster.getMonster().getDexMod());
-        MonsterInfoConTv = v.findViewById(R.id.MonsterInfoConTv);
-        MonsterInfoConTv.setText(activeMonster.getMonster().getDexMod());
-        MonsterInfoIntTv = v.findViewById(R.id.MonsterInfoIntTv);
-        MonsterInfoIntTv.setText(activeMonster.getMonster().getIntelMod());
-        MonsterInfoWisTv = v.findViewById(R.id.MonsterInfoWisTv);
-        MonsterInfoWisTv.setText(activeMonster.getMonster().getWisMod());
-        MonsterInfoChaTv = v.findViewById(R.id.MonsterInfoChaTv);
-        MonsterInfoChaTv.setText(activeMonster.getMonster().getChaMod());
+	    TextView monsterInfoStrTv = v.findViewById(R.id.MonsterInfoStrTv);
+	    monsterInfoStrTv.setText(activeMonster.getMonster().getStrMod());
+	    TextView monsterInfoDexTv = v.findViewById(R.id.MonsterInfoDexTv);
+	    monsterInfoDexTv.setText(activeMonster.getMonster().getDexMod());
+	    TextView monsterInfoConTv = v.findViewById(R.id.MonsterInfoConTv);
+	    monsterInfoConTv.setText(activeMonster.getMonster().getConMod());
+	    TextView monsterInfoIntTv = v.findViewById(R.id.MonsterInfoIntTv);
+	    monsterInfoIntTv.setText(activeMonster.getMonster().getIntelMod());
+	    TextView monsterInfoWisTv = v.findViewById(R.id.MonsterInfoWisTv);
+	    monsterInfoWisTv.setText(activeMonster.getMonster().getWisMod());
+	    TextView monsterInfoChaTv = v.findViewById(R.id.MonsterInfoChaTv);
+	    monsterInfoChaTv.setText(activeMonster.getMonster().getChaMod());
         //special abilities
         MonsterInfoSpecialAbilitiesRv = v.findViewById(R.id.MonsterInfoSpecialAbilitiesRv);
-        monsterAbilitiesListAdapter = new MonsterAbilitiesListAdapter(getContext());
-        monsterAbilitiesListAdapter.setMonsterAbilityList(activeMonster.getMonster().getSpecialAbilities());
+	    MonsterAbilitiesListAdapter monsterAbilitiesListAdapter
+			    = new MonsterAbilitiesListAdapter(getContext());
+	    monsterAbilitiesListAdapter
+			    .setMonsterAbilityList(activeMonster.getMonster().getSpecialAbilities());
         MonsterInfoSpecialAbilitiesRv.setAdapter(monsterAbilitiesListAdapter);
         MonsterInfoSpecialAbilitiesRv.setLayoutManager(new LinearLayoutManager(getContext()));
         //actions
         MonsterInfoActionsRv = v.findViewById(R.id.MonsterInfoActionsRv);
-        monsterActionsListAdapter = new MonsterAbilitiesListAdapter(getContext());
+	    MonsterAbilitiesListAdapter monsterActionsListAdapter
+			    = new MonsterAbilitiesListAdapter(getContext());
         monsterActionsListAdapter.setMonsterAbilityList(activeMonster.getMonster().getActions());
         MonsterInfoActionsRv.setAdapter(monsterActionsListAdapter);
         MonsterInfoActionsRv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -139,40 +144,42 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
         });
         //current HP
         MonsterCurrentHpEt = v.findViewById(R.id.MonsterCurrentHpEt);
-        MonsterCurrentHpEt.setText(Integer.toString(activeMonster.getHp()));
+	    MonsterCurrentHpEt.setText(String.format(Locale.getDefault(), "%d", activeMonster.getHp()));
         //hp modifier widget
         HpModTypeTb = v.findViewById(R.id.HpModTypeTb);
-        hpmod1 = v.findViewById(R.id.hpmod1);
+	    Button hpmod1 = v.findViewById(R.id.hpmod1);
         hpmod1.setOnClickListener(this);
-        hpmod2 = v.findViewById(R.id.hpmod2);
+	    Button hpmod2 = v.findViewById(R.id.hpmod2);
         hpmod2.setOnClickListener(this);
-        hpmod3 = v.findViewById(R.id.hpmod3);
+	    Button hpmod3 = v.findViewById(R.id.hpmod3);
         hpmod3.setOnClickListener(this);
-        hpmod4 = v.findViewById(R.id.hpmod4);
+	    Button hpmod4 = v.findViewById(R.id.hpmod4);
         hpmod4.setOnClickListener(this);
-        hpmod5 = v.findViewById(R.id.hpmod5);
+	    Button hpmod5 = v.findViewById(R.id.hpmod5);
         hpmod5.setOnClickListener(this);
-        hpmod6 = v.findViewById(R.id.hpmod6);
+	    Button hpmod6 = v.findViewById(R.id.hpmod6);
         hpmod6.setOnClickListener(this);
-        hpmod7 = v.findViewById(R.id.hpmod7);
+	    Button hpmod7 = v.findViewById(R.id.hpmod7);
         hpmod7.setOnClickListener(this);
-        hpmod8 = v.findViewById(R.id.hpmod8);
+	    Button hpmod8 = v.findViewById(R.id.hpmod8);
         hpmod8.setOnClickListener(this);
-        hpmod9 = v.findViewById(R.id.hpmod9);
+	    Button hpmod9 = v.findViewById(R.id.hpmod9);
         hpmod9.setOnClickListener(this);
-        hpmod10 = v.findViewById(R.id.hpmod10);
+	    Button hpmod10 = v.findViewById(R.id.hpmod10);
         hpmod10.setOnClickListener(this);
         //finish monster buttons
-        FinishMonsterBt = v.findViewById(R.id.FinishMonsterBt);
-        FinishMonsterBt.setOnClickListener(new View.OnClickListener() {
+	    Button finishMonsterBt = v.findViewById(R.id.FinishMonsterBt);
+	    finishMonsterBt.setOnClickListener(new View.OnClickListener()
+	    {
             @Override
             public void onClick(View v) {
                 activeMonster.setHp(Integer.parseInt(MonsterCurrentHpEt.getText().toString()));
                 mListener.onMonsterCompletedListener(activeMonster);
             }
         });
-        MarkMonsterDeadBt = v.findViewById(R.id.MarkMonsterDeadBt);
-        MarkMonsterDeadBt.setOnClickListener(new View.OnClickListener() {
+	    Button markMonsterDeadBt = v.findViewById(R.id.MarkMonsterDeadBt);
+	    markMonsterDeadBt.setOnClickListener(new View.OnClickListener()
+	    {
             @Override
             public void onClick(View v) {
                 activeMonster.setHp(0);
@@ -203,12 +210,12 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
             if(curHp > activeMonster.getMaxHp())
                 curHp = activeMonster.getMaxHp();
         }
-        MonsterCurrentHpEt.setText(Integer.toString(curHp));
+	    MonsterCurrentHpEt.setText(String.format(Locale.getDefault(), "%d", curHp));
     }
 
     public interface OnMonsterCompletedListener
     {
-        public void onMonsterCompletedListener(AdventureEncounterMonster activeMonster);
+	    void onMonsterCompletedListener(AdventureEncounterMonster activeMonster);
     }
 
     private MonsterTarget.OnMonsterCompletedListener mListener;

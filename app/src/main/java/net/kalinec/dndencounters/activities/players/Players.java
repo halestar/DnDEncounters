@@ -5,12 +5,11 @@ import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
@@ -24,8 +23,6 @@ import java.util.List;
 
 public class Players extends DnDEncountersActivity
 {
-	private RecyclerView recyclerview_players;
-	private LiveData<List<Player>> playerList;
 	private PlayerListAdapter playerListAdapter;
 
 	@Override
@@ -34,7 +31,7 @@ public class Players extends DnDEncountersActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_players);
 		PlayerDao playerDao = AppDatabase.getDatabase(getApplicationContext()).playerDao();
-		playerList = playerDao.getAllPlayers();
+		LiveData<List<Player>> playerList = playerDao.getAllPlayers();
 
 		playerListAdapter = new PlayerListAdapter(getApplicationContext(), new RvClickListener() {
 			@Override
@@ -49,8 +46,8 @@ public class Players extends DnDEncountersActivity
 				playerListAdapter.setPlayerList(players);
 			}
 		});
-
-		recyclerview_players = findViewById(R.id.recyclerview_players);
+		
+		RecyclerView recyclerview_players = findViewById(R.id.recyclerview_players);
 		recyclerview_players.setAdapter(playerListAdapter);
 		recyclerview_players.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 	}

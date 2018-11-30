@@ -12,27 +12,19 @@ import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdapter.CharacterViewHolder>
 {
-	private static final Comparator<Character> ALPHABETICAL_COMPARATOR = new Comparator<Character>() {
-		@Override
-		public int compare(Character a, Character b) {
-			return a.getName().compareTo(b.getName());
-		}
-	};
 
 	private LayoutInflater layoutInflater;
 	private List<Character> characterList;
-	private Context context;
 	private RvClickListener mListener;
 	
 	public CharacterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		this.mListener = listener;
 		this.characterList = new ArrayList<>();
 	}
@@ -68,7 +60,8 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 		if (character != null)
 		{
 			holder.characterNameTv.setText(character.nameAndDescription());
-			holder.characterLvTv.setText("Lv. " + Integer.toString(character.getLevel()));
+			holder.characterLvTv.setText(
+					"Lv. " + String.format(Locale.getDefault(), "%d", character.getLevel()));
 		}
 	}
 	
@@ -90,7 +83,7 @@ public class CharacterListAdapter extends RecyclerView.Adapter<CharacterListAdap
 		private TextView characterNameTv, characterLvTv;
 		private RvClickListener mListener;
 		
-		public CharacterViewHolder(View itemView, RvClickListener listener)
+		CharacterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			mListener = listener;

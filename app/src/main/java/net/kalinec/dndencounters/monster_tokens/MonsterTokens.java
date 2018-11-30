@@ -2,10 +2,7 @@ package net.kalinec.dndencounters.monster_tokens;
 
 import android.content.Context;
 
-import net.kalinec.dndencounters.lib.SelectableItem;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,7 +14,6 @@ import java.util.List;
 public class MonsterTokens
 {
 	private static List<MonsterToken> tokensDb;
-	private static Context context;
 	private static final String fname = "monster_tokens.srl";
 	
 	private static final Comparator<MonsterToken> ALPHABETICAL_COMPARATOR = new Comparator<MonsterToken>() {
@@ -30,7 +26,6 @@ public class MonsterTokens
 	
 	private static void verifyDb(Context context)
 	{
-		MonsterTokens.context = context;
 		if(tokensDb == null)
 		{
 			try
@@ -46,12 +41,7 @@ public class MonsterTokens
 					in.close();
 				}
 			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-				tokensDb = new ArrayList<>();
-			}
-			catch (ClassNotFoundException e)
+			catch (IOException | ClassNotFoundException e)
 			{
 				e.printStackTrace();
 				tokensDb = new ArrayList<>();
@@ -59,23 +49,19 @@ public class MonsterTokens
 		}
 	}
 	
-	private static void writeEncounters()
+	private static void writeEncounters(Context context)
 	{
 		
-		FileOutputStream fos = null;
+		FileOutputStream fos;
 		try
 		{
 			fos = context.openFileOutput(fname, Context.MODE_PRIVATE);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(new Integer(tokensDb.size()));
+			oos.writeObject(tokensDb.size());
 			for(MonsterToken e: tokensDb)
 				oos.writeObject(e);
 			oos.flush();
 			oos.close();
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
 		}
 		catch (IOException e)
 		{
@@ -88,24 +74,13 @@ public class MonsterTokens
 		verifyDb(context);
 		return tokensDb;
 	}
-
-	public static List<SelectableItem> getAllAsSelectibles(Context context)
-	{
-		verifyDb(context);
-		List<SelectableItem> selectableMonsterTokens = new ArrayList<>();
-		for(MonsterToken e: tokensDb)
-		{
-			selectableMonsterTokens.add((SelectableItem) e);
-		}
-		return selectableMonsterTokens;
-	}
 	
 	public static void addMonsterToken(Context context, MonsterToken e)
 	{
 		verifyDb(context);
 		tokensDb.add(e);
 		tokensDb.sort(ALPHABETICAL_COMPARATOR);
-		writeEncounters();
+		writeEncounters(context);
 	}
 	
 	public static void updateMonsterToken(Context context, MonsterToken oldMt, MonsterToken newMt)
@@ -117,7 +92,7 @@ public class MonsterTokens
 		else
 			tokensDb.add(newMt);
 		tokensDb.sort(ALPHABETICAL_COMPARATOR);
-		writeEncounters();
+		writeEncounters(context);
 	}
 	
 	public static void removeMonsterToken(Context context, MonsterToken e)
@@ -125,6 +100,6 @@ public class MonsterTokens
 		verifyDb(context);
 		tokensDb.remove(e);
 		tokensDb.sort(ALPHABETICAL_COMPARATOR);
-		writeEncounters();
+		writeEncounters(context);
 	}
 }

@@ -3,9 +3,8 @@ package net.kalinec.dndencounters.activities.players;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,10 +12,7 @@ import android.widget.SearchView;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.characters.Character;
-import net.kalinec.dndencounters.characters.PcListAdapter;
 import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.CharacterDao;
 import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.players.Player;
@@ -28,18 +24,16 @@ import java.util.List;
 public class SelectPlayer extends DnDEncountersActivity {
 
     public static final int REQUEST_SELECT_PLAYER = 42;
-    private LiveData<List<Player>> players;
     private PlayerListAdapter playerListAdapter;
     private RecyclerView playerSearchRv;
-    private SearchView playerSearchSv;
-
-    @Override
+	
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_player);
 
         PlayerDao playerDao = AppDatabase.getDatabase(getApplicationContext()).playerDao();
-        players = playerDao.getAllPlayers();
+		LiveData<List<Player>> players = playerDao.getAllPlayers();
         playerListAdapter = new PlayerListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -57,8 +51,8 @@ public class SelectPlayer extends DnDEncountersActivity {
         playerSearchRv = findViewById(R.id.playerSearchRv);
         playerSearchRv.setAdapter(playerListAdapter);
         playerSearchRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        playerSearchSv = (SearchView)findViewById(R.id.playerSearchSv);
+		
+		SearchView playerSearchSv = findViewById(R.id.playerSearchSv);
         playerSearchSv.setActivated(true);
         playerSearchSv.onActionViewExpanded();
         playerSearchSv.setIconified(false);

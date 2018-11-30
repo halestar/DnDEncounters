@@ -1,9 +1,7 @@
 package net.kalinec.dndencounters.monsters;
 
 
-
-import android.annotation.TargetApi;
-import android.os.Build;
+import android.support.annotation.NonNull;
 
 import net.kalinec.dndencounters.dice.DiceParser;
 
@@ -20,7 +18,7 @@ public class Monster implements Serializable
 {
 	public final static String PASSED_MONSTER = "PASSED_MONSTER";
 	public static final String CR_ERROR = "Unk.";
-	public static final String NAME_ERROR = "Error Monster";
+	private static final String NAME_ERROR = "Error Monster";
 	private int mid;
 	private String name, cr, monsterType, monsterSize;
 	private int str, dex, con, intel, wis, cha;
@@ -34,11 +32,6 @@ public class Monster implements Serializable
 
 	private int ac;
 	private DiceParser hitDice;
-	
-	public int getMid()
-	{
-		return mid;
-	}
 	
 	public String getName()
 	{
@@ -142,38 +135,15 @@ public class Monster implements Serializable
 		
 		return Objects.hash(mid);
 	}
-
+	
+	@NonNull
 	@Override
 	public String toString() {
 		return "Monster{" +
-				"name='" + name + '\'' +
-				", dex_mod=" + dex_mod +
-				", hp=" + hp +
-				'}';
-	}
-
-	public int getStr() {
-		return str;
-	}
-
-	public int getDex() {
-		return dex;
-	}
-
-	public int getCon() {
-		return con;
-	}
-
-	public int getIntel() {
-		return intel;
-	}
-
-	public int getWis() {
-		return wis;
-	}
-
-	public int getCha() {
-		return cha;
+		       "name='" + name + '\'' +
+		       ", dex_mod=" + dex_mod +
+		       ", hp=" + hp +
+		       '}';
 	}
 
 	private String formatMod(int mod)
@@ -205,30 +175,12 @@ public class Monster implements Serializable
 		return formatMod(wis_mod);
 	}
 
-	public int getStr_mod() {
-		return str_mod;
-	}
 
 	public int getDex_mod() {
 		return dex_mod;
 	}
-
-	public int getCon_mod() {
-		return con_mod;
-	}
-
-	public int getIntel_mod() {
-		return intel_mod;
-	}
-
-	public int getWis_mod() {
-		return wis_mod;
-	}
-
-	public int getCha_mod() {
-		return cha_mod;
-	}
-
+	
+	
 	public String getChaMod() {
 		return formatMod(cha_mod);
 	}
@@ -236,11 +188,7 @@ public class Monster implements Serializable
 	public int getHp() {
 		return hp;
 	}
-
-	public DiceParser getHitDice() {
-		return hitDice;
-	}
-
+	
 	public int rollHp()
 	{
 		return hitDice.result();

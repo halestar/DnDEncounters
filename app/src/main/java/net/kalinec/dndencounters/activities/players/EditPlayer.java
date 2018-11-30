@@ -3,9 +3,8 @@ package net.kalinec.dndencounters.activities.players;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -32,6 +31,7 @@ public class EditPlayer extends DnDEncountersActivity
 		super.onCreate(savedInstanceState);
 		
 		Bundle bundle = getIntent().getExtras();
+		assert bundle != null;
 		selectedPlayer = (Player)bundle.getSerializable(Player.PASSED_PLAYER);
 		
 		setContentView(R.layout.activity_edit_player);
@@ -77,6 +77,7 @@ public class EditPlayer extends DnDEncountersActivity
 		if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
 		{
 			Bundle extras = data.getExtras();
+			assert extras != null;
 			portrait = (Bitmap) extras.get("data");
 			portraitContainer.setImageBitmap(portrait);
 		}

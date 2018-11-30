@@ -14,28 +14,19 @@ import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class PlayingEncounterListAdapter extends RecyclerView.Adapter<PlayingEncounterListAdapter.PlayingEncounterViewHolder>
 {
-	private static final Comparator<Encounter> ALPHABETICAL_COMPARATOR = new Comparator<Encounter>() {
-		@Override
-		public int compare(Encounter a, Encounter b) {
-			return a.getEncounterName().compareTo(b.getEncounterName());
-		}
-	};
 
 	private final List<Encounter> encounterList = new ArrayList<>();
 
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvClickListener mListener;
 
 	public PlayingEncounterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		mListener = listener;
 	}
 
@@ -63,10 +54,6 @@ public class PlayingEncounterListAdapter extends RecyclerView.Adapter<PlayingEnc
 	@Override
 	public void onBindViewHolder(@NonNull PlayingEncounterListAdapter.PlayingEncounterViewHolder holder, int position)
 	{
-		if (encounterList == null)
-		{
-			return;
-		}
 		final Encounter encounter = encounterList.get(position);
 		if (encounter != null)
 		{
@@ -77,14 +64,7 @@ public class PlayingEncounterListAdapter extends RecyclerView.Adapter<PlayingEnc
 	@Override
 	public int getItemCount()
 	{
-		if (encounterList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return encounterList.size();
-		}
+		return encounterList.size();
 	}
 	
 	static class PlayingEncounterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -93,7 +73,7 @@ public class PlayingEncounterListAdapter extends RecyclerView.Adapter<PlayingEnc
 		private Button playEncounterBtn, removeEncounterBtn;
 		private RvClickListener mListener;
 		
-		public PlayingEncounterViewHolder(View itemView, RvClickListener listener)
+		PlayingEncounterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			encounterNameTxt = itemView.findViewById(R.id.encounterNameTxt);

@@ -13,12 +13,10 @@ import java.util.List;
 public class Monsters
 {
 	private static JSONArray monsterDb;
-	private static Context context;
-	private static Monsters instance;
 	
-	private static String loadJSONFromAsset()
+	private static String loadJSONFromAsset(Context context)
 	{
-		String json = null;
+		String json;
 		try
 		{
 			InputStream is = context.getAssets().open("dnd_monsters.json");
@@ -38,13 +36,11 @@ public class Monsters
 	
 	private static boolean verifyDb(Context context)
 	{
-		if(Monsters.context == null)
-			Monsters.context = context;
 		if(monsterDb == null)
 		{
 			try
 			{
-				monsterDb = new JSONArray(loadJSONFromAsset());
+				monsterDb = new JSONArray(loadJSONFromAsset(context));
 			}
 			catch (JSONException e)
 			{
@@ -52,15 +48,7 @@ public class Monsters
 				monsterDb = null;
 			}
 		}
-		instance = new Monsters();
 		return (monsterDb != null);
-	}
-	
-	public static Monsters allMonsters(Context context)
-	{
-		if(verifyDb(context))
-			return Monsters.instance;
-		return null;
 	}
 	
 	public static List<Monster> monsterList(Context context)
@@ -86,16 +74,4 @@ public class Monsters
 	}
 	
 	
-	public Monster getMonster(int index)
-	{
-		try
-		{
-			return new Monster(index, monsterDb.getJSONObject(index));
-		}
-		catch (JSONException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
-	}
 }

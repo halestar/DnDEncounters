@@ -2,9 +2,8 @@ package net.kalinec.dndencounters.activities.adventure_encounters;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -20,7 +19,6 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterPlayer;
 import net.kalinec.dndencounters.dice.InitiativeRoller;
-import net.kalinec.dndencounters.encounters.Encounter;
 
 import java.util.ArrayList;
 
@@ -28,7 +26,6 @@ public class SetupEncounter extends DnDEncountersActivity {
 
     public static final int SETUP_ADVENTURE_ENCOUNTER = 63;
     private TextView monsterTokensCompletedIconTv, playerInitiativeCompletedIconTv;
-    private Switch assignIndividualMonsterInitiativeSw, rollMonsterHp;
     private Button StartEncounterBtn;
     private AdventureEncounter selectedEncounter;
     private ArrayList<AdventureEncounterMonster> encounterMonsterList;
@@ -40,6 +37,7 @@ public class SetupEncounter extends DnDEncountersActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
+        assert bundle != null;
         selectedEncounter = (AdventureEncounter)bundle.getSerializable(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
         setContentView(R.layout.activity_setup_encounter);
 
@@ -47,7 +45,8 @@ public class SetupEncounter extends DnDEncountersActivity {
         playerInitiativeCompletedIconTv = findViewById(R.id.playerInitiativeCompletedIconTv);
 
         individualInitiative = false;
-        assignIndividualMonsterInitiativeSw = findViewById(R.id.assignIndividualMonsterInitiativeSw);
+        Switch assignIndividualMonsterInitiativeSw
+                = findViewById(R.id.assignIndividualMonsterInitiativeSw);
         assignIndividualMonsterInitiativeSw.setChecked(individualInitiative);
         assignIndividualMonsterInitiativeSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -57,7 +56,7 @@ public class SetupEncounter extends DnDEncountersActivity {
         });
 
         rollForHp = false;
-        rollMonsterHp = findViewById(R.id.rollMonsterHp);
+        Switch rollMonsterHp = findViewById(R.id.rollMonsterHp);
         rollMonsterHp.setChecked(rollForHp);
         rollMonsterHp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -123,10 +122,8 @@ public class SetupEncounter extends DnDEncountersActivity {
     
     public void completeMonsterTokens()
     {
-        if(encounterMonsterList.size() == selectedEncounter.getEncounter().getMonsters().size())
-            completedMonsterTokens = true;
-        else
-            completedMonsterTokens = false;
+        completedMonsterTokens = encounterMonsterList.size() ==
+                                 selectedEncounter.getEncounter().getMonsters().size();
         setMonstersCompletedIcon();
     }
 
@@ -139,10 +136,8 @@ public class SetupEncounter extends DnDEncountersActivity {
 
     public void completePlayerInitiative()
     {
-        if(encounterPlayers.size() == selectedEncounter.getParty().getMembers().size())
-            completedPlayerInitiative = true;
-        else
-            completedPlayerInitiative = false;
+        completedPlayerInitiative = encounterPlayers.size() ==
+                                    selectedEncounter.getParty().getMembers().size();
         setPcsCompletedIcon();
     }
     
@@ -151,11 +146,13 @@ public class SetupEncounter extends DnDEncountersActivity {
     {
         if(requestCode == AssignMonsterTokens.REQUEST_ENCOUNTER_MONSTERS && resultCode == RESULT_OK)
         {
+            assert data != null;
             encounterMonsterList = (ArrayList<AdventureEncounterMonster>)data.getSerializableExtra(AdventureEncounterMonster.PASSED_ENCOUNTER_MONSTERS);
             completeMonsterTokens();
         }
         if(requestCode == AssignPlayerInitiative.REQUEST_PLAYER_INITIATIVE && resultCode == RESULT_OK)
         {
+            assert data != null;
             encounterPlayers = (ArrayList<AdventureEncounterPlayer>)data.getSerializableExtra(AdventureEncounterPlayer.PASSED_ENCOUNTER_PLAYERS);
             completePlayerInitiative();
         }

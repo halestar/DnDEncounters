@@ -14,8 +14,8 @@ import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class AdventureEncounterMonsterListAdapter extends RecyclerView.Adapter<AdventureEncounterMonsterListAdapter.AdventureEncounterMonsterViewHolder>
 {
@@ -23,13 +23,11 @@ public class AdventureEncounterMonsterListAdapter extends RecyclerView.Adapter<A
 	private final ArrayList<AdventureEncounterMonster> monsterList = new ArrayList<>();
 
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvClickListener mListener;
 
 	public AdventureEncounterMonsterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		this.mListener = listener;
 	}
 
@@ -56,16 +54,16 @@ public class AdventureEncounterMonsterListAdapter extends RecyclerView.Adapter<A
 	@Override
 	public void onBindViewHolder(@NonNull AdventureEncounterMonsterListAdapter.AdventureEncounterMonsterViewHolder holder, int position)
 	{
-		if (monsterList == null)
-		{
-			return;
-		}
 		final AdventureEncounterMonster mToken = monsterList.get(position);
 		if (mToken != null)
 		{
 			holder.MonsterNameTv.setText(mToken.getMonster().getName());
-			holder.MonsterAcTv.setText(Integer.toString(mToken.getMonster().getAc()));
-			holder.MonsterCurrentHpTxt.setText(Integer.toString(mToken.getHp()));
+			holder.MonsterAcTv.setText(String.format(Locale.getDefault(), "%d", mToken.getMonster()
+					.getAc()));
+			holder.MonsterCurrentHpTxt.setText(String.format(Locale.getDefault(), "%d", mToken
+					.getHp()));
+			holder.MonsterMaxHpTxt.setText(String.format(Locale.getDefault(), "%d", mToken
+					.getMaxHp()));
 			mToken.getToken().makePortrait(holder.MonsterTokenPortraitIv);
 		}
 	}
@@ -73,29 +71,23 @@ public class AdventureEncounterMonsterListAdapter extends RecyclerView.Adapter<A
 	@Override
 	public int getItemCount()
 	{
-		if (monsterList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return monsterList.size();
-		}
+		return monsterList.size();
 	}
 	
 	static class AdventureEncounterMonsterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 	{
-		private TextView MonsterNameTv, MonsterAcTv, MonsterCurrentHpTxt;
+		private TextView MonsterNameTv, MonsterAcTv, MonsterCurrentHpTxt, MonsterMaxHpTxt;
 		private ImageView MonsterTokenPortraitIv;
 		private RvClickListener mListener;
 		
-		public AdventureEncounterMonsterViewHolder(View itemView, RvClickListener listener)
+		AdventureEncounterMonsterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			MonsterNameTv = itemView.findViewById(R.id.MonsterNameTv);
 			MonsterAcTv = itemView.findViewById(R.id.MonsterAcTv);
 			MonsterCurrentHpTxt = itemView.findViewById(R.id.MonsterCurrentHpTxt);
 			MonsterTokenPortraitIv = itemView.findViewById(R.id.MonsterTokenPortraitIv);
+			MonsterMaxHpTxt = itemView.findViewById(R.id.MonsterMaxHpTxt);
 			mListener = listener;
 			itemView.setOnClickListener(this);
 		}

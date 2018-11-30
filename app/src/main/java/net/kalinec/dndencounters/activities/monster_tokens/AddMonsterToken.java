@@ -3,11 +3,9 @@ package net.kalinec.dndencounters.activities.monster_tokens;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.provider.MediaStore;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Group;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.constraint.Group;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,9 +24,6 @@ public class AddMonsterToken extends DnDEncountersActivity {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int REQUEST_NEW_MONSTER_TOKEN = 50;
-    private ConstraintLayout SingleNumberLy, SingleColorLy, ColorAndNumberLy, MiniLy;
-    private RadioGroup TokenTypeRg;
-    private RadioButton singleNumberRb, SingleColorRb, ColoredNumberRb, MiniRb;
     private Group SingleNumberGroup, SingleColorGroup, ColorAndNumberGroup, MiniGroup;
     private Bitmap miniPortrait;
     private ImageView MiniIv;
@@ -43,12 +38,6 @@ public class AddMonsterToken extends DnDEncountersActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_monster_token);
 
-        //constraint layouts
-        SingleNumberLy = findViewById(R.id.SingleNumberLy);
-        SingleColorLy = findViewById(R.id.SingleNumberLy);
-        ColorAndNumberLy = findViewById(R.id.SingleNumberLy);
-        MiniLy = findViewById(R.id.SingleNumberLy);
-
         //groups
         SingleNumberGroup = findViewById(R.id.SingleNumberGroup);
         SingleColorGroup = findViewById(R.id.SingleColorGroup);
@@ -56,19 +45,20 @@ public class AddMonsterToken extends DnDEncountersActivity {
         MiniGroup = findViewById(R.id.MiniGroup);
 
         //radio buttons
-        TokenTypeRg = findViewById(R.id.TokenTypeRg);
-        singleNumberRb = findViewById(R.id.singleNumberRb);
+	    RadioGroup tokenTypeRg = findViewById(R.id.TokenTypeRg);
+	    RadioButton singleNumberRb = findViewById(R.id.singleNumberRb);
         singleNumberRb.setChecked(true);
-        SingleColorRb = findViewById(R.id.SingleColorRb);
-        SingleColorRb.setChecked(false);
-        ColoredNumberRb = findViewById(R.id.ColoredNumberRb);
-        ColoredNumberRb.setChecked(false);
-        MiniRb = findViewById(R.id.MiniRb);
-        MiniRb.setChecked(false);
+	    RadioButton singleColorRb = findViewById(R.id.SingleColorRb);
+	    singleColorRb.setChecked(false);
+	    RadioButton coloredNumberRb = findViewById(R.id.ColoredNumberRb);
+	    coloredNumberRb.setChecked(false);
+	    RadioButton miniRb = findViewById(R.id.MiniRb);
+	    miniRb.setChecked(false);
 
         setSingleNumberToken();
-
-        TokenTypeRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+	
+	    tokenTypeRg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+	    {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch(checkedId)
@@ -147,6 +137,7 @@ public class AddMonsterToken extends DnDEncountersActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
         {
             Bundle extras = data.getExtras();
+	        assert extras != null;
             miniPortrait = (Bitmap) extras.get("data");
             MiniIv.setImageBitmap(miniPortrait);
         }

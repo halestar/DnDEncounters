@@ -1,5 +1,7 @@
 package net.kalinec.dndencounters.adventure_encounters;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -37,25 +39,19 @@ public class AdventureEncounterTurn implements Serializable
         }
         return null;
     }
-
-    public AdventureEncounterTurn(List<AdventureEncounterActor> actors, int turnNumber) {
+	
+	AdventureEncounterTurn(List<AdventureEncounterActor> actors, int turnNumber)
+	{
         this.actors = actors;
         this.turnNumber = turnNumber;
 
         this.currentInitiative = this.highestInitiative();
         this.currentActor = this.getActiveActor();
+		assert this.currentActor != null;
         this.completed = this.currentActor.hasActed();
     }
-
-    public int getTurnNumber() {
-        return turnNumber;
-    }
-
-    public int getCurrentInitiative() {
-        return currentInitiative;
-    }
-
-    public AdventureEncounterActor getCurrentActor() {
+	
+	public AdventureEncounterActor getCurrentActor() {
         return currentActor;
     }
 
@@ -71,15 +67,16 @@ public class AdventureEncounterTurn implements Serializable
         if(currentActor == null)
             completed = true;
     }
-
+	
+	@NonNull
     @Override
     public String toString() {
         return "AdventureEncounterTurn{" +
-                "actors=" + actors +
-                ", turnNumber=" + turnNumber +
-                ", currentInitiative=" + currentInitiative +
-                ", currentActor=" + currentActor +
-                ", completed=" + completed +
-                '}';
+               "actors=" + actors +
+               ", turnNumber=" + turnNumber +
+               ", currentInitiative=" + currentInitiative +
+               ", currentActor=" + currentActor +
+               ", completed=" + completed +
+               '}';
     }
 }

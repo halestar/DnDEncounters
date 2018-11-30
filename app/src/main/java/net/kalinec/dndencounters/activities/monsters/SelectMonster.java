@@ -23,7 +23,6 @@ public class SelectMonster extends DnDEncountersActivity
 	private List<Monster> monsters, currentMonsterList;
 	private MonsterListAdapter monsterListAdapter;
 	private RecyclerView monsterSearchRv;
-	private SearchView monsterSearchSv;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -44,12 +43,12 @@ public class SelectMonster extends DnDEncountersActivity
 		monsterListAdapter.setMonsterList(monsters);
 		
 		
-		monsterSearchRv = (RecyclerView)findViewById(R.id.monsterSearchRv);
+		monsterSearchRv = findViewById(R.id.monsterSearchRv);
 		monsterSearchRv.setAdapter(monsterListAdapter);
 		monsterSearchRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 		
 		
-		monsterSearchSv = (SearchView)findViewById(R.id.SpellSearchSv);
+		SearchView monsterSearchSv = findViewById(R.id.SpellSearchSv);
 		monsterSearchSv.setActivated(true);
 		monsterSearchSv.onActionViewExpanded();
 		monsterSearchSv.setIconified(false);

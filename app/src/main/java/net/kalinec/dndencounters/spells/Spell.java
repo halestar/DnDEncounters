@@ -1,5 +1,7 @@
 package net.kalinec.dndencounters.spells;
 
+import android.support.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,22 +12,67 @@ public class Spell implements Serializable
 {
     public final static String PASSED_SPELL = "PASSED_SPELL";
     private static final String BLANK = "Unk.";
-    private String name, description, page, range, components, material, ritual, duration, concentration, casting_time, level, spellClass, higher_level;
+	private String name, description, page, range, components, material, duration, casting_time,
+			level, spellClass, higher_level, school;
+	private boolean ritual, concentration;
     public Spell(JSONObject spell)
     {
         try{name = spell.getString("name");}catch (JSONException e){name = BLANK;}
-        try{description = spell.getString("description");}catch (JSONException e){description = BLANK;}
+	    try
+	    {
+		    description = spell.getString("desc");
+	    }
+	    catch (JSONException e)
+	    {
+		    description = BLANK;
+	    }
         try{page = spell.getString("page");}catch (JSONException e){page = BLANK;}
         try{range = spell.getString("range");}catch (JSONException e){range = BLANK;}
         try{components = spell.getString("components");}catch (JSONException e){components = BLANK;}
         try{material = spell.getString("material");}catch (JSONException e){material = BLANK;}
-        try{ritual = spell.getString("ritual");}catch (JSONException e){ritual = BLANK;}
+	    try
+	    {
+		    ritual = (spell.getString("ritual").equals("yes"));
+	    }
+	    catch (JSONException e)
+	    {
+		    ritual = false;
+	    }
         try{duration = spell.getString("duration");}catch (JSONException e){duration = BLANK;}
-        try{concentration = spell.getString("concentration");}catch (JSONException e){concentration = BLANK;}
+	    try
+	    {
+		    concentration = (spell.getString("concentration").equals("yes"));
+	    }
+	    catch (JSONException e)
+	    {
+		    concentration = false;
+	    }
         try{casting_time = spell.getString("casting_time");}catch (JSONException e){casting_time = BLANK;}
         try{level = spell.getString("level");}catch (JSONException e){level = BLANK;}
-        try{spellClass = spell.getString("spellClass");}catch (JSONException e){spellClass = BLANK;}
-        try{higher_level = spell.getString("higher_level");}catch (JSONException e){higher_level = BLANK;}
+	    try
+	    {
+		    spellClass = spell.getString("class");
+	    }
+	    catch (JSONException e)
+	    {
+		    spellClass = BLANK;
+	    }
+	    try
+	    {
+		    higher_level = spell.getString("higher_level");
+	    }
+	    catch (JSONException e)
+	    {
+		    higher_level = null;
+	    }
+	    try
+	    {
+		    school = spell.getString("school");
+	    }
+	    catch (JSONException e)
+	    {
+		    school = BLANK;
+	    }
     }
 
     public String getName() {
@@ -35,7 +82,12 @@ public class Spell implements Serializable
     public String getDescription() {
         return description;
     }
-
+	
+	public String getSchool()
+	{
+		return school;
+	}
+    
     public String getPage() {
         return page;
     }
@@ -51,20 +103,22 @@ public class Spell implements Serializable
     public String getMaterial() {
         return material;
     }
-
-    public String getRitual() {
+	
+	public boolean isRitual()
+	{
         return ritual;
     }
-
-    public String getDuration() {
+	
+	public String getDuration() {
         return duration;
     }
-
-    public String getConcentration() {
+	
+	public boolean isConcentration()
+	{
         return concentration;
     }
-
-    public String getCasting_time() {
+	
+	public String getCasting_time() {
         return casting_time;
     }
 
@@ -79,13 +133,14 @@ public class Spell implements Serializable
     public String getHigher_level() {
         return higher_level;
     }
-
+	
+	@NonNull
     @Override
     public String toString() {
         return "Spell{" +
-                "name='" + name + '\'' +
-                ", level='" + level + '\'' +
-                '}';
+               "name='" + name + '\'' +
+               ", level='" + level + '\'' +
+               '}';
     }
 
     @Override

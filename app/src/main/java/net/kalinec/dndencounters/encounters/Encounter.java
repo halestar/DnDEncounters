@@ -1,5 +1,7 @@
 package net.kalinec.dndencounters.encounters;
 
+import android.support.annotation.NonNull;
+
 import net.kalinec.dndencounters.lib.SelectableItem;
 import net.kalinec.dndencounters.monsters.Monster;
 
@@ -38,7 +40,7 @@ public class Encounter implements Serializable, SelectableItem
 		for(Monster m: monsters)
 		{
 			String crStr = m.getCr();
-			if(crStr == Monster.CR_ERROR)
+			if (crStr.equals(Monster.CR_ERROR))
 				continue;
 			String[] fractionCr = crStr.split("/");
 			if(fractionCr.length == 1)
@@ -79,11 +81,6 @@ public class Encounter implements Serializable, SelectableItem
 		return cr;
 	}
 	
-	public void setCr(int cr)
-	{
-		this.cr = cr;
-	}
-	
 	@Override
 	public boolean equals(Object o)
 	{
@@ -101,6 +98,7 @@ public class Encounter implements Serializable, SelectableItem
 		return Objects.hash(encounterName, monsters, cr);
 	}
 	
+	@NonNull
 	@Override
 	public String toString()
 	{

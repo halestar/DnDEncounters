@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,29 +10,33 @@
         android:id="@+id/characterNameTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/CharacterNameTxt"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/CharacterNameTxt"
         android:inputType="textPersonName"
-        android:autofillHints="" />
+        android:nextFocusDown="@+id/characterClassTxt">
+
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/characterClassTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/PcClassTxt"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/PcClassTxt"
         android:inputType="textPersonName"
-        android:autofillHints="" />
+        android:nextFocusDown="@+id/characterRaceTxt" />
 
     <EditText
         android:id="@+id/characterRaceTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/PcRaceTxt"
         android:ems="10"
         android:hint="@string/PcRaceTxt"
+        android:importantForAutofill="no"
+        android:nextFocusDown="@+id/characterAcTxt"
         android:inputType="textPersonName" />
 
     <LinearLayout
@@ -50,17 +53,21 @@
             android:hint="@string/PcAC"
             android:inputType="number"
             android:selectAllOnFocus="true"
+            android:importantForAutofill="no"
             android:singleLine="true"
             android:textSize="18sp"
+            android:nextFocusDown="@+id/characterHpTxt"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/characterHpTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:importantForAutofill="no"
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/PcHp"
+            android:nextFocusDown="@+id/characterPpTxt"
             android:inputType="number"
             android:textStyle="bold" />
 
@@ -71,6 +78,8 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/PcPp"
+            android:importantForAutofill="no"
+            android:nextFocusDown="@+id/characterLvTxt"
             android:inputType="number"
             android:textStyle="bold" />
     </LinearLayout>
@@ -86,16 +95,20 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:importantForAutofill="no"
             android:hint="@string/PcLevel"
+            android:nextFocusDown="@+id/characterDcTxt"
             android:inputType="number" />
 
         <EditText
             android:id="@+id/characterDcTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:importantForAutofill="no"
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/PcSpellDc"
+            android:nextFocusDown="@+id/button"
             android:inputType="number" />
 
     </LinearLayout>

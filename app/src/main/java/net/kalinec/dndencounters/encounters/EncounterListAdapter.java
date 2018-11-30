@@ -14,6 +14,7 @@ import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdapter.EncounterViewHolder>
 {
@@ -62,13 +63,11 @@ public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdap
 	});
 	
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvClickListener mListener;
 	
 	public EncounterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		mListener = listener;
 	}
 	
@@ -96,29 +95,19 @@ public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdap
 	@Override
 	public void onBindViewHolder(@NonNull EncounterListAdapter.EncounterViewHolder holder, int position)
 	{
-		if (encounterList == null)
-		{
-			return;
-		}
 		final Encounter encounter = encounterList.get(position);
 		if (encounter != null)
 		{
 			holder.EncounterNameTv.setText(encounter.getEncounterName());
-			holder.EncounterCrTv.setText(Integer.toString(encounter.getCr()));
+			holder.EncounterCrTv.setText(String.format(Locale.getDefault(), "%d", encounter
+					.getCr()));
 		}
 	}
 	
 	@Override
 	public int getItemCount()
 	{
-		if (encounterList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return encounterList.size();
-		}
+		return encounterList.size();
 	}
 	
 	static class EncounterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -126,7 +115,7 @@ public class EncounterListAdapter extends RecyclerView.Adapter<EncounterListAdap
 		private TextView EncounterNameTv, EncounterCrTv;
 		private RvClickListener mListener;
 		
-		public EncounterViewHolder(View itemView, RvClickListener listener)
+		EncounterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			EncounterNameTv = itemView.findViewById(R.id.EncounterNameTv);

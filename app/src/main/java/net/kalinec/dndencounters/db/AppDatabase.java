@@ -13,7 +13,6 @@ public abstract class AppDatabase extends RoomDatabase
 {
 	private static AppDatabase INSTANCE;
 	private static final String DB_NAME = "app_db";
-	private static Context CONTEXT;
 	
 	public static AppDatabase getDatabase(final Context context)
 	{
@@ -23,7 +22,6 @@ public abstract class AppDatabase extends RoomDatabase
 			{
 				if (INSTANCE == null)
 				{
-					CONTEXT = context;
 					INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
 					                                AppDatabase.class, DB_NAME)
 							.allowMainThreadQueries() // SHOULD NOT BE USED IN PRODUCTION !!!

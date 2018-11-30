@@ -1,9 +1,8 @@
 package net.kalinec.dndencounters.activities.encounters;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,6 +22,7 @@ import org.apache.commons.math3.fraction.Fraction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AddEncounter extends DnDEncountersActivity
 {
@@ -30,7 +30,6 @@ public class AddEncounter extends DnDEncountersActivity
 	private List<Monster> monsters;
 	private EditText encounterName;
 	private TextView encounterCr;
-	private RecyclerView encounterMonstersRv;
 	private EncounterMonsterListAdapter encounterMonsterListAdapter;
 	
 	@Override
@@ -42,7 +41,7 @@ public class AddEncounter extends DnDEncountersActivity
 		encounterName = findViewById(R.id.editEncounterNameEt);
 		encounterCr = findViewById(R.id.encounterCrDisplayTv);
 		encounterCr.setText("0");
-		encounterMonstersRv = findViewById(R.id.encounterMonstersRv);
+		RecyclerView encounterMonstersRv = findViewById(R.id.encounterMonstersRv);
 		monsters = new ArrayList<>();
 		
 		encounterMonsterListAdapter = new EncounterMonsterListAdapter(getApplicationContext(), new RvClickListener()
@@ -74,7 +73,7 @@ public class AddEncounter extends DnDEncountersActivity
 		for(Monster m: monsters)
 		{
 			String crStr = m.getCr();
-			if(crStr == Monster.CR_ERROR)
+			if (crStr.equals(Monster.CR_ERROR))
 				continue;
 			String[] fractionCr = crStr.split("/");
 			if(fractionCr.length == 1)
@@ -87,7 +86,7 @@ public class AddEncounter extends DnDEncountersActivity
 			}
 		}
 		cr = Math.ceil(cr);
-		encounterCr.setText(Double.toString(cr));
+		encounterCr.setText(String.format(Locale.getDefault(), "%d", (int) cr));
 	}
 	
 	private void addMonsterToEncounter(Monster m)
@@ -113,6 +112,7 @@ public class AddEncounter extends DnDEncountersActivity
 		{
 			if(resultCode == RESULT_OK)
 			{
+				assert data != null;
 				Monster selectedMonster = (Monster)data.getSerializableExtra(Monster.PASSED_MONSTER);
 				addMonsterToEncounter(selectedMonster);
 			}

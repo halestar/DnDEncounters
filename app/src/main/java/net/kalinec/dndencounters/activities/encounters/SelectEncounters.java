@@ -1,7 +1,6 @@
 package net.kalinec.dndencounters.activities.encounters;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import net.kalinec.dndencounters.encounters.Encounters;
 import net.kalinec.dndencounters.lib.RvSelectListener;
 import net.kalinec.dndencounters.lib.SelectableAdapter;
 import net.kalinec.dndencounters.lib.SelectableItem;
-import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +21,16 @@ import java.util.List;
 public class SelectEncounters extends DnDEncountersActivity {
 
     public static final int REQUEST_ENCOUNTER_LIST = 44;
-    private RecyclerView encounterListRv;
     private SelectableAdapter adapter;
-    private List<SelectableItem> encounters, selectedItems;
+	private List<SelectableItem> selectedItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_encounters);
-        encounterListRv = findViewById(R.id.encounterListRv);
+	    RecyclerView encounterListRv = findViewById(R.id.encounterListRv);
         encounterListRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        encounters = Encounters.getAllAsSelectibles(getApplicationContext());
+	    List<SelectableItem> encounters = Encounters.getAllAsSelectibles(getApplicationContext());
         Log.d("SelecEncounters", "encounter as selectible passes: " + encounters);
         adapter = new SelectableAdapter(encounters, true, new RvSelectListener() {
             @Override

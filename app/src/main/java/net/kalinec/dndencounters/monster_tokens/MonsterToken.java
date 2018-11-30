@@ -99,12 +99,12 @@ public class MonsterToken implements Serializable, SelectableItem
     @Override
     public String toString() {
         return "MonsterToken{" +
-                "miniPortrait=" + miniPortrait +
-                ", tokenName='" + tokenName + '\'' +
-                ", tokenType=" + tokenType +
-                ", tokenColor=" + tokenColor +
-                ", tokenNumber=" + tokenNumber +
-                '}';
+               "miniPortrait=" + Arrays.toString(miniPortrait) +
+               ", tokenName='" + tokenName + '\'' +
+               ", tokenType=" + tokenType +
+               ", tokenColor=" + tokenColor +
+               ", tokenNumber=" + tokenNumber +
+               '}';
     }
 
     @Override
@@ -121,20 +121,21 @@ public class MonsterToken implements Serializable, SelectableItem
     public String getSelectableText() {
         return tokenName;
     }
-
-    private Bitmap drawText(String text, int textWidth, int textColor, int backgroudColor)
+	
+	private Bitmap drawText(String text, int backgroudColor)
     {
 
         // Get text dimensions
         TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.LINEAR_TEXT_FLAG);
         textPaint.setStyle(Paint.Style.FILL);
-        textPaint.setColor(textColor);
+	    textPaint.setColor(Color.BLACK);
         textPaint.setTextSize(30);
-
-        StaticLayout mTextLayout = new StaticLayout(text, textPaint, textWidth, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+	
+	    StaticLayout mTextLayout
+			    = new StaticLayout(text, textPaint, 20, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
 
         // Create bitmap and canvas to draw to
-        Bitmap b = Bitmap.createBitmap(textWidth, mTextLayout.getHeight(), Bitmap.Config.ARGB_4444);
+	    Bitmap b = Bitmap.createBitmap(20, mTextLayout.getHeight(), Bitmap.Config.ARGB_4444);
         Canvas c = new Canvas(b);
 
         // Draw background
@@ -160,11 +161,11 @@ public class MonsterToken implements Serializable, SelectableItem
         }
         else if(tokenType == MonsterToken.TOKEN_TYPE_NUMBER)
         {
-            holder.setImageBitmap(drawText(Integer.toString(tokenNumber), 20, Color.BLACK, Color.WHITE));
+	        holder.setImageBitmap(drawText(Integer.toString(tokenNumber), Color.WHITE));
         }
         else if(tokenType == MonsterToken.TOKEN_TYPE_COLORED_NUMBER)
         {
-            holder.setImageBitmap(drawText(Integer.toString(tokenNumber), 20, Color.BLACK, tokenColor));
+	        holder.setImageBitmap(drawText(Integer.toString(tokenNumber), tokenColor));
         }
         else if(tokenType == MonsterToken.TOKEN_TYPE_COLOR)
         {

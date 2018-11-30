@@ -6,7 +6,6 @@ import android.util.Log;
 import net.kalinec.dndencounters.lib.SelectableItem;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,7 +17,6 @@ import java.util.List;
 public class Encounters
 {
 	private static List<Encounter> encountersDB;
-	private static Context context;
 	private static final String fname = "encounters.srl";
 	
 	private static final Comparator<Encounter> ALPHABETICAL_COMPARATOR = new Comparator<Encounter>() {
@@ -31,7 +29,6 @@ public class Encounters
 	
 	private static void verifyDb(Context context)
 	{
-		Encounters.context = context;
 		if(encountersDB == null)
 		{
 			try
@@ -48,12 +45,7 @@ public class Encounters
 					in.close();
 				}
 			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-				encountersDB = new ArrayList<>();
-			}
-			catch (ClassNotFoundException e)
+			catch (IOException | ClassNotFoundException e)
 			{
 				e.printStackTrace();
 				encountersDB = new ArrayList<>();
@@ -61,25 +53,21 @@ public class Encounters
 		}
 	}
 	
-	private static void writeEncounters()
+	private static void writeEncounters(Context context)
 	{
 		
 		Log.d("Encounters", "Wirintg obj file.  encountersDB: " + encountersDB);
-		FileOutputStream fos = null;
+		FileOutputStream fos;
 		try
 		{
 			fos = context.openFileOutput(fname, Context.MODE_PRIVATE);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(new Integer(encountersDB.size()));
+			oos.writeObject(encountersDB.size());
 			for(Encounter e: encountersDB)
 				oos.writeObject(e);
 			oos.flush();
 			oos.close();
 			Log.d("Encounters", "Objects written correctly. ");
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
 		}
 		catch (IOException e)
 		{
@@ -96,12 +84,7 @@ public class Encounters
 	public static List<SelectableItem> getAllAsSelectibles(Context context)
 	{
 		verifyDb(context);
-		List<SelectableItem> selectableEncounters = new ArrayList<>();
-		for(Encounter e: encountersDB)
-		{
-			selectableEncounters.add((SelectableItem) e);
-		}
-		return selectableEncounters;
+		return new ArrayList<SelectableItem>(encountersDB);
 	}
 	
 	public static void addEncounter(Context context, Encounter e)
@@ -109,7 +92,7 @@ public class Encounters
 		verifyDb(context);
 		encountersDB.add(e);
 		encountersDB.sort(ALPHABETICAL_COMPARATOR);
-		writeEncounters();
+		writeEncounters(context);
 	}
 	
 	public static void updateEncounter(Context context, Encounter oldEncounter, Encounter newEncounter)
@@ -125,7 +108,7 @@ public class Encounters
 		else
 			encountersDB.add(newEncounter);
 		encountersDB.sort(ALPHABETICAL_COMPARATOR);
-		writeEncounters();
+		writeEncounters(context);
 	}
 	
 	public static void removeEncounter(Context context, Encounter e)
@@ -133,6 +116,6 @@ public class Encounters
 		verifyDb(context);
 		encountersDB.remove(e);
 		encountersDB.sort(ALPHABETICAL_COMPARATOR);
-		writeEncounters();
+		writeEncounters(context);
 	}
 }

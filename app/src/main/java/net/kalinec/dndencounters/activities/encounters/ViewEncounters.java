@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -27,17 +26,16 @@ public class ViewEncounters extends DnDEncountersActivity
 	private List<Encounter> encounters, currentEncounterList;
 	private EncounterListAdapter encounterAdapter;
 	private RecyclerView encounterRv;
-	private SearchView encounterSv;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_encounters);
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		FloatingActionButton fab = findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -64,11 +62,11 @@ public class ViewEncounters extends DnDEncountersActivity
 		});
 		encounterAdapter.setEncounterList(encounters);
 		
-		encounterRv = (RecyclerView)findViewById(R.id.encounterRv);
+		encounterRv = findViewById(R.id.encounterRv);
 		encounterRv.setAdapter(encounterAdapter);
 		encounterRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 		
-		encounterSv = (SearchView)findViewById(R.id.encounterSv);
+		SearchView encounterSv = findViewById(R.id.encounterSv);
 		encounterSv.setActivated(true);
 		encounterSv.onActionViewExpanded();
 		encounterSv.setIconified(false);

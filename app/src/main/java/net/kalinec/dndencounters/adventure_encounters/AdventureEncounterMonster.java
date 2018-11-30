@@ -1,14 +1,15 @@
 package net.kalinec.dndencounters.adventure_encounters;
 
-import net.kalinec.dndencounters.monsters.Monster;
+import android.support.annotation.NonNull;
+
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
+import net.kalinec.dndencounters.monsters.Monster;
 
 import java.io.Serializable;
 import java.util.UUID;
 
 public class AdventureEncounterMonster implements AdventureEncounterActor, Serializable
 {
-    public static final String PASSED_ENCOUNTER_MONSTER = "PASSED_ENCOUNTER_MONSTER";
     public static final String PASSED_ENCOUNTER_MONSTERS = "PASSED_ENCOUNTER_MONSTERS";
     
     private Monster monster;
@@ -91,16 +92,17 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
     public void setHp(int hp) {
         this.hp = hp;
     }
-
+	
+	@NonNull
     @Override
     public String toString() {
         return "AdventureEncounterMonster{" +
-                "monster=" + monster +
-                ", token=" + token +
-                ", initiative=" + initiative +
-                ", status=" + status +
-                ", hasActed=" + hasActed +
-                ", hp=" + hp +
-                '}';
+               "monster=" + monster +
+               ", token=" + token +
+               ", initiative=" + initiative +
+               ", status=" + status +
+               ", hasActed=" + hasActed +
+               ", hp=" + hp +
+               '}';
     }
 }

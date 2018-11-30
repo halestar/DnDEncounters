@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +29,7 @@ public class ViewMonsterTokens extends DnDEncountersActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_monster_tokens);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+	    Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
 
@@ -48,9 +47,9 @@ public class ViewMonsterTokens extends DnDEncountersActivity {
         monsterTokenListAdapter.setMonsterList(monsterTokens);
         MonsterTokenRv.setAdapter(monsterTokenListAdapter);
         MonsterTokenRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+	
+	
+	    FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

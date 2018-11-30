@@ -1,6 +1,7 @@
 package net.kalinec.dndencounters.parties;
 
 
+import android.support.annotation.NonNull;
 
 import net.kalinec.dndencounters.characters.Character;
 
@@ -76,14 +77,15 @@ public class Party implements Serializable
 			level += pc.getLevel();
 		apl = (int)Math.floor(level/members.size());
 	}
-
+	
+	@NonNull
 	@Override
 	public String toString() {
 		return "Party{" +
-				"created=" + created +
-				", members=" + members +
-				", name='" + name + '\'' +
-				", apl=" + apl +
-				'}';
+		       "created=" + created +
+		       ", members=" + members +
+		       ", name='" + name + '\'' +
+		       ", apl=" + apl +
+		       '}';
 	}
 }

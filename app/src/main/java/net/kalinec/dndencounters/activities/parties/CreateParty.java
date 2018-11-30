@@ -1,9 +1,8 @@
 package net.kalinec.dndencounters.activities.parties;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -25,8 +24,6 @@ import net.kalinec.dndencounters.playsessions.PlaySession;
 public class CreateParty extends DnDEncountersActivity
 {
 	public static final int REQUEST_NEW_PARTY = 30;
-	private RecyclerView partyMemberListRv;
-	private PlaySession activeSession;
 	private Party selectedParty;
 	private EditText partyNameEt;
 	private PartyListAdapter partyListAdapter;
@@ -36,13 +33,16 @@ public class CreateParty extends DnDEncountersActivity
 	{
 		super.onCreate(savedInstanceState);
 		Bundle bundle = getIntent().getExtras();
-		activeSession = (PlaySession) bundle.getSerializable(PlaySession.PASSED_SESSION);
+		assert bundle != null;
+		PlaySession activeSession = (PlaySession) bundle
+				.getSerializable(PlaySession.PASSED_SESSION);
+		assert activeSession != null;
 		selectedParty = activeSession.getPlayers();
 		setContentView(R.layout.activity_create_party);
 
 		partyNameEt = findViewById(R.id.partyNameEt);
 		partyNameEt.setText(selectedParty.getName());
-		partyMemberListRv = findViewById(R.id.partyMemberListRv);
+		RecyclerView partyMemberListRv = findViewById(R.id.partyMemberListRv);
 
 		partyListAdapter = new PartyListAdapter(getApplicationContext(), new RvClickListener() {
 			@Override
@@ -81,6 +81,7 @@ public class CreateParty extends DnDEncountersActivity
 		{
 			if(resultCode == RESULT_OK)
 			{
+				assert data != null;
 				Character pc = (Character)data.getSerializableExtra(Character.PASSED_CHARACTER);
 				selectedParty.addMember(pc);
 				partyListAdapter.setParty(selectedParty);
@@ -91,6 +92,7 @@ public class CreateParty extends DnDEncountersActivity
 			if(resultCode == RESULT_OK)
 			{
 				//create a character for this player.
+				assert data != null;
 				Player player = (Player)data.getSerializableExtra(Player.PASSED_PLAYER);
 				Intent myIntent = new Intent(CreateParty.this, AddCharacter.class);
 				myIntent.putExtra(Player.PASSED_PLAYER, player);

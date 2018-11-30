@@ -63,13 +63,11 @@ public class MonsterTokenListAdapter extends RecyclerView.Adapter<MonsterTokenLi
 	});
 
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvClickListener mListener;
 
 	public MonsterTokenListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		this.mListener = listener;
 	}
 
@@ -96,10 +94,6 @@ public class MonsterTokenListAdapter extends RecyclerView.Adapter<MonsterTokenLi
 	@Override
 	public void onBindViewHolder(@NonNull MonsterTokenListAdapter.MonsterTokenViewHolder holder, int position)
 	{
-		if (monsterList == null)
-		{
-			return;
-		}
 		final MonsterToken mToken = monsterList.get(position);
 		if (mToken != null)
 		{
@@ -111,14 +105,7 @@ public class MonsterTokenListAdapter extends RecyclerView.Adapter<MonsterTokenLi
 	@Override
 	public int getItemCount()
 	{
-		if (monsterList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return monsterList.size();
-		}
+		return monsterList.size();
 	}
 	
 	static class MonsterTokenViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -127,7 +114,7 @@ public class MonsterTokenListAdapter extends RecyclerView.Adapter<MonsterTokenLi
 		private ImageView MonsterTokenPortrait;
 		private RvClickListener mListener;
 		
-		public MonsterTokenViewHolder(View itemView, RvClickListener listener)
+		MonsterTokenViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			MonsterTokenName = itemView.findViewById(R.id.MonsterTokenName);

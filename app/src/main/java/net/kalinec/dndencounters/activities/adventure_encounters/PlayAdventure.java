@@ -1,9 +1,8 @@
 package net.kalinec.dndencounters.activities.adventure_encounters;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,42 +15,42 @@ import net.kalinec.dndencounters.activities.encounters.PlayEncounter;
 import net.kalinec.dndencounters.activities.encounters.SelectEncounter;
 import net.kalinec.dndencounters.activities.encounters.SelectEncounters;
 import net.kalinec.dndencounters.activities.parties.CreateParty;
-import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.encounters.Encounter;
-import net.kalinec.dndencounters.playsessions.PlayingEncounterListAdapter;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.parties.Party;
 import net.kalinec.dndencounters.playsessions.PlaySession;
+import net.kalinec.dndencounters.playsessions.PlaySessionManager;
+import net.kalinec.dndencounters.playsessions.PlayingEncounterListAdapter;
 import net.kalinec.dndencounters.playsessions.SimpleEncounterListAdapter;
 
 import java.util.List;
+import java.util.Locale;
 
 public class PlayAdventure extends DnDEncountersActivity {
 
     private PlaySession activeSession;
     private TextView aplTxt, NumMembersTxt, PlayAdventurePartyNameTv;
-    private Button continueLastEncounterBtn, FinishAdventureBtn;
-    private RecyclerView AdventureEncountersRv, CompletedEncountersRv;
     private PlayingEncounterListAdapter playingEncounterListAdapter;
     private SimpleEncounterListAdapter simpleEncounterListAdapter;
-    private AdventureEncounter adventureEncounter = null;
-
-
-
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_adventure);
         Bundle bundle = getIntent().getExtras();
+        assert bundle != null;
         activeSession = (PlaySession)bundle.getSerializable(PlaySession.PASSED_SESSION);
         activeSession.beginSession(getApplicationContext());
 
         PlayAdventurePartyNameTv = findViewById(R.id.PlayAdventurePartyNameTv);
         PlayAdventurePartyNameTv.setText(activeSession.getPlayers().getName());
         aplTxt = findViewById(R.id.aplTxt);
-        aplTxt.setText(Integer.toString(activeSession.getPlayers().getApl()));
+        aplTxt.setText(String.format(Locale.getDefault(), "%d", activeSession.getPlayers()
+                .getApl()));
         NumMembersTxt = findViewById(R.id.NumMembersTxt);
-        NumMembersTxt.setText(Integer.toString(activeSession.getPlayers().getMembers().size()));
+        NumMembersTxt.setText(String.format(Locale.getDefault(), "%d", activeSession.getPlayers()
+                .getMembers().size()));
 
         playingEncounterListAdapter = new PlayingEncounterListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
@@ -65,11 +64,11 @@ public class PlayAdventure extends DnDEncountersActivity {
             }
         });
         playingEncounterListAdapter.setEncounterList(activeSession.getEncounters());
-        AdventureEncountersRv = findViewById(R.id.AdventureEncountersRv);
-        AdventureEncountersRv.setAdapter(playingEncounterListAdapter);
-        AdventureEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        CompletedEncountersRv = findViewById(R.id.CompletedEncountersRv);
+        RecyclerView adventureEncountersRv = findViewById(R.id.AdventureEncountersRv);
+        adventureEncountersRv.setAdapter(playingEncounterListAdapter);
+        adventureEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        
+        RecyclerView completedEncountersRv = findViewById(R.id.CompletedEncountersRv);
         simpleEncounterListAdapter = new SimpleEncounterListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -77,14 +76,13 @@ public class PlayAdventure extends DnDEncountersActivity {
             }
         });
         simpleEncounterListAdapter.setEncounterList(activeSession.getCompletedEncounters());
-        CompletedEncountersRv.setAdapter(simpleEncounterListAdapter);
-        CompletedEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        continueLastEncounterBtn = findViewById(R.id.continueLastEncounterBtn);
+        completedEncountersRv.setAdapter(simpleEncounterListAdapter);
+        completedEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        
+        Button continueLastEncounterBtn = findViewById(R.id.continueLastEncounterBtn);
         if(activeSession.encounterInProgress())
         {
             continueLastEncounterBtn.setVisibility(View.VISIBLE);
-            adventureEncounter = activeSession.getAdventureEncounter();
         }
         else
             continueLastEncounterBtn.setVisibility(View.GONE);
@@ -103,34 +101,35 @@ public class PlayAdventure extends DnDEncountersActivity {
     {
         if(requestCode == CreateParty.REQUEST_NEW_PARTY && resultCode == RESULT_OK)
         {
+            assert data != null;
             Party newParty = (Party)data.getSerializableExtra(Party.PASSED_PARTY);
 
             activeSession.setPlayers(newParty);
             activeSession.saveSession(getApplicationContext());
-            aplTxt.setText(Integer.toString(activeSession.getPlayers().getApl()));
-            NumMembersTxt.setText(Integer.toString(activeSession.getPlayers().getMembers().size()));
+            aplTxt.setText(String.format(Locale.getDefault(), "%d", activeSession.getPlayers()
+                    .getApl()));
+            NumMembersTxt.setText(String.format(Locale.getDefault(), "%d", activeSession
+                    .getPlayers().getMembers().size()));
             PlayAdventurePartyNameTv.setText(activeSession.getPlayers().getName());
         }
         else if(requestCode == SelectEncounters.REQUEST_ENCOUNTER_LIST && resultCode == RESULT_OK)
         {
-            try {
-                List<Encounter> newEncounters = (List<Encounter>) data.getSerializableExtra(Encounter.PASSED_ENCOUNTERS);
-                activeSession.addEncounters(newEncounters);
-                playingEncounterListAdapter.setEncounterList(activeSession.getEncounters());
-                activeSession.saveSession(getApplicationContext());
-            }
-            catch(NullPointerException e)
-            {
-
-            }
+            assert data != null;
+            List<Encounter> newEncounters = (List<Encounter>) data
+                    .getSerializableExtra(Encounter.PASSED_ENCOUNTERS);
+            activeSession.addEncounters(newEncounters);
+            playingEncounterListAdapter.setEncounterList(activeSession.getEncounters());
+            activeSession.saveSession(getApplicationContext());
         }
         else if(requestCode == SelectEncounter.REQUEST_SELECT_ENCOUNTER && resultCode == RESULT_OK)
         {
+            assert data != null;
             Encounter encounter = (Encounter)data.getSerializableExtra(Encounter.PASSED_ENCOUNTER);
             playEncounter(encounter);
         }
         else if(requestCode == PlayEncounter.PLAY_ENCOUNTER && resultCode == RESULT_OK)
         {
+            assert data != null;
             activeSession = (PlaySession)data.getSerializableExtra(PlaySession.PASSED_SESSION);
             activeSession.saveSession(getApplicationContext());
             simpleEncounterListAdapter.setEncounterList(activeSession.getCompletedEncounters());
@@ -169,6 +168,15 @@ public class PlayAdventure extends DnDEncountersActivity {
         Intent myIntent = new Intent(PlayAdventure.this, PlayEncounter.class);
         myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
         startActivityForResult(myIntent, PlayEncounter.PLAY_ENCOUNTER);
+    }
+    
+    public void finishAdventure(View v)
+    {
+        activeSession.saveSession(getApplicationContext());
+        PlaySessionManager.completeCurrentSession(getApplicationContext());
+        Intent data = new Intent();
+        setResult(RESULT_OK, data);
+        finish();
     }
 
 }

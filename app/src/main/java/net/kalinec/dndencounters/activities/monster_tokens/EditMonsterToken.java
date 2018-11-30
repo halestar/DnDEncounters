@@ -3,10 +3,9 @@ package net.kalinec.dndencounters.activities.monster_tokens;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.constraint.Group;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +16,8 @@ import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
+
+import java.util.Locale;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -37,6 +38,7 @@ public class EditMonsterToken extends DnDEncountersActivity {
     {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
+	    assert bundle != null;
         selectedToken = (MonsterToken) bundle.getSerializable(MonsterToken.PASSED_MONSTER_TOKEN);
 
         Log.d("ViewMonsterTokens", "received: " + selectedToken);
@@ -73,7 +75,8 @@ public class EditMonsterToken extends DnDEncountersActivity {
     public void setSingleNumberToken()
     {
         SingleNumberGroup.setVisibility(View.VISIBLE);
-        SingleNumberEt.setText(Integer.toString(selectedToken.getTokenNumber()));
+	    SingleNumberEt.setText(String.format(Locale.getDefault(), "%d", selectedToken
+			    .getTokenNumber()));
         SingleColorGroup.setVisibility(View.GONE);
         ColorAndNumberGroup.setVisibility(View.GONE);
         MiniGroup.setVisibility(View.GONE);
@@ -94,7 +97,8 @@ public class EditMonsterToken extends DnDEncountersActivity {
         SingleNumberGroup.setVisibility(View.GONE);
         SingleColorGroup.setVisibility(View.GONE);
         ColorAndNumberGroup.setVisibility(View.VISIBLE);
-        ColoredNumberEt.setText(Integer.toString(selectedToken.getTokenNumber()));
+	    ColoredNumberEt.setText(String.format(Locale.getDefault(), "%d", selectedToken
+			    .getTokenNumber()));
         ColoredNumberBt.setBackgroundColor(selectedToken.getTokenColor());
         coloredNumberColor = selectedToken.getTokenColor();
         MiniGroup.setVisibility(View.GONE);
@@ -124,6 +128,7 @@ public class EditMonsterToken extends DnDEncountersActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK)
         {
             Bundle extras = data.getExtras();
+	        assert extras != null;
             miniPortrait = (Bitmap) extras.get("data");
             MiniIv.setImageBitmap(miniPortrait);
         }

@@ -1,8 +1,6 @@
 package net.kalinec.dndencounters.monsters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.lib.RvClickListener;
-import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.Comparator;
 import java.util.List;
@@ -66,13 +62,11 @@ public class MonsterListAdapter extends RecyclerView.Adapter<MonsterListAdapter.
 	});
 	
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvClickListener mListener;
 	
 	public MonsterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		this.mListener = listener;
 	}
 	
@@ -94,10 +88,6 @@ public class MonsterListAdapter extends RecyclerView.Adapter<MonsterListAdapter.
 	@Override
 	public void onBindViewHolder(@NonNull MonsterListAdapter.MonsterViewHolder holder, int position)
 	{
-		if (monsterList == null)
-		{
-			return;
-		}
 		final Monster monster = monsterList.get(position);
 		if (monster != null)
 		{
@@ -109,14 +99,7 @@ public class MonsterListAdapter extends RecyclerView.Adapter<MonsterListAdapter.
 	@Override
 	public int getItemCount()
 	{
-		if (monsterList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return monsterList.size();
-		}
+		return monsterList.size();
 	}
 	
 	static class MonsterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -124,7 +107,7 @@ public class MonsterListAdapter extends RecyclerView.Adapter<MonsterListAdapter.
 		private TextView MonsterNameTv, MonsterCrTv;
 		private RvClickListener mListener;
 		
-		public MonsterViewHolder(View itemView, RvClickListener listener)
+		MonsterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			MonsterNameTv = itemView.findViewById(R.id.MonsterNameTv);

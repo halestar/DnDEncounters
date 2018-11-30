@@ -3,9 +3,8 @@ package net.kalinec.dndencounters.activities.characters;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,8 +17,6 @@ import net.kalinec.dndencounters.characters.PcListAdapter;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.CharacterDao;
 import net.kalinec.dndencounters.lib.RvClickListener;
-import net.kalinec.dndencounters.monsters.Monster;
-import net.kalinec.dndencounters.monsters.MonsterListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +24,16 @@ import java.util.List;
 public class SelectCharacter extends DnDEncountersActivity {
 
     public static final int REQUEST_SELECT_CHARACTER = 40;
-    private LiveData<List<Character>> pcs;
     private PcListAdapter pcListAdapter;
     private RecyclerView characterSearchRv;
-    private SearchView characterSearchSv;
-
-    @Override
+	
+	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_character);
         CharacterDao characterDao = AppDatabase.getDatabase(getApplicationContext()).characterDao();
-        pcs = characterDao.getAllCharacters();
+	    LiveData<List<Character>> pcs = characterDao.getAllCharacters();
         pcListAdapter = new PcListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -56,8 +51,8 @@ public class SelectCharacter extends DnDEncountersActivity {
         characterSearchRv = findViewById(R.id.characterSearchRv);
         characterSearchRv.setAdapter(pcListAdapter);
         characterSearchRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        characterSearchSv = (SearchView)findViewById(R.id.characterSearchSv);
+	
+	    SearchView characterSearchSv = findViewById(R.id.characterSearchSv);
         characterSearchSv.setActivated(true);
         characterSearchSv.onActionViewExpanded();
         characterSearchSv.setIconified(false);

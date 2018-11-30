@@ -1,9 +1,6 @@
 package net.kalinec.dndencounters.playsessions;
 
 import android.content.Context;
-import android.util.Log;
-
-import net.kalinec.dndencounters.encounters.Encounter;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +17,7 @@ public class PlaySessionManager
 
     public static PlaySession getCurrentSession(Context context)
     {
-        PlaySession activeSession = null;
+        PlaySession activeSession;
         try
         {
             File fout = new File(context.getFilesDir(), currentFname);
@@ -29,19 +26,15 @@ public class PlaySessionManager
             ObjectInputStream ois = new ObjectInputStream(context.openFileInput(currentFname));
             activeSession = (PlaySession)ois.readObject();
         }
-        catch(IOException e)
+        catch (IOException | ClassNotFoundException e)
         {
             return null;
         }
-        catch(ClassNotFoundException e)
-        {
-            return null;
-        }
-
+    
         return activeSession;
     }
-
-    public static void saveCurrentSession(Context context, PlaySession activeSession)
+    
+    static void saveCurrentSession(Context context, PlaySession activeSession)
     {
         File fout = new File(context.getFilesDir(), currentFname);
         try {
@@ -72,27 +65,23 @@ public class PlaySessionManager
                 in.close();
             }
         }
-        catch(IOException e)
+        catch (IOException | ClassNotFoundException e)
         {
             return new ArrayList<>();
         }
-        catch(ClassNotFoundException e)
-        {
-            return new ArrayList<>();
-        }
-
+    
         return activeSessions;
     }
-
-    public static void saveActiveSession(Context context, PlaySession activeSession)
+    
+    private static void saveActiveSession(Context context, PlaySession activeSession)
     {
         ArrayList<PlaySession> activeSessions = PlaySessionManager.getActiveSessions(context);
         activeSessions.add(activeSession);
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         try {
             fos = context.openFileOutput(activeFname, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(new Integer(activeSessions.size()));
+            oos.writeObject(activeSessions.size());
             for(PlaySession e: activeSessions)
                 oos.writeObject(e);
             oos.flush();
@@ -103,8 +92,8 @@ public class PlaySessionManager
             e.printStackTrace();
         }
     }
-
-    public static ArrayList<PlaySession> getCompletedSessions(Context context)
+    
+    private static ArrayList<PlaySession> getCompletedSessions(Context context)
     {
         ArrayList<PlaySession> completedSessions = new ArrayList<>();
         try
@@ -119,15 +108,11 @@ public class PlaySessionManager
                 in.close();
             }
         }
-        catch(IOException e)
+        catch (IOException | ClassNotFoundException e)
         {
             return new ArrayList<>();
         }
-        catch(ClassNotFoundException e)
-        {
-            return new ArrayList<>();
-        }
-
+    
         return completedSessions;
     }
 
@@ -142,14 +127,15 @@ public class PlaySessionManager
     public static void completeCurrentSession(Context context)
     {
         PlaySession currentSession = PlaySessionManager.getCurrentSession(context);
+        assert currentSession != null;
         currentSession.completeSession();
         ArrayList<PlaySession> completedSessions = PlaySessionManager.getCompletedSessions(context);
         completedSessions.add(currentSession);
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         try {
             fos = context.openFileOutput(completedFname, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(new Integer(completedSessions.size()));
+            oos.writeObject(completedSessions.size());
             for(PlaySession e: completedSessions)
                 oos.writeObject(e);
             oos.flush();
@@ -172,11 +158,11 @@ public class PlaySessionManager
             pos++;
         }
         activeSessions.remove(pos);
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         try {
             fos = context.openFileOutput(activeFname, Context.MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(new Integer(activeSessions.size()));
+            oos.writeObject(activeSessions.size());
             for(PlaySession e: activeSessions)
                 oos.writeObject(e);
             oos.flush();

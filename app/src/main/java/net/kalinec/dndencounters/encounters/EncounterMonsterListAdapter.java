@@ -30,13 +30,12 @@ public class EncounterMonsterListAdapter
 	private List<Monster> monsterList = new ArrayList<>();
 	
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvClickListener mListener;
 	
 	public EncounterMonsterListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
+		
 		mListener = listener;
 	}
 	
@@ -109,7 +108,7 @@ public class EncounterMonsterListAdapter
 		private Button removeMonsterBtn, dupeMonsterBtn;
 		private RvClickListener mListener;
 		
-		public MonsterViewHolder(View itemView, RvClickListener listener)
+		MonsterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			encounterMonsterTv = itemView.findViewById(R.id.partyMemberNameTv);

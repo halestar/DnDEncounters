@@ -1,19 +1,15 @@
 package net.kalinec.dndencounters.activities.spells;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.SearchView;
 
-import net.kalinec.dndencounters.MainActivity;
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.activities.encounters.ViewEncounters;
 import net.kalinec.dndencounters.lib.RvClickListener;
-import net.kalinec.dndencounters.monsters.Monster;
-import net.kalinec.dndencounters.playsessions.PlaySession;
 import net.kalinec.dndencounters.spells.Spell;
 import net.kalinec.dndencounters.spells.SpellListAdapter;
 import net.kalinec.dndencounters.spells.Spells;
@@ -25,9 +21,8 @@ public class SearchSpells extends AppCompatActivity {
     private List<Spell> spells, currentSpellList;
     private SpellListAdapter spellListAdapter;
     private RecyclerView SpellSearchRv;
-    private SearchView SpellSearchSv;
-
-    @Override
+	
+	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -44,19 +39,19 @@ public class SearchSpells extends AppCompatActivity {
             }
         });
         spellListAdapter.setSpellList(spells);
-
-
-        SpellSearchRv = (RecyclerView)findViewById(R.id.SpellSearchRv);
+	
+	
+	    SpellSearchRv = findViewById(R.id.SpellSearchRv);
         SpellSearchRv.setAdapter(spellListAdapter);
         SpellSearchRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
-        SpellSearchSv = (SearchView)findViewById(R.id.SpellSearchSv);
-        SpellSearchSv.setActivated(true);
-        SpellSearchSv.onActionViewExpanded();
-        SpellSearchSv.setIconified(false);
-        SpellSearchSv.clearFocus();
-        SpellSearchSv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+	
+	
+	    SearchView spellSearchSv = findViewById(R.id.SpellSearchSv);
+	    spellSearchSv.setActivated(true);
+	    spellSearchSv.onActionViewExpanded();
+	    spellSearchSv.setIconified(false);
+	    spellSearchSv.clearFocus();
+	    spellSearchSv.setOnQueryTextListener(new SearchView.OnQueryTextListener()
         {
             private List<Spell> filter(List<Spell> models, String query) {
                 final String lowerCaseQuery = query.toLowerCase();

@@ -29,6 +29,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/addTokenMonsterTokenNameEt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ems="10"
+            android:hint="@string/MonsterTokenNameTxt"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:nextFocusDown="@+id/TokenTypeRg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+            <requestFocus />
+        </EditText>
+
         <RadioGroup
             android:id="@+id/TokenTypeRg"
             android:layout_width="0dp"
@@ -39,6 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            android:nextFocusDown="@+id/singleNumberRb"
             app:layout_constraintTop_toBottomOf="@+id/addTokenMonsterTokenNameEt">
 
             <RadioButton
@@ -46,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:nextFocusDown="@+id/SingleColorRb"
                 android:text="@string/MonsterTokenTypeNumberTxt" />
 
             <RadioButton
@@ -53,6 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:nextFocusDown="@+id/ColoredNumberRb"
                 android:text="@string/MonsterTokenTypeColorTxt" />
 
             <RadioButton
@@ -60,10 +82,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:nextFocusDown="@+id/MiniRb"
                 android:text="@string/MonsterTokenTypeColoredNumberTxt" />
 
             <RadioButton
                 android:id="@+id/MiniRb"
+                android:nextFocusDown="@+id/addMonsterTokenBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -92,6 +116,7 @@
                 android:ems="10"
                 android:hint="@string/TokenNumberTxt"
                 android:inputType="number"
+                android:importantForAutofill="no"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -146,6 +171,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/SingleColorLy">
 
+            <EditText
+                android:id="@+id/ColoredNumberEt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:hint="@string/TokenNumberTxt"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <Button
                 android:id="@+id/ColoredNumberBt"
                 android:layout_width="0dp"
@@ -160,20 +201,6 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ColoredNumberEt" />
-
-            <EditText
-                android:id="@+id/ColoredNumberEt"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:hint="@string/TokenNumberTxt"
-                android:inputType="number"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.constraint.Group
                 android:id="@+id/ColorAndNumberGroup"
@@ -212,8 +239,10 @@
                 android:id="@+id/MiniIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:contentDescription="@string/TokenPortraitTxt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/MiniBt"
@@ -232,26 +261,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:onClick="addToken"
             android:text="@string/AddMonsterTokenTxt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/MiniLy" />
-
-        <EditText
-            android:id="@+id/addTokenMonsterTokenNameEt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/MonsterTokenNameTxt"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

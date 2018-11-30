@@ -2,7 +2,6 @@ package net.kalinec.dndencounters.activities.monster_tokens;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,21 +12,18 @@ import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
 import net.kalinec.dndencounters.lib.RvItemClickListener;
-import net.kalinec.dndencounters.monsters.Monster;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokenAssignerListAdapter;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
+import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AssignMonsterTokens extends DnDEncountersActivity {
     public static final int REQUEST_ENCOUNTER_MONSTERS = 68;
-
-    private AdventureEncounter adventureEncounter;
-    private List<Monster> monsters;
-    private RecyclerView MonsterTokenAssignerRv;
-    private MonsterTokenAssignerListAdapter monsterTokenAssignerListAdapter;
+	
+	private MonsterTokenAssignerListAdapter monsterTokenAssignerListAdapter;
     private ArrayList<AdventureEncounterMonster> encounterMonsters;
     private List<MonsterToken> monsterTokens;
 
@@ -35,10 +31,13 @@ public class AssignMonsterTokens extends DnDEncountersActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
-        adventureEncounter = (AdventureEncounter)bundle.getSerializable(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
+	    assert bundle != null;
+	    AdventureEncounter adventureEncounter = (AdventureEncounter) bundle
+			    .getSerializable(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
         setContentView(R.layout.activity_assign_monster_tokens);
-
-        monsters = adventureEncounter.getEncounter().getMonsters();
+	
+	    assert adventureEncounter != null;
+	    List<Monster> monsters = adventureEncounter.getEncounter().getMonsters();
         monsterTokens = MonsterTokens.getAllMonsterTokens(getApplicationContext());
         encounterMonsters = new ArrayList<>();
         for(Monster m: monsters)
@@ -58,10 +57,10 @@ public class AssignMonsterTokens extends DnDEncountersActivity {
         });
         monsterTokenAssignerListAdapter.setMonsterList(encounterMonsters);
         //assign spinner adapter
-
-        MonsterTokenAssignerRv = findViewById(R.id.MonsterTokenAssignerRv);
-        MonsterTokenAssignerRv.setAdapter(monsterTokenAssignerListAdapter);
-        MonsterTokenAssignerRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+	
+	    RecyclerView monsterTokenAssignerRv = findViewById(R.id.MonsterTokenAssignerRv);
+	    monsterTokenAssignerRv.setAdapter(monsterTokenAssignerListAdapter);
+	    monsterTokenAssignerRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
     }
     

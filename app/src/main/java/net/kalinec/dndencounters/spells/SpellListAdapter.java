@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.lib.RvClickListener;
-import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.Comparator;
 import java.util.List;
@@ -63,13 +62,11 @@ public class SpellListAdapter extends RecyclerView.Adapter<SpellListAdapter.Mons
 	});
 
 	private LayoutInflater layoutInflater;
-	private Context context;
 	private RvClickListener mListener;
 
 	public SpellListAdapter(Context context, RvClickListener listener)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		this.mListener = listener;
 	}
 
@@ -91,10 +88,6 @@ public class SpellListAdapter extends RecyclerView.Adapter<SpellListAdapter.Mons
 	@Override
 	public void onBindViewHolder(@NonNull SpellListAdapter.MonsterViewHolder holder, int position)
 	{
-		if (spellList == null)
-		{
-			return;
-		}
 		final Spell spell = spellList.get(position);
 		if (spell != null)
 		{
@@ -106,14 +99,7 @@ public class SpellListAdapter extends RecyclerView.Adapter<SpellListAdapter.Mons
 	@Override
 	public int getItemCount()
 	{
-		if (spellList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return spellList.size();
-		}
+		return spellList.size();
 	}
 	
 	static class MonsterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -121,7 +107,7 @@ public class SpellListAdapter extends RecyclerView.Adapter<SpellListAdapter.Mons
 		private TextView SpellNameTv, SpellLevelTv;
 		private RvClickListener mListener;
 		
-		public MonsterViewHolder(View itemView, RvClickListener listener)
+		MonsterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			SpellNameTv = itemView.findViewById(R.id.SpellNameTv);

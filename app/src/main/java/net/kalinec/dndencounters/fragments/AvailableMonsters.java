@@ -1,16 +1,14 @@
 package net.kalinec.dndencounters.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
@@ -18,17 +16,13 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonsterL
 import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AvailableMonsters extends Fragment {
 
     private static final String AVAILABLE_MONSTERS = "AVAILABLE_MONSTERS";
 
     private ArrayList<AdventureEncounterMonster> availableMonsters = new ArrayList<>();
-    private RecyclerView availableMonstersRv;
-    private AdventureEncounterMonsterListAdapter monsterListAdapter;
-    private View monsterView;
-
+    
     public AvailableMonsters() {
         // Required empty public constructor
     }
@@ -50,18 +44,24 @@ public class AvailableMonsters extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        monsterView = inflater.inflate(R.layout.fragment_available_monsters, container, false);
-        monsterListAdapter = new AdventureEncounterMonsterListAdapter(getContext(), new RvClickListener() {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+                            )
+    {
+        View monsterView = inflater.inflate(R.layout.fragment_available_monsters, container, false);
+        AdventureEncounterMonsterListAdapter monsterListAdapter
+                = new AdventureEncounterMonsterListAdapter(getContext(), new RvClickListener()
+        {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(View view, int position)
+            {
                 AdventureEncounterMonster selectedMonster = availableMonsters.get(position);
                 mListener.onMonsterSelectedListener(selectedMonster);
             }
         });
         monsterListAdapter.setMonsterList(availableMonsters);
-        availableMonstersRv = monsterView.findViewById(R.id.availableMonstersRv);
+        RecyclerView availableMonstersRv = monsterView.findViewById(R.id.availableMonstersRv);
         availableMonstersRv.setAdapter(monsterListAdapter);
         availableMonstersRv.setLayoutManager(new LinearLayoutManager(getContext()));
         return monsterView;
@@ -69,7 +69,7 @@ public class AvailableMonsters extends Fragment {
 
     public interface OnMonsterSelectedListener
     {
-        public void onMonsterSelectedListener(AdventureEncounterMonster selectedMonster);
+        void onMonsterSelectedListener(AdventureEncounterMonster selectedMonster);
     }
     private OnMonsterSelectedListener mListener;
     @Override

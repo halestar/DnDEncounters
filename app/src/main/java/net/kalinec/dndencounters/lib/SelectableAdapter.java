@@ -15,8 +15,8 @@ import java.util.List;
 public class SelectableAdapter extends RecyclerView.Adapter implements RvSelectListener {
 
     private final List<SelectableItem> mValues;
-    private boolean isMultiSelectEnabled = false;
-    RvSelectListener mListener;
+	private boolean isMultiSelectEnabled;
+	private RvSelectListener mListener;
 
     public SelectableAdapter(List<SelectableItem> items, boolean isMultiSelectEnabled, RvSelectListener listener)
     {

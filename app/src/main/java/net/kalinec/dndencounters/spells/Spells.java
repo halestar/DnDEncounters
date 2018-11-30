@@ -2,8 +2,6 @@ package net.kalinec.dndencounters.spells;
 
 import android.content.Context;
 
-import net.kalinec.dndencounters.monsters.Monster;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -15,12 +13,10 @@ import java.util.List;
 public class Spells
 {
 	private static JSONArray spellDb;
-	private static Context context;
-	private static Spells instance;
 	
-	private static String loadJSONFromAsset()
+	private static String loadJSONFromAsset(Context context)
 	{
-		String json = null;
+		String json;
 		try
 		{
 			InputStream is = context.getAssets().open("spells.json");
@@ -40,13 +36,11 @@ public class Spells
 	
 	private static boolean verifyDb(Context context)
 	{
-		if(Spells.context == null)
-			Spells.context = context;
 		if(spellDb == null)
 		{
 			try
 			{
-				spellDb = new JSONArray(loadJSONFromAsset());
+				spellDb = new JSONArray(loadJSONFromAsset(context));
 			}
 			catch (JSONException e)
 			{
@@ -54,15 +48,7 @@ public class Spells
 				spellDb = null;
 			}
 		}
-		instance = new Spells();
 		return (spellDb != null);
-	}
-	
-	public static Spells allSpells(Context context)
-	{
-		if(verifyDb(context))
-			return Spells.instance;
-		return null;
 	}
 	
 	public static List<Spell> spellList(Context context)
@@ -85,20 +71,6 @@ public class Spells
 			
 		}
 		return new ArrayList<>();
-	}
-	
-	
-	public Spell getSpell(int index)
-	{
-		try
-		{
-			return new Spell(spellDb.getJSONObject(index));
-		}
-		catch (JSONException e)
-		{
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 }

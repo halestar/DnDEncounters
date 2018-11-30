@@ -1,5 +1,7 @@
 package net.kalinec.dndencounters.adventure_encounters;
 
+import android.support.annotation.NonNull;
+
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.players.Player;
 
@@ -9,7 +11,6 @@ import java.util.UUID;
 public class AdventureEncounterPlayer implements AdventureEncounterActor, Serializable
 {
 
-    public static final String PASSED_ENCOUNTER_PLAYER = "PASSED_ENCOUNTER_PLAYER";
     public static final String PASSED_ENCOUNTER_PLAYERS = "PASSED_ENCOUNTER_PLAYERS";
     private Character pc;
     private Player player;
@@ -77,14 +78,16 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
     public int getHp() {
         return pc.getHp();
     }
-
-    @Override
-    public String toString() {
-        return "AdventureEncounterPlayer{" +
-                "pc=" + pc +
-                ", initiative=" + initiative +
-                ", status=" + status +
-                ", hasActed=" + hasActed +
-                '}';
-    }
+	
+	@NonNull
+	@Override
+	public String toString()
+	{
+		return "AdventureEncounterPlayer{" +
+		       "pc=" + pc +
+		       ", initiative=" + initiative +
+		       ", status=" + status +
+		       ", hasActed=" + hasActed +
+		       '}';
+	}
 }

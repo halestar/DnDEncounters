@@ -5,8 +5,10 @@ import java.io.Serializable;
 public class MonsterAbility implements Serializable {
     private String name;
     private String description;
-
-    public MonsterAbility(String name, String description) {
+	
+	
+	MonsterAbility(String name, String description)
+	{
         this.name = name;
         this.description = description;
     }

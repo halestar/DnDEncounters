@@ -17,6 +17,7 @@ import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerViewHolder>
 {
@@ -71,7 +72,8 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 		{
 			holder.PlayerNameTv.setText(player.getName());
 			int numPcs = AppDatabase.getDatabase(context).playerDao().numPcs(player.getUid());
-			holder.PlayerNumPcs.setText(Integer.toString(numPcs) + " PC(s)");
+			holder.PlayerNumPcs.setText(
+					String.format(Locale.getDefault(), "%d", numPcs) + " PC(s)");
 			if(player.getPortrait() != null) {
 				Bitmap bmp = BitmapFactory.decodeByteArray(player.getPortrait(), 0, player.getPortrait().length);
 				holder.PlayerPortraitIv.setImageBitmap(bmp);
@@ -109,7 +111,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 		private ImageView PlayerPortraitIv;
 		private RvClickListener mListener;
 		
-		public PlayerViewHolder(View itemView, RvClickListener listener)
+		PlayerViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			PlayerNameTv = itemView.findViewById(R.id.PlayerNameTv);

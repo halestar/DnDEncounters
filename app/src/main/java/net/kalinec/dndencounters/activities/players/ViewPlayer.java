@@ -4,10 +4,9 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -31,24 +30,24 @@ public class ViewPlayer extends DnDEncountersActivity
 {
 	protected Player selectedPlayer;
 	protected TextView playerNameTv;
-	private RecyclerView recyclerview_characters;
 	private CharacterListAdapter characterListAdapter;
-	private LiveData<List<Character>> pcList;
-
-
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_player);
 		Bundle bundle = getIntent().getExtras();
+		assert bundle != null;
 		selectedPlayer = (Player)bundle.getSerializable(Player.PASSED_PLAYER);
 		
 		playerNameTv = findViewById(R.id.playerName);
 		playerNameTv.setText(selectedPlayer.getName());
 
 		CharacterDao characterDao = AppDatabase.getDatabase(getApplicationContext()).characterDao();
-		pcList = characterDao.getCharactersByPlayerId(selectedPlayer.getUid());
+		LiveData<List<Character>> pcList = characterDao.getCharactersByPlayerId(selectedPlayer
+				                                                                        .getUid());
 
 		characterListAdapter = new CharacterListAdapter(getApplicationContext(), new RvClickListener() {
 			@Override
@@ -63,9 +62,9 @@ public class ViewPlayer extends DnDEncountersActivity
 				characterListAdapter.setCharacterList(characters);
 			}
 		});
-
-
-		recyclerview_characters = findViewById(R.id.recyclerview_characters);
+		
+		
+		RecyclerView recyclerview_characters = findViewById(R.id.recyclerview_characters);
 		recyclerview_characters.setAdapter(characterListAdapter);
 		recyclerview_characters.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 

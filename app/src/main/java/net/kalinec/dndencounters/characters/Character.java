@@ -6,8 +6,6 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.players.Player;
 
 import java.io.Serializable;
@@ -25,50 +23,22 @@ public class Character implements Serializable
 	public final static String PASSED_CHARACTER = "PASSED_CHARACTER";
 	
 	@PrimaryKey(autoGenerate = true)
-	@NonNull
 	public int pid;
-	
-	@NonNull
 	public int playerId;
-	
-	
-	@NonNull
 	public String name;
-	@NonNull
 	public String characterClass;
 	public String characterRace;
 
-	@Override
-	public String toString() {
-		return "Character{" +
-				"name='" + name + '\'' +
-				", characterClass='" + characterClass + '\'' +
-				", characterRace='" + characterRace + '\'' +
-				'}';
-	}
-
-	@NonNull
 	public int ac;
-	@NonNull
 	public int hp;
-	@NonNull
 	public int pp;
-	
-	@NonNull
 	public int level;
 	public int spellDc;
-	
-	public Character(Player owner)
-	{
-		this.playerId = owner.getUid();
-	
-	}
-	
 	public Character(
-			@NonNull String name, @NonNull int playerId, @NonNull int ac, @NonNull int hp,
-			@NonNull int pp,
+			@NonNull String name, int playerId, int ac, int hp,
+			int pp,
 			@NonNull String characterClass,
-			@NonNull int level
+			int level
 	                )
 	{
 		this.name = name;
@@ -78,6 +48,23 @@ public class Character implements Serializable
 		this.pp = pp;
 		this.characterClass = characterClass;
 		this.level = level;
+	}
+	
+	public Character(Player owner)
+	{
+		this.playerId = owner.getUid();
+		
+	}
+	
+	@NonNull
+	@Override
+	public String toString()
+	{
+		return "Character{" +
+		       "name='" + name + '\'' +
+		       ", characterClass='" + characterClass + '\'' +
+		       ", characterRace='" + characterRace + '\'' +
+		       '}';
 	}
 	
 	@NonNull
@@ -92,47 +79,42 @@ public class Character implements Serializable
 	}
 	
 	
-	@NonNull
 	public int getLevel()
 	{
 		return level;
 	}
 	
-	public void setLevel(@NonNull int level)
+	public void setLevel(int level)
 	{
 		this.level = level;
 	}
-	
-	@NonNull
 	
 	public int getAc()
 	{
 		return ac;
 	}
 	
-	public void setAc(@NonNull int ac)
+	public void setAc(int ac)
 	{
 		this.ac = ac;
 	}
 	
-	@NonNull
 	public int getHp()
 	{
 		return hp;
 	}
 	
-	public void setHp(@NonNull int hp)
+	public void setHp(int hp)
 	{
 		this.hp = hp;
 	}
 	
-	@NonNull
 	public int getPp()
 	{
 		return pp;
 	}
 	
-	public void setPp(@NonNull int pp)
+	public void setPp(int pp)
 	{
 		this.pp = pp;
 	}
@@ -168,14 +150,13 @@ public class Character implements Serializable
 		this.characterRace = characterRace;
 	}
 	
-	public String nameAndDescription()
+	String nameAndDescription()
 	{
 		return name + "(" +
-		       (characterRace != ""? characterRace + " ": "") +
+		       (!characterRace.equals("") ? characterRace + " " : "") +
 		       characterClass + ")";
 	}
 
-	@NonNull
 	public int getPlayerId() {
 		return playerId;
 	}

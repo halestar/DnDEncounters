@@ -10,23 +10,20 @@ import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterPlayer;
-import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class CharacterEncounterListAdapter extends RecyclerView.Adapter<CharacterEncounterListAdapter.CharacterEncounterViewHolder>
 {
 
 	private LayoutInflater layoutInflater;
 	private List<AdventureEncounterPlayer> characterList;
-	private Context context;
-
+	
 	public CharacterEncounterListAdapter(Context context)
 	{
 		this.layoutInflater = LayoutInflater.from(context);
-		this.context = context;
 		this.characterList = new ArrayList<>();
 	}
 	
@@ -61,9 +58,12 @@ public class CharacterEncounterListAdapter extends RecyclerView.Adapter<Characte
 		if (character != null)
 		{
 			holder.PcNameTv.setText(character.getPc().getName());
-			holder.PcAcTv.setText(Integer.toString(character.getPc().getAc()));
-			holder.PcPpTv.setText(Integer.toString(character.getPc().getPp()));
-			holder.PcDcTv.setText(Integer.toString(character.getPc().getSpellDc()));
+			holder.PcAcTv.setText(String.format(Locale.getDefault(), "%d", character.getPc()
+					.getAc()));
+			holder.PcPpTv.setText(String.format(Locale.getDefault(), "%d", character.getPc()
+					.getPp()));
+			holder.PcDcTv.setText(String.format(Locale.getDefault(), "%d", character.getPc()
+					.getSpellDc()));
 		}
 	}
 	
@@ -83,8 +83,8 @@ public class CharacterEncounterListAdapter extends RecyclerView.Adapter<Characte
 	static class CharacterEncounterViewHolder extends RecyclerView.ViewHolder
 	{
 		private TextView PcNameTv, PcAcTv, PcPpTv, PcDcTv;
-
-		public CharacterEncounterViewHolder(View itemView)
+		
+		CharacterEncounterViewHolder(View itemView)
 		{
 			super(itemView);
 			PcNameTv = itemView.findViewById(R.id.PcNameTv);

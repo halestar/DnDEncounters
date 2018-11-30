@@ -1,10 +1,9 @@
 package net.kalinec.dndencounters.activities.encounters;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.Group;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,8 +19,9 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureActorsListAdapter
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterTurn;
-import net.kalinec.dndencounters.monsters.Monster;
 import net.kalinec.dndencounters.playsessions.PlaySession;
+
+import java.util.Locale;
 
 public class PlayEncounter extends DnDEncountersActivity {
     public static final int PLAY_ENCOUNTER = 60;
@@ -36,6 +36,7 @@ public class PlayEncounter extends DnDEncountersActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
+	    assert bundle != null;
         activeSession = (PlaySession)bundle.getSerializable(PlaySession.PASSED_SESSION);
         setContentView(R.layout.activity_play_encounter);
         adventureEncounter = activeSession.getAdventureEncounter();
@@ -64,7 +65,8 @@ public class PlayEncounter extends DnDEncountersActivity {
         //fill in basics
         PartyNameTv.setText(adventureEncounter.getParty().getName());
         EncounterNameTv.setText(adventureEncounter.getEncounter().getEncounterName());
-        RoundNumTv.setText(Integer.toString(adventureEncounter.getTurnNumber()));
+	    RoundNumTv.setText(String.format(Locale.getDefault(), "%d", adventureEncounter
+			    .getTurnNumber()));
         //determine if we're in the middle of a turn
         currentTurn = adventureEncounter.nextTurn();
         if(adventureEncounter.isCompleted())
@@ -103,6 +105,7 @@ public class PlayEncounter extends DnDEncountersActivity {
     {
         if(requestCode == SetupEncounter.SETUP_ADVENTURE_ENCOUNTER && resultCode == RESULT_OK)
         {
+	        assert data != null;
             adventureEncounter = (AdventureEncounter)data.getSerializableExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
             Log.d("PlayEncounter", "Encounter: " + adventureEncounter);
 
@@ -114,6 +117,7 @@ public class PlayEncounter extends DnDEncountersActivity {
         }
         else if((requestCode == PlayerTurn.PLAYER_TURN || requestCode == MonsterTurn.MONSTER_TURN) && resultCode == RESULT_OK)
         {
+	        assert data != null;
             adventureEncounter = (AdventureEncounter)data.getSerializableExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
             activeSession.updateAdventureEncounter(adventureEncounter);
             activeSession.saveSession(getApplicationContext());

@@ -1,5 +1,6 @@
 package net.kalinec.dndencounters.adventure_encounters;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import net.kalinec.dndencounters.characters.Character;
@@ -12,12 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdventureEncounter implements Serializable {
-
-    public void setActors(ArrayList<AdventureEncounterActor> actors) {
-        this.actors = actors;
-    }
-
-    public final static String PASSED_ADVENTURE_ENCOUNTER = "PASSED_ADVENTURE_ENCOUNTER";
+	
+	public final static String PASSED_ADVENTURE_ENCOUNTER = "PASSED_ADVENTURE_ENCOUNTER";
     private Party pcs;
     private Encounter encounter;
     private ArrayList<AdventureEncounterActor> actors;
@@ -122,12 +119,6 @@ public class AdventureEncounter implements Serializable {
         setup = isSetUp();
     }
 
-    public void removeActor(AdventureEncounterActor a)
-    {
-        actors.remove(a);
-        setup = isSetUp();
-    }
-
     public void clearActors()
     {
         actors.clear();
@@ -145,25 +136,20 @@ public class AdventureEncounter implements Serializable {
     {
         return currentTurn;
     }
-
-    public void finishEncounter()
-    {
-        completed = true;
-        completedTurns.add(currentTurn);
-        currentTurn = null;
-    }
-
+	
+	
+	@NonNull
     @Override
     public String toString() {
         return "AdventureEncounter{" +
-                "pcs=" + pcs +
-                ", encounter=" + encounter +
-                ", actors=" + actors +
-                ", currentTurn=" + currentTurn +
-                ", completed=" + completed +
-                ", setup=" + setup +
-                ", turnNumber=" + turnNumber +
-                '}';
+               "pcs=" + pcs +
+               ", encounter=" + encounter +
+               ", actors=" + actors +
+               ", currentTurn=" + currentTurn +
+               ", completed=" + completed +
+               ", setup=" + setup +
+               ", turnNumber=" + turnNumber +
+               '}';
     }
 
     public ArrayList<AdventureEncounterMonster> getAvailableMonsters()

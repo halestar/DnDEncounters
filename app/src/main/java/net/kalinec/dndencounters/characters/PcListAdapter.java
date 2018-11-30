@@ -18,6 +18,7 @@ import net.kalinec.dndencounters.players.Player;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class PcListAdapter extends RecyclerView.Adapter<PcListAdapter.PcViewHolder>
 {
@@ -112,10 +113,6 @@ public class PcListAdapter extends RecyclerView.Adapter<PcListAdapter.PcViewHold
 	@Override
 	public void onBindViewHolder(@NonNull PcListAdapter.PcViewHolder holder, int position)
 	{
-		if (characterList == null)
-		{
-			return;
-		}
 		final Character character = characterList.get(position);
 		if (character != null)
 		{
@@ -123,21 +120,15 @@ public class PcListAdapter extends RecyclerView.Adapter<PcListAdapter.PcViewHold
 			PlayerDao playerDao = AppDatabase.getDatabase(context).playerDao();
 			Player owner = playerDao.getPlayerById(character.getPlayerId());
 			holder.playeNameTv.setText(owner.getName());
-			holder.characterLevelTv.setText("Lv. " + Integer.toString(character.getLevel()));
+			holder.characterLevelTv.setText(
+					"Lv. " + String.format(Locale.getDefault(), "%d", character.getLevel()));
 		}
 	}
 	
 	@Override
 	public int getItemCount()
 	{
-		if (characterList == null)
-		{
-			return 0;
-		}
-		else
-		{
-			return characterList.size();
-		}
+		return characterList.size();
 	}
 	
 	static class PcViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -145,7 +136,7 @@ public class PcListAdapter extends RecyclerView.Adapter<PcListAdapter.PcViewHold
 		private TextView characterNameTv, playeNameTv, characterLevelTv;
 		private RvClickListener mListener;
 		
-		public PcViewHolder(View itemView, RvClickListener listener)
+		PcViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
 			characterNameTv = itemView.findViewById(R.id.characterNameTv);

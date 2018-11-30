@@ -1,7 +1,6 @@
 package net.kalinec.dndencounters.activities.encounters;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +13,6 @@ import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.encounters.EncounterListAdapter;
 import net.kalinec.dndencounters.encounters.Encounters;
 import net.kalinec.dndencounters.lib.RvClickListener;
-import net.kalinec.dndencounters.monsters.Monster;
-import net.kalinec.dndencounters.monsters.MonsterListAdapter;
-import net.kalinec.dndencounters.monsters.Monsters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +22,8 @@ public class SelectEncounter extends DnDEncountersActivity {
     private List<Encounter> encounters, currentEncounterList;
     private EncounterListAdapter encounterListAdapter;
     private RecyclerView encounterSearchRv;
-    private SearchView encounterSearchSv;
-
-    @Override
+	
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_encounter);
@@ -44,14 +39,14 @@ public class SelectEncounter extends DnDEncountersActivity {
             }
         });
         encounterListAdapter.setEncounterList(encounters);
-
-
-        encounterSearchRv = (RecyclerView)findViewById(R.id.encounterSearchRv);
+		
+		
+		encounterSearchRv = findViewById(R.id.encounterSearchRv);
         encounterSearchRv.setAdapter(encounterListAdapter);
         encounterSearchRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
-        encounterSearchSv = (SearchView)findViewById(R.id.encounterSearchSv);
+		
+		
+		SearchView encounterSearchSv = findViewById(R.id.encounterSearchSv);
         encounterSearchSv.setActivated(true);
         encounterSearchSv.onActionViewExpanded();
         encounterSearchSv.setIconified(false);

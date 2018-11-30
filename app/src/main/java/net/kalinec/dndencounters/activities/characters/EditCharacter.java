@@ -1,9 +1,8 @@
 package net.kalinec.dndencounters.activities.characters;
 
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,6 +11,8 @@ import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.CharacterDao;
+
+import java.util.Locale;
 
 public class EditCharacter extends DnDEncountersActivity
 {
@@ -26,6 +27,7 @@ public class EditCharacter extends DnDEncountersActivity
 		super.onCreate(savedInstanceState);
 		
 		Bundle bundle = getIntent().getExtras();
+		assert bundle != null;
 		selectedCharacter = (Character)bundle.getSerializable(Character.PASSED_CHARACTER);
 		
 		setContentView(R.layout.activity_edit_character);
@@ -39,17 +41,19 @@ public class EditCharacter extends DnDEncountersActivity
 		
 		
 		characterAcTxt = findViewById(R.id.characterAcTxt);
-		characterAcTxt.setText(Integer.toString(selectedCharacter.getAc()));
+		characterAcTxt.setText(String.format(Locale.getDefault(), "%d", selectedCharacter.getAc()));
 		characterHpTxt = findViewById(R.id.characterHpTxt);
-		characterHpTxt.setText(Integer.toString(selectedCharacter.getHp()));
+		characterHpTxt.setText(String.format(Locale.getDefault(), "%d", selectedCharacter.getHp()));
 		characterPpTxt = findViewById(R.id.characterPpTxt);
-		characterPpTxt.setText(Integer.toString(selectedCharacter.getPp()));
+		characterPpTxt.setText(String.format(Locale.getDefault(), "%d", selectedCharacter.getPp()));
 		
 		
 		characterLvTxt = findViewById(R.id.characterLvTxt);
-		characterLvTxt.setText(Integer.toString(selectedCharacter.getLevel()));
+		characterLvTxt.setText(String.format(Locale.getDefault(), "%d", selectedCharacter
+				.getLevel()));
 		characterDcTxt = findViewById(R.id.characterDcTxt);
-		characterDcTxt.setText(Integer.toString(selectedCharacter.getSpellDc()));
+		characterDcTxt.setText(String.format(Locale.getDefault(), "%d", selectedCharacter
+				.getSpellDc()));
 	}
 	
 	public void updatePC(View target)

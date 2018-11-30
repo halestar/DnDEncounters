@@ -18,6 +18,7 @@ import net.kalinec.dndencounters.fragments.AvailableMonsters;
 import net.kalinec.dndencounters.fragments.MonsterTarget;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class PlayerTurn extends DnDEncountersActivity implements AvailableMonsters.OnMonsterSelectedListener, MonsterTarget.OnMonsterCompletedListener {
     public static final int PLAYER_TURN = 71;
@@ -32,6 +33,7 @@ public class PlayerTurn extends DnDEncountersActivity implements AvailableMonste
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
+	    assert bundle != null;
         selectedEncounter = (AdventureEncounter)bundle.getSerializable(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
         setContentView(R.layout.activity_player_turn);
         AdventureEncounterTurn currentTurn = selectedEncounter.getCurrentTurn();
@@ -41,9 +43,10 @@ public class PlayerTurn extends DnDEncountersActivity implements AvailableMonste
         TextView playerNameTv = findViewById(R.id.PlayerNameTv);
         playerNameTv.setText(currentPc.getPc().getName());
         TextView playerAcTv = findViewById(R.id.PlayerAcTv);
-        playerAcTv.setText(Integer.toString(currentPc.getPc().getAc()));
+	    playerAcTv.setText(String.format(Locale.getDefault(), "%d", currentPc.getPc().getAc()));
         TextView playerSpellDcTv = findViewById(R.id.PlayerSpellDcTv);
-        playerSpellDcTv.setText(Integer.toString(currentPc.getPc().getSpellDc()));
+	    playerSpellDcTv.setText(String.format(Locale.getDefault(), "%d", currentPc.getPc()
+			    .getSpellDc()));
 
 
         //insert the available monsters.
