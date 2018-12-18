@@ -51,31 +51,7 @@ public class Players extends DnDEncountersActivity
 		recyclerview_players.setAdapter(playerListAdapter);
 		recyclerview_players.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_players, menu);
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		
-		//noinspection SimplifiableIfStatement
-		if (id == R.id.action_settings)
-		{
-			return true;
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
+
 	
 	public void newPlayer(View target)
 	{

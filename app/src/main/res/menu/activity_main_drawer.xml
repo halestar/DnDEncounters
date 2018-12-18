@@ -13,8 +13,12 @@
             android:icon="@drawable/encounter_icon"
             android:title="@string/EncountersTxt" />
         <item
-            android:id="@+id/nav_monster_tokens"
+            android:id="@+id/nav_all_monsters"
             android:icon="@drawable/monster_icon"
+            android:title="@string/MonsterTxt" />
+        <item
+            android:id="@+id/nav_monster_tokens"
+            android:icon="@drawable/monster_token"
             android:title="@string/MonsterTokensTxt" />
         <item
             android:id="@+id/nav_project_link"

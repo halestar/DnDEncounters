@@ -116,6 +116,7 @@ public class EditEncounter extends DnDEncountersActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
 	{
+		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode == SelectMonster.REQUEST_SELECT_MONSTER)
 		{
 			if(resultCode == RESULT_OK)

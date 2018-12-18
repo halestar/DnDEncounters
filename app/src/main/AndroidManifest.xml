@@ -56,7 +56,14 @@
         <activity android:name=".activities.encounter_turn.PlayerTurn" />
         <activity android:name=".activities.encounter_turn.MonsterTurn" />
         <activity android:name=".activities.spells.SearchSpells" />
-        <activity android:name=".activities.spells.ViewSpell"></activity>
+        <activity android:name=".activities.spells.ViewSpell" />
+        <activity
+            android:name=".activities.custom_monsters.ViewMonsters"
+            android:label="@string/title_activity_view_monsters"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.custom_monsters.AddCustomMonster" />
+        <activity android:name=".dice.DiceRollerDialog" />
+        <activity android:name=".activities.custom_monsters.EditCustomMonster"></activity>
     </application>
 
 </manifest>

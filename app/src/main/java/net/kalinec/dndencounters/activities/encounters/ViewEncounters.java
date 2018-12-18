@@ -107,6 +107,7 @@ public class ViewEncounters extends DnDEncountersActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
 	{
+		super.onActivityResult(requestCode, resultCode, data);
 		Log.d("ViewEncounter", "in activity result");
 		encounters = currentEncounterList = Encounters.getAllEncounters(getApplicationContext());
 		Log.d("ViewEncounter", "encounters=" + encounters);

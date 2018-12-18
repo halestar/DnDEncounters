@@ -103,6 +103,7 @@ public class PlayEncounter extends DnDEncountersActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == SetupEncounter.SETUP_ADVENTURE_ENCOUNTER && resultCode == RESULT_OK)
         {
 	        assert data != null;

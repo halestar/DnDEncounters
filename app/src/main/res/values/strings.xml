@@ -22,6 +22,7 @@
     <!-- Dialogs -->
     <string name="ConfirmPlayerDelete">Are you sure you want to delete this player?</string>
     <string name="ConfirmPcDelete">Are you sure you want to delete this player character?</string>
+    <string name="ConfirmMonsterDelete">Are you sure you want to delete this monster?</string>
 
 
     <!-- Player -->
@@ -190,4 +191,34 @@
     <string name="PlayerTurnTxt">Player Turn</string>
     <string name="MonsterTurnTxt">Monster Turn</string>
     <string name="ViewGitHubTxt">View Project on GitHub</string>
+    <string name="title_activity_view_monsters">ViewMonsters</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="MonsterTabTxt"><![CDATA[D&D Monsters]]></string>
+    <string name="CustomMonsterTab">Custom Monsters</string>
+    <string name="AddCustomMonsterTxt">Add Custom Monster</string>
+    <string name="StrTxt">STR</string>
+    <string name="DexTxt">DEX</string>
+    <string name="ConTxt">CON</string>
+    <string name="WisTxt">WIS</string>
+    <string name="IntTxt">INT</string>
+    <string name="ChaTxt">CHA</string>
+    <string name="NumDiceTxt">Number of Dice</string>
+    <string name="DiceTypeTxt">Type of Dice</string>
+    <string name="DiceD4Txt">d4</string>
+    <string name="DiceD6Txt">d6</string>
+    <string name="DiceD8Txt">d8</string>
+    <string name="DiceD10Txt">d10</string>
+    <string name="DiceD12Txt">d12</string>
+    <string name="DiceD20Txt">d20</string>
+    <string name="ModifierTxt">Add Modifier</string>
+    <string name="ZeroTxt">0</string>
+    <string name="RollTxt">Roll!</string>
+    <string name="RollDiceTxt">Roll Dice</string>
+    <string name="HitDiceColonTxt">Hit Dice:</string>
+    <string name="EnterHitDiceTxt">Enter Hit Dice</string>
+    <string name="EditustomMonsterTxt">Edit Custom Monster</string>
+    <string name="DeleteCustomMonsterTxt">Delete Custom Monster</string>
 </resources>

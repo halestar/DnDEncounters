@@ -82,4 +82,8 @@ public class DiceParser implements Serializable
             result += d.roll();
         return result;
     }
+
+    public String getDiceStr() {
+        return diceStr;
+    }
 }

@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.activities.adventure_encounters.PlayAdventure;
+import net.kalinec.dndencounters.activities.custom_monsters.ViewMonsters;
 import net.kalinec.dndencounters.activities.encounters.ViewEncounters;
 import net.kalinec.dndencounters.activities.monster_tokens.ViewMonsterTokens;
 import net.kalinec.dndencounters.activities.parties.CreateParty;
@@ -157,6 +158,11 @@ public class MainActivity extends DnDEncountersActivity
 			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/halestar/DnDEncounters"));
 			startActivity(browserIntent);
 		}
+		else if(id == R.id.nav_all_monsters)
+		{
+			Intent myIntent = new Intent(MainActivity.this, ViewMonsters.class);
+			MainActivity.this.startActivity(myIntent);
+		}
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		drawer.closeDrawer(GravityCompat.START);
 		return true;
@@ -183,6 +189,7 @@ public class MainActivity extends DnDEncountersActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
 	{
+		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode == CreateParty.REQUEST_NEW_PARTY)
 		{
 			if(resultCode == RESULT_OK)
@@ -195,6 +202,5 @@ public class MainActivity extends DnDEncountersActivity
 			}
 		}
 		updateFront();
-		
 	}
 }

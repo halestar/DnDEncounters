@@ -77,6 +77,7 @@ public class CreateParty extends DnDEncountersActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
 	{
+		super.onActivityResult(requestCode, resultCode, data);
 		if(requestCode == SelectCharacter.REQUEST_SELECT_CHARACTER || requestCode == CreatePlayerAndCharacter.REQUEST_NEW_CHARACTER || requestCode == AddCharacter.REQUEST_NEW_CHARACTER)
 		{
 			if(resultCode == RESULT_OK)

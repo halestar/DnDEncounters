@@ -100,6 +100,7 @@ public class PlayAdventure extends DnDEncountersActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == CreateParty.REQUEST_NEW_PARTY && resultCode == RESULT_OK)
         {
             assert data != null;

@@ -18,20 +18,28 @@ public class Monster implements Serializable
 {
 	public final static String PASSED_MONSTER = "PASSED_MONSTER";
 	public static final String CR_ERROR = "Unk.";
-	private static final String NAME_ERROR = "Error Monster";
-	private int mid;
-	private String name, cr, monsterType, monsterSize;
-	private int str, dex, con, intel, wis, cha;
-	private int str_mod, dex_mod, con_mod, intel_mod, wis_mod, cha_mod;
-	private int hp;
-	private ArrayList<MonsterAbility> specialAbilities, actions;
+	protected static final String NAME_ERROR = "Error Monster";
+	protected int mid;
+	protected String name, cr, monsterType, monsterSize;
+	protected int str, dex, con, intel, wis, cha;
+	protected int str_mod, dex_mod, con_mod, intel_mod, wis_mod, cha_mod;
+	protected int hp;
+	protected ArrayList<MonsterAbility> specialAbilities, actions;
+	protected int ac;
+
+	public Monster()
+	{
+		name = cr = monsterType = monsterSize = "";
+		str = dex = con = intel = wis = cha = hp = mid = 0;
+		specialAbilities = actions = new ArrayList<>();
+		determineMods();
+	}
 
 	public int getAc() {
 		return ac;
 	}
 
-	private int ac;
-	private DiceParser hitDice;
+	protected DiceParser hitDice;
 	
 	public String getName()
 	{
@@ -43,7 +51,7 @@ public class Monster implements Serializable
 		return cr;
 	}
 
-	private void determineMods()
+	protected void determineMods()
 	{
 		str_mod = (int)Math.floor((str - 10) / 2);
 		dex_mod = (int)Math.floor((dex - 10) / 2);
@@ -119,6 +127,8 @@ public class Monster implements Serializable
 		}
 
 	}
+
+
 	
 	@Override
 	public boolean equals(Object o)
@@ -146,7 +156,7 @@ public class Monster implements Serializable
 		       '}';
 	}
 
-	private String formatMod(int mod)
+	protected String formatMod(int mod)
 	{
 		if(mod < 0)
 			return Integer.toString(mod);
@@ -192,5 +202,33 @@ public class Monster implements Serializable
 	public int rollHp()
 	{
 		return hitDice.result();
+	}
+
+	public int getStr() {
+		return str;
+	}
+
+	public int getDex() {
+		return dex;
+	}
+
+	public int getCon() {
+		return con;
+	}
+
+	public int getIntel() {
+		return intel;
+	}
+
+	public int getWis() {
+		return wis;
+	}
+
+	public int getCha() {
+		return cha;
+	}
+
+	public DiceParser getHitDice() {
+		return hitDice;
 	}
 }
