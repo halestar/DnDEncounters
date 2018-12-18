@@ -72,4 +72,4 @@ The app does provide at least one additional tool (more to come later) to make l
 From the menu item on the app you can select **Spell Lookup**.  This is a searchable database of all D&D 5e spells.  Click on the spell to see more information. Click the back button to go back to what you were doing.
 
 ## Marketplace Information
-At the time of this writing the App is **not** yet available in teh Markeplace, as it is still going through debugging.  If you wish to try it out, you must compile it from source. It will be uploaded to the Marketplace once it is sufficently debugged, so look for it soon!
+At the time of this writing the App is **not** yet available in the Markeplace, as it is still going through debugging.  If you wish to try it out, you must compile it from source. It will be uploaded to the Marketplace once it is sufficently debugged, so look for it soon!

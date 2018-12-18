@@ -15,6 +15,7 @@ import net.kalinec.dndencounters.custom_monsters.CustomMonster;
 import net.kalinec.dndencounters.custom_monsters.CustomMonsterListAdapter;
 import net.kalinec.dndencounters.custom_monsters.CustomMonsters;
 import net.kalinec.dndencounters.dice.DiceRollerDialog;
+import net.kalinec.dndencounters.lib.OnMonsterSelectedListener;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monsters.Monster;
 import net.kalinec.dndencounters.monsters.MonsterListAdapter;
@@ -26,10 +27,12 @@ import java.util.List;
 
 public class ViewCustomMonstersFragment extends Fragment {
 
+    private static final String SELECTOR_LISTENER = "SELECTOR_LISTENER";
     private List<CustomMonster> monsterList, currentMonsterList;
     private CustomMonsterListAdapter monsterListAdapter;
     private RecyclerView CustomMonsterRv;
     private SearchView CustomMonsterSv;
+    private OnMonsterSelectedListener mListener;
 
 
     public ViewCustomMonstersFragment() {
@@ -38,12 +41,27 @@ public class ViewCustomMonstersFragment extends Fragment {
     public static ViewCustomMonstersFragment newInstance()
     {
         ViewCustomMonstersFragment fragment = new ViewCustomMonstersFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(SELECTOR_LISTENER, null);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public static ViewCustomMonstersFragment newInstance(OnMonsterSelectedListener mListener)
+    {
+        ViewCustomMonstersFragment fragment = new ViewCustomMonstersFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(SELECTOR_LISTENER, mListener);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mListener = (OnMonsterSelectedListener)getArguments().getSerializable(SELECTOR_LISTENER);
+        }
     }
 
     @Override
@@ -62,11 +80,17 @@ public class ViewCustomMonstersFragment extends Fragment {
             public void onClick(View view, int position)
             {
                 CustomMonster monster = currentMonsterList.get(position);
-                Intent myIntent = new Intent(getContext(), EditCustomMonster.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(CustomMonster.PASSED_MONSTER, monster);
-                myIntent.putExtras(bundle);
-                startActivityForResult(myIntent, DiceRollerDialog.REQUEST_DICE_ROLL);
+                if(mListener != null)
+                {
+                    mListener.onMonsterSelected(monster);
+                }
+                else {
+                    Intent myIntent = new Intent(getContext(), EditCustomMonster.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(CustomMonster.PASSED_MONSTER, monster);
+                    myIntent.putExtras(bundle);
+                    startActivityForResult(myIntent, EditCustomMonster.REQUEST_UDPATED_MONSTER);
+                }
             }
         });
         monsterListAdapter.setMonsterList(monsterList);

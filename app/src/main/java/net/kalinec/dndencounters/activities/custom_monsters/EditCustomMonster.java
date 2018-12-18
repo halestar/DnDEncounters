@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,20 +17,29 @@ import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.players.ViewPlayer;
 import net.kalinec.dndencounters.custom_monsters.CustomMonster;
+import net.kalinec.dndencounters.custom_monsters.CustomMonsterAbilitiesListAdapter;
 import net.kalinec.dndencounters.custom_monsters.CustomMonsters;
 import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.dice.DiceParser;
 import net.kalinec.dndencounters.dice.DiceRollerDialog;
+import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.monsters.MonsterAbility;
 import net.kalinec.dndencounters.players.Player;
+
+import java.util.ArrayList;
 
 public class EditCustomMonster extends DnDEncountersActivity
 {
     public static final int REQUEST_UDPATED_MONSTER = 102;
     private TextView HitDiceDisplayTv;
     private EditText CustomMonsterNameEt, CustomMonsterTypeEt, CustomMonsterSizeEt, CustomMonsterStrEt, CustomMonsterDexEt, CustomMonsterConEt,
-            CustomMonsterWisEt, CustomMonsterIntEt, CustomMonsterChaEt, CustomMonsterHpEt, CustomMonsterAcEt, CustomMonsterCr;
+            CustomMonsterWisEt, CustomMonsterIntEt, CustomMonsterChaEt, CustomMonsterHpEt, CustomMonsterAcEt, CustomMonsterCr, CustomMonsterSpeed;
     private CustomMonster monster;
+    private RecyclerView CustomMonsterSpecialAbilitiesRv, CustomMonsterActionsRv;
+    private ArrayList<MonsterAbility> actions, specialAbilities;
+    private CustomMonsterAbilitiesListAdapter actionLA, specialAbilitiesLA;
+    private int editPosition = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -64,6 +75,63 @@ public class EditCustomMonster extends DnDEncountersActivity
         CustomMonsterAcEt.setText(Integer.toString(monster.getAc()));
         CustomMonsterCr = findViewById(R.id.CustomMonsterCr);
         CustomMonsterCr.setText(monster.getCr());
+        CustomMonsterSpeed = findViewById(R.id.CustomMonsterSpeed);
+        CustomMonsterSpeed.setText(monster.getSpeed());
+
+        //special abilities
+        CustomMonsterSpecialAbilitiesRv = findViewById(R.id.CustomMonsterSpecialAbilitiesRv);
+        specialAbilities = monster.getSpecialAbilities();
+        specialAbilitiesLA = new CustomMonsterAbilitiesListAdapter(getApplicationContext(), new RvClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //edit special ability
+                MonsterAbility monsterAbility = specialAbilities.get(position);
+                editPosition = position;
+                Intent myIntent = new Intent(EditCustomMonster.this, ManageCustomMonsterAbility.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(ManageCustomMonsterAbility.PASSED_ACTION, ManageCustomMonsterAbility.REQUEST_UPDATE_SPECIAL_ABILITY);
+                bundle.putSerializable(ManageCustomMonsterAbility.PASSED_ABILITY, monsterAbility);
+                myIntent.putExtras(bundle);
+                startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_UPDATE_SPECIAL_ABILITY);
+            }
+        }, new RvClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //delete special ability
+                specialAbilities.remove(position);
+                specialAbilitiesLA.setMonsterAbilityList(specialAbilities);
+            }
+        });
+        specialAbilitiesLA.setMonsterAbilityList(specialAbilities);
+        CustomMonsterSpecialAbilitiesRv.setAdapter(specialAbilitiesLA);
+        CustomMonsterSpecialAbilitiesRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        CustomMonsterActionsRv = findViewById(R.id.CustomMonsterActionsRv);
+        actions = monster.getActions();
+        actionLA = new CustomMonsterAbilitiesListAdapter(getApplicationContext(), new RvClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //edit action
+                MonsterAbility monsterAbility = actions.get(position);
+                editPosition = position;
+                Intent myIntent = new Intent(EditCustomMonster.this, ManageCustomMonsterAbility.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(ManageCustomMonsterAbility.PASSED_ACTION, ManageCustomMonsterAbility.REQUEST_UPDATE_ACTION);
+                bundle.putSerializable(ManageCustomMonsterAbility.PASSED_ABILITY, monsterAbility);
+                myIntent.putExtras(bundle);
+                startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_UPDATE_ACTION);
+            }
+        }, new RvClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //delete action
+                actions.remove(position);
+                actionLA.setMonsterAbilityList(actions);
+            }
+        });
+        actionLA.setMonsterAbilityList(actions);
+        CustomMonsterActionsRv.setAdapter(actionLA);
+        CustomMonsterActionsRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     public void enterHitDice(View v)
@@ -81,6 +149,38 @@ public class EditCustomMonster extends DnDEncountersActivity
             {
                 String rollResult = data.getStringExtra(DiceRollerDialog.PASSED_ROLL);
                 HitDiceDisplayTv.setText(rollResult);
+            }
+        }
+        else if(requestCode == ManageCustomMonsterAbility.REQUEST_NEW_ACTION && resultCode == RESULT_OK)
+        {
+            MonsterAbility newAction = (MonsterAbility)data.getSerializableExtra(ManageCustomMonsterAbility.PASSED_ABILITY);
+            actions.add(newAction);
+            actionLA.setMonsterAbilityList(actions);
+        }
+        else if(requestCode == ManageCustomMonsterAbility.REQUEST_NEW_SPECIAL_ABILITY && resultCode == RESULT_OK)
+        {
+            MonsterAbility newAbility = (MonsterAbility)data.getSerializableExtra(ManageCustomMonsterAbility.PASSED_ABILITY);
+            specialAbilities.add(newAbility);
+            specialAbilitiesLA.setMonsterAbilityList(specialAbilities);
+        }
+        else if(requestCode == ManageCustomMonsterAbility.REQUEST_UPDATE_SPECIAL_ABILITY && resultCode == RESULT_OK)
+        {
+            if(editPosition >= 0)
+            {
+                MonsterAbility newAbility = (MonsterAbility)data.getSerializableExtra(ManageCustomMonsterAbility.PASSED_ABILITY);
+                specialAbilities.set(editPosition, newAbility);
+                specialAbilitiesLA.setMonsterAbilityList(specialAbilities);
+                editPosition = -1;
+            }
+        }
+        else if(requestCode == ManageCustomMonsterAbility.REQUEST_UPDATE_ACTION && resultCode == RESULT_OK)
+        {
+            if(editPosition >= 0)
+            {
+                MonsterAbility newAbility = (MonsterAbility)data.getSerializableExtra(ManageCustomMonsterAbility.PASSED_ABILITY);
+                actions.set(editPosition, newAbility);
+                actionLA.setMonsterAbilityList(actions);
+                editPosition = -1;
             }
         }
     }
@@ -159,6 +259,12 @@ public class EditCustomMonster extends DnDEncountersActivity
             errorToast.show();
             return;
         }
+        if(CustomMonsterSpeed.getText().toString() == "")
+        {
+            Toast errorToast = Toast.makeText(getApplicationContext(), "You must enter a monster speed", Toast.LENGTH_LONG);
+            errorToast.show();
+            return;
+        }
         CustomMonster newMonster = new CustomMonster(CustomMonsterNameEt.getText().toString());
         newMonster.setMonsterType(CustomMonsterTypeEt.getText().toString());
         newMonster.setMonsterSize(CustomMonsterSizeEt.getText().toString());
@@ -172,6 +278,9 @@ public class EditCustomMonster extends DnDEncountersActivity
         newMonster.setAc(Integer.parseInt(CustomMonsterAcEt.getText().toString()));
         newMonster.setHitDice(new DiceParser(HitDiceDisplayTv.getText().toString()));
         newMonster.setCr(CustomMonsterCr.getText().toString());
+        newMonster.setSpeed(CustomMonsterSpeed.getText().toString());
+        newMonster.setSpecialAbilities(specialAbilities);
+        newMonster.setActions(actions);
         CustomMonsters.updateCustomMonster(getApplicationContext(), monster, newMonster);
         setResult(RESULT_OK);
         finish();
@@ -205,5 +314,23 @@ public class EditCustomMonster extends DnDEncountersActivity
         CustomMonsters.removeCustomMonster(getApplicationContext(), monster);
         setResult(RESULT_OK);
         finish();
+    }
+
+    public void addSpecialAbility(View v)
+    {
+        Intent myIntent = new Intent(EditCustomMonster.this, ManageCustomMonsterAbility.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ManageCustomMonsterAbility.PASSED_ACTION, ManageCustomMonsterAbility.REQUEST_NEW_SPECIAL_ABILITY);
+        myIntent.putExtras(bundle);
+        startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_NEW_SPECIAL_ABILITY);
+    }
+
+    public void addAction(View v)
+    {
+        Intent myIntent = new Intent(EditCustomMonster.this, ManageCustomMonsterAbility.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ManageCustomMonsterAbility.PASSED_ACTION, ManageCustomMonsterAbility.REQUEST_NEW_ACTION);
+        myIntent.putExtras(bundle);
+        startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_NEW_ACTION);
     }
 }

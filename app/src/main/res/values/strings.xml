@@ -17,6 +17,8 @@
     <string name="fa_arrow_circle_right">&#xf35a;</string>
     <string name="fa_arrow_circle_up">&#xf35b;</string>
     <string name="fa_arrow_circle_down">&#xf0ab;</string>
+    <string name="fa_edit">&#xf044;</string>
+    <string name="fa_plus_circle">&#xf055;</string>
 
 
     <!-- Dialogs -->
@@ -221,4 +223,16 @@
     <string name="EnterHitDiceTxt">Enter Hit Dice</string>
     <string name="EditustomMonsterTxt">Edit Custom Monster</string>
     <string name="DeleteCustomMonsterTxt">Delete Custom Monster</string>
+    <string name="SpeedTxt">Speed</string>
+    <string name="SpeedColonTxt">Speed:</string>
+
+    <!-- Abilities Manager -->
+    <string name="NewSpecialAbilityTxt">Add New Special Ability</string>
+    <string name="UpdateSpecialAbilityTxt">Update Special Ability</string>
+    <string name="NewActionTxt">Add New Monster Action</string>
+    <string name="UpdateActionTxt">Update Monster Action</string>
+    <string name="SpecialAbilityName">Special Ability Name</string>
+    <string name="SpecialAbilityDescription">Special Ability Description</string>
+    <string name="ActionName">Action Name</string>
+    <string name="ActionDescription">Action Description</string>
 </resources>

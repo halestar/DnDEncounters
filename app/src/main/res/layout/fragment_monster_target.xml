@@ -10,33 +10,16 @@
     android:layout_height="wrap_content">
 
 
-    <TextView
-        android:id="@+id/textView51"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/MonsterInfoPortraitIv"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/ActionsTxt"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ActionsHideBt"
-        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoSpecialAbilitiesRv" />
-
-    <Button
-        android:id="@+id/ActionsHideBt"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/fa_solids"
-        android:padding="0dp"
-        android:text="@string/fa_arrow_circle_down"
-        android:textColor="@color/colorPrimary"
+        android:contentDescription="@string/TokenPortraitTxt"
+        android:src="@drawable/monster_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoSpecialAbilitiesRv" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/MonsterInfoNameTv"
@@ -52,16 +35,27 @@
         app:layout_constraintStart_toEndOf="@+id/MonsterInfoPortraitIv"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/MonsterInfoPortraitIv"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+    <TextView
+        android:id="@+id/MonsterInfoSizeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="@string/TokenPortraitTxt"
-        android:src="@drawable/monster_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/MonsterSizeTxt"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/MonsterInfoPortraitIv"
+        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoNameTv" />
+
+    <TextView
+        android:id="@+id/MonsterInfoTypeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/MonsterTypeTxt"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/MonsterInfoSizeTv"
+        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoNameTv" />
 
     <TextView
         android:id="@+id/textView24"
@@ -84,28 +78,6 @@
         android:text="@string/PcAC"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoNameTv" />
-
-    <TextView
-        android:id="@+id/MonsterInfoSizeTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/MonsterSizeTxt"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/MonsterInfoPortraitIv"
-        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoNameTv" />
-
-    <TextView
-        android:id="@+id/MonsterInfoTypeTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/MonsterTypeTxt"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/MonsterInfoSizeTv"
         app:layout_constraintTop_toBottomOf="@+id/MonsterInfoNameTv" />
 
     <android.support.constraint.ConstraintLayout
@@ -460,6 +432,44 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textView50"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/SpeedColonTxt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+    <TextView
+        android:id="@+id/MonsterrInfoSpeed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/SpeedTxt"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView50"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+    <Button
+        android:id="@+id/SpecialAbilitiesHideBt"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/fa_solids"
+        android:padding="0dp"
+        android:text="@string/fa_arrow_circle_down"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView50" />
+
+    <TextView
         android:id="@+id/textView48"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -470,8 +480,9 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/SpecialAbilitiesHideBt"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/MonsterrInfoSpeed" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/MonsterInfoSpecialAbilitiesRv"
@@ -485,7 +496,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
     <Button
-        android:id="@+id/SpecialAbilitiesHideBt"
+        android:id="@+id/ActionsHideBt"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
@@ -495,7 +506,22 @@
         android:text="@string/fa_arrow_circle_down"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoSpecialAbilitiesRv" />
+
+    <TextView
+        android:id="@+id/textView51"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/ActionsTxt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/ActionsHideBt"
+        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoSpecialAbilitiesRv" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/MonsterInfoActionsRv"

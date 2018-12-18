@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".activities.custom_monsters.EditCustomMonster">
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textView42"
@@ -18,6 +21,22 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/DeleteMonsterBt"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/DeleteMonsterBt"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/DeleteCustomMonsterTxt"
+        android:fontFamily="@font/fa_solids_family"
+        android:onClick="confirmDeleteMonster"
+        android:padding="0dp"
+        android:text="@string/fa_times_circle"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
@@ -192,6 +211,20 @@
             android:textAlignment="center" />
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/CustomMonsterSpeed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/SpeedTxt"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
+
     <TextView
         android:id="@+id/textView49"
         android:layout_width="wrap_content"
@@ -202,7 +235,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpeed" />
 
     <TextView
         android:id="@+id/HitDiceDisplayTv"
@@ -212,7 +245,7 @@
         android:layout_marginTop="8dp"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView49"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpeed" />
 
     <Button
         android:id="@+id/button9"
@@ -224,7 +257,86 @@
         android:padding="0dp"
         android:text="@string/EnterHitDiceTxt"
         app:layout_constraintStart_toEndOf="@+id/HitDiceDisplayTv"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpeed" />
+    <TextView
+        android:id="@+id/textView52"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/SpecialAbilitiesTxt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/AddSpecialAbilityBt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView49" />
+
+    <Button
+        android:id="@+id/AddSpecialAbilityBt"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fa_solids_family"
+        android:onClick="addSpecialAbility"
+        android:padding="0dp"
+        android:text="@string/fa_plus_circle"
+        android:textColor="@color/design_default_color_primary_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button9" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/CustomMonsterSpecialAbilitiesRv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView52">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/textView53"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/ActionsTxt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/AddActionBt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpecialAbilitiesRv" />
+
+    <Button
+        android:id="@+id/AddActionBt"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fa_solids_family"
+        android:onClick="addAction"
+        android:padding="0dp"
+        android:text="@string/fa_plus_circle"
+        android:textColor="@color/design_default_color_primary_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpecialAbilitiesRv" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/CustomMonsterActionsRv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
     <Button
         android:id="@+id/button13"
@@ -236,22 +348,9 @@
         android:onClick="UpdateMonster"
         android:text="@string/EditustomMonsterTxt"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button9" />
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterActionsRv" />
 
-    <Button
-        android:id="@+id/DeleteMonsterBt"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        android:contentDescription="@string/DeleteCustomMonsterTxt"
-        android:fontFamily="@font/fa_solids_family"
-        android:onClick="confirmDeleteMonster"
-        android:padding="0dp"
-        android:text="@string/fa_times_circle"
-        android:textColor="@color/colorAccent"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -85,6 +85,72 @@
             android:textOn="@string/FiveTxt" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout12"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout10">
+
+        <ToggleButton
+            android:id="@+id/DiceNum6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/SixTxt"
+            android:textAlignment="center"
+            android:textOff="@string/SixTxt"
+            android:textOn="@string/SixTxt"
+            android:textStyle="bold"
+            android:visibility="visible" />
+
+        <ToggleButton
+            android:id="@+id/DiceNum7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/SevenTxt"
+            android:textOff="@string/SevenTxt"
+            android:textOn="@string/SevenTxt"
+            android:visibility="visible" />
+
+        <ToggleButton
+            android:id="@+id/DiceNum8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/EightTxt"
+            android:textOff="@string/EightTxt"
+            android:textOn="@string/EightTxt" />
+
+        <ToggleButton
+            android:id="@+id/DiceNum9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/NineTxt"
+            android:textOff="@string/NineTxt"
+            android:textOn="@string/NineTxt" />
+
+        <ToggleButton
+            android:id="@+id/DiceNum10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="false"
+            android:text="@string/TenTxt"
+            android:textOff="@string/TenTxt"
+            android:textOn="@string/TenTxt" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/textView46"
         android:layout_width="0dp"
@@ -97,7 +163,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout10" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
 
     <LinearLayout
         android:id="@+id/linearLayout11"
@@ -198,36 +264,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView47" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <Button
+        android:id="@+id/RollBt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:text="@string/RollTxt"
+        android:textAlignment="center"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RollModifierEt"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@+id/RollModifierEt" />
 
-        <Button
-            android:id="@+id/RollBt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:text="@string/RollTxt"
-            style="?android:attr/buttonBarButtonStyle"
-            android:textAlignment="center"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/CancelBtn"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:text="@android:string/cancel" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/CancelBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:text="@android:string/cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RollModifierEt" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -89,6 +89,8 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
 	    monsterInfoWisTv.setText(activeMonster.getMonster().getWisMod());
 	    TextView monsterInfoChaTv = v.findViewById(R.id.MonsterInfoChaTv);
 	    monsterInfoChaTv.setText(activeMonster.getMonster().getChaMod());
+        TextView MonsterrInfoSpeed = v.findViewById(R.id.MonsterrInfoSpeed);
+        MonsterrInfoSpeed.setText(activeMonster.getMonster().getSpeed());
         //special abilities
         MonsterInfoSpecialAbilitiesRv = v.findViewById(R.id.MonsterInfoSpecialAbilitiesRv);
 	    MonsterAbilitiesListAdapter monsterAbilitiesListAdapter

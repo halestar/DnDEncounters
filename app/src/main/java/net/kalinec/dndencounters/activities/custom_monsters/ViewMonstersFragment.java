@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
+import net.kalinec.dndencounters.lib.OnMonsterSelectedListener;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monsters.Monster;
 import net.kalinec.dndencounters.monsters.MonsterListAdapter;
@@ -20,24 +22,42 @@ import java.util.List;
 
 public class ViewMonstersFragment extends Fragment {
 
+    private static final String SELECTOR_LISTENER = "SELECTOR_LISTENER";
     private List<Monster> monsterList, currentMonsterList;
     private MonsterListAdapter monsterListAdapter;
     private RecyclerView MonsterRv;
     private SearchView MonsterSv;
+    private OnMonsterSelectedListener mListener;
 
 
     public ViewMonstersFragment() {
 
     }
+
+    public static ViewMonstersFragment newInstance(OnMonsterSelectedListener mListener)
+    {
+        ViewMonstersFragment fragment = new ViewMonstersFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(SELECTOR_LISTENER, mListener);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public static ViewMonstersFragment newInstance()
     {
         ViewMonstersFragment fragment = new ViewMonstersFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(SELECTOR_LISTENER, null);
+        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mListener = (OnMonsterSelectedListener)getArguments().getSerializable(SELECTOR_LISTENER);
+        }
     }
 
     @Override
@@ -56,7 +76,8 @@ public class ViewMonstersFragment extends Fragment {
             public void onClick(View view, int position)
             {
                 Monster monster = currentMonsterList.get(position);
-                //selectMonster(monster);
+                if(mListener != null)
+                    mListener.onMonsterSelected(monster);
             }
         });
         monsterListAdapter.setMonsterList(monsterList);

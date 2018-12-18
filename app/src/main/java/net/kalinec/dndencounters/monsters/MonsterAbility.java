@@ -7,7 +7,7 @@ public class MonsterAbility implements Serializable {
     private String description;
 	
 	
-	MonsterAbility(String name, String description)
+	public MonsterAbility(String name, String description)
 	{
         this.name = name;
         this.description = description;

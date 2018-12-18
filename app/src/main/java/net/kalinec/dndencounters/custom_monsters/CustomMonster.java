@@ -85,11 +85,18 @@ public class CustomMonster extends Monster
         this.specialAbilities = specialAbilities;
     }
 
+    public void setActions(ArrayList<MonsterAbility> actions) {
+        this.actions = actions;
+    }
+
     public void setAc(int ac) {
         this.ac = ac;
     }
 
     public void setHitDice(DiceParser hitDice) {
         this.hitDice = hitDice;
+    }
+    public void setSpeed(String speed) {
+        this.speed = speed;
     }
 }

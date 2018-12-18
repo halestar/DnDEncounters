@@ -26,12 +26,14 @@ public class Monster implements Serializable
 	protected int hp;
 	protected ArrayList<MonsterAbility> specialAbilities, actions;
 	protected int ac;
+	protected String speed;
 
 	public Monster()
 	{
 		name = cr = monsterType = monsterSize = "";
 		str = dex = con = intel = wis = cha = hp = mid = 0;
 		specialAbilities = actions = new ArrayList<>();
+		speed = "unk.";
 		determineMods();
 	}
 
@@ -92,6 +94,7 @@ public class Monster implements Serializable
 		try{ ac = stats.getInt("armor_class"); } catch (JSONException e) { ac = 0; }
 		try{monsterType = stats.getString("type");}catch (JSONException e){monsterType = CR_ERROR;}
 		try{monsterSize = stats.getString("size");}catch (JSONException e){monsterSize = CR_ERROR;}
+		try{speed = stats.getString("speed");}catch (JSONException e){speed = CR_ERROR;}
 		try
 		{
 			String hit_dice = stats.getString("hit_dice");
@@ -230,5 +233,9 @@ public class Monster implements Serializable
 
 	public DiceParser getHitDice() {
 		return hitDice;
+	}
+
+	public String getSpeed() {
+		return speed;
 	}
 }
