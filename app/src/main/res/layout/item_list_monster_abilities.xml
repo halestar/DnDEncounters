@@ -18,4 +18,10 @@
         android:layout_height="wrap_content"
         android:text="@string/AbilityDescriptionTxt"
         android:textSize="12sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/DiceRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>

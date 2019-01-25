@@ -4,7 +4,10 @@ import android.util.Log;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DiceParser implements Serializable
 {
@@ -85,5 +88,19 @@ public class DiceParser implements Serializable
 
     public String getDiceStr() {
         return diceStr;
+    }
+    
+    public static List<DiceParser> parseString(String str)
+    {
+        ArrayList<DiceParser> tokens = new ArrayList<>();
+        Pattern diceRegEx = Pattern.compile("\\b(\\d*[dD](4|6|8|10|12|20)(\\s*[+|-]\\s*\\d)?)\\b");
+        Matcher diceMatches = diceRegEx.matcher(str);
+        while(diceMatches.find())
+        {
+            String diceStr = diceMatches.group(1).replace(" ", "");
+            Log.d("DiceParser.List","found " + diceStr);
+            tokens.add(new DiceParser(diceStr));
+        }
+        return tokens;
     }
 }

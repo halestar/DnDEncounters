@@ -39,8 +39,8 @@ public class AddEncounter extends DnDEncountersActivity
 	{
 		super.onCreate(savedInstanceState);
 		Bundle bundle = getIntent().getExtras();
-		assert bundle != null;
-		writeEncounter = bundle.getBoolean(WRITE_ENCOUNTER, true);
+		if(bundle != null)
+			writeEncounter = bundle.getBoolean(WRITE_ENCOUNTER, true);
 		setContentView(R.layout.activity_add_encounter);
 		
 		encounterName = findViewById(R.id.editEncounterNameEt);

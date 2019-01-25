@@ -2,6 +2,7 @@ package net.kalinec.dndencounters.monsters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.dice.DiceButtonsListAdapter;
+import net.kalinec.dndencounters.dice.DiceParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +22,11 @@ public class MonsterAbilitiesListAdapter extends RecyclerView.Adapter<MonsterAbi
 	private final ArrayList<MonsterAbility> monsterAbilityList = new ArrayList<>();
 	
 	private LayoutInflater layoutInflater;
+	private Context context;
 	
 	public MonsterAbilitiesListAdapter(Context context)
 	{
+		this.context = context;
 		this.layoutInflater = LayoutInflater.from(context);
 	}
 	
@@ -48,6 +53,10 @@ public class MonsterAbilitiesListAdapter extends RecyclerView.Adapter<MonsterAbi
 		{
 			holder.MonsterInfoAbilityNameTv.setText(monsterAbility.getName());
 			holder.MonsterInfoAbilityDescriptionTv.setText(monsterAbility.getDescription());
+			DiceButtonsListAdapter diceButtonsListAdapter = new DiceButtonsListAdapter(context);
+			diceButtonsListAdapter.setDice(DiceParser.parseString(monsterAbility.getDescription()));
+			holder.DiceRv.setAdapter(diceButtonsListAdapter);
+			holder.DiceRv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 		}
 	}
 	
@@ -60,12 +69,14 @@ public class MonsterAbilitiesListAdapter extends RecyclerView.Adapter<MonsterAbi
 	static class MonsterAbilityAbilitiesViewHolder extends RecyclerView.ViewHolder
 	{
 		private TextView MonsterInfoAbilityNameTv, MonsterInfoAbilityDescriptionTv;
+		private RecyclerView DiceRv;
 		
 		MonsterAbilityAbilitiesViewHolder(View itemView)
 		{
 			super(itemView);
 			MonsterInfoAbilityNameTv = itemView.findViewById(R.id.MonsterInfoAbilityNameTv);
 			MonsterInfoAbilityDescriptionTv = itemView.findViewById(R.id.MonsterInfoAbilityDescriptionTv);
+			DiceRv = itemView.findViewById(R.id.DiceRv);
 		}
 	}
 }
