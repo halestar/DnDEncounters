@@ -9,6 +9,10 @@
             android:icon="@drawable/players_icon"
             android:title="@string/PlayersTxt" />
         <item
+            android:id="@+id/nav_modules"
+            android:icon="@drawable/adventure"
+            android:title="@string/ModulesTxt" />
+        <item
             android:id="@+id/nav_encounters"
             android:icon="@drawable/encounter_icon"
             android:title="@string/EncountersTxt" />

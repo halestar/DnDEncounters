@@ -4,6 +4,7 @@ import android.content.Context;
 
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.encounters.Encounter;
+import net.kalinec.dndencounters.modules.Module;
 import net.kalinec.dndencounters.parties.Party;
 
 import java.io.Serializable;
@@ -22,6 +23,22 @@ public class PlaySession implements Serializable
 	private ArrayList<AdventureEncounter> completedEncounters = new ArrayList<>();
 	private Date started, completed;
 	private UUID uuid;
+	private Module module = null;
+
+	public Module getModule()
+	{
+		return module;
+	}
+
+	public void setModule(Module module)
+	{
+		this.module = module;
+	}
+
+	public boolean hasModule()
+	{
+		return (this.module != null);
+	}
 
 	public void updateAdventureEncounter(AdventureEncounter adventureEncounter)
 	{

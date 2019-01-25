@@ -21,6 +21,7 @@ import android.widget.TextView;
 import net.kalinec.dndencounters.activities.adventure_encounters.PlayAdventure;
 import net.kalinec.dndencounters.activities.custom_monsters.ViewMonsters;
 import net.kalinec.dndencounters.activities.encounters.ViewEncounters;
+import net.kalinec.dndencounters.activities.modules.ListModules;
 import net.kalinec.dndencounters.activities.monster_tokens.ViewMonsterTokens;
 import net.kalinec.dndencounters.activities.parties.CreateParty;
 import net.kalinec.dndencounters.activities.players.Players;
@@ -141,6 +142,11 @@ public class MainActivity extends DnDEncountersActivity
 		if (id == R.id.nav_players)
 		{
 			Intent myIntent = new Intent(MainActivity.this, Players.class);
+			MainActivity.this.startActivity(myIntent);
+		}
+		else if (id == R.id.nav_modules)
+		{
+			Intent myIntent = new Intent(MainActivity.this, ListModules.class);
 			MainActivity.this.startActivity(myIntent);
 		}
 		else if (id == R.id.nav_encounters)

@@ -13,6 +13,9 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.modules.EditModule"></activity>
+        <activity android:name=".activities.modules.AddModule" />
+        <activity android:name=".activities.modules.ListModules" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -64,7 +67,7 @@
         <activity android:name=".activities.custom_monsters.AddCustomMonster" />
         <activity android:name=".dice.DiceRollerDialog" />
         <activity android:name=".activities.custom_monsters.EditCustomMonster" />
-        <activity android:name=".activities.custom_monsters.ManageCustomMonsterAbility"></activity>
+        <activity android:name=".activities.custom_monsters.ManageCustomMonsterAbility" />
     </application>
 
 </manifest>

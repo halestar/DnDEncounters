@@ -27,15 +27,20 @@ import java.util.Locale;
 public class AddEncounter extends DnDEncountersActivity
 {
 	public static final int REQUEST_NEW_ENCOUNTER = 15;
+	public final static String WRITE_ENCOUNTER = "WRITE_ENCOUNTER";
 	private List<Monster> monsters;
 	private EditText encounterName;
 	private TextView encounterCr;
 	private EncounterMonsterListAdapter encounterMonsterListAdapter;
+	private boolean writeEncounter = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Bundle bundle = getIntent().getExtras();
+		assert bundle != null;
+		writeEncounter = bundle.getBoolean(WRITE_ENCOUNTER, true);
 		setContentView(R.layout.activity_add_encounter);
 		
 		encounterName = findViewById(R.id.editEncounterNameEt);
@@ -50,7 +55,7 @@ public class AddEncounter extends DnDEncountersActivity
 			public void onClick(View view, int position)
 			{
 				Monster selectedMonster = encounterMonsterListAdapter.get(position);
-				if(view.getId() == R.id.removePartyMembeBtn)
+				if(view.getId() == R.id.RemoveEncounterBt)
 					removeMonsterFromEncounter(selectedMonster);
 				else if(view.getId() == R.id.dupeMonsterBtn)
 					addMonsterToEncounter(selectedMonster);
@@ -125,7 +130,8 @@ public class AddEncounter extends DnDEncountersActivity
 		Encounter newEncounter = new Encounter();
 		newEncounter.setEncounterName(encounterName.getText().toString());
 		newEncounter.setMonsters(monsters);
-		Encounters.addEncounter(getApplicationContext(), newEncounter);
+		if(writeEncounter)
+			Encounters.addEncounter(getApplicationContext(), newEncounter);
 		Intent data = new Intent();
 		data.putExtra(Encounter.PASSED_ENCOUNTER, newEncounter);
 		setResult(RESULT_OK, data);

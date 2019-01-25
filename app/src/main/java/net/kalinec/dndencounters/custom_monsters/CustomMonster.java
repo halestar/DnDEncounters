@@ -6,10 +6,11 @@ import net.kalinec.dndencounters.monsters.MonsterAbility;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class CustomMonster extends Monster
+public class CustomMonster extends Monster implements Serializable
 {
     private UUID uuid;
 

@@ -90,10 +90,10 @@ public class PartyListAdapter extends RecyclerView.Adapter<PartyListAdapter.Part
 		PartyViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
-			partyMemberNameTv = itemView.findViewById(R.id.partyMemberNameTv);
+			partyMemberNameTv = itemView.findViewById(R.id.EncounterNameTv);
 			partyMemberClass = itemView.findViewById(R.id.partyMemberClass);
 			PartyMemberLv = itemView.findViewById(R.id.PartyMemberLv);
-			removePartyMembeBtn = itemView.findViewById(R.id.removePartyMembeBtn);
+			removePartyMembeBtn = itemView.findViewById(R.id.RemoveEncounterBt);
 			mListener = listener;
 			removePartyMembeBtn.setOnClickListener(this);
 		}

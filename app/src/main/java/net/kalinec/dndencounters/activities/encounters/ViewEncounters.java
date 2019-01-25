@@ -66,7 +66,7 @@ public class ViewEncounters extends DnDEncountersActivity
 		encounterRv.setAdapter(encounterAdapter);
 		encounterRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 		
-		SearchView encounterSv = findViewById(R.id.encounterSv);
+		SearchView encounterSv = findViewById(R.id.ModuleSv);
 		encounterSv.setActivated(true);
 		encounterSv.onActionViewExpanded();
 		encounterSv.setIconified(false);

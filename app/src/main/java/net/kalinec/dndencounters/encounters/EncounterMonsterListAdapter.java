@@ -111,11 +111,11 @@ public class EncounterMonsterListAdapter
 		MonsterViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
-			encounterMonsterTv = itemView.findViewById(R.id.partyMemberNameTv);
+			encounterMonsterTv = itemView.findViewById(R.id.EncounterNameTv);
 			encounterMonsterCrTv = itemView.findViewById(R.id.encounterMonsterCrTv);
 			mListener = listener;
 			
-			removeMonsterBtn = itemView.findViewById(R.id.removePartyMembeBtn);
+			removeMonsterBtn = itemView.findViewById(R.id.RemoveEncounterBt);
 			dupeMonsterBtn = itemView.findViewById(R.id.dupeMonsterBtn);
 		}
 		

@@ -279,4 +279,5 @@ public class AddCustomMonster extends AppCompatActivity
         startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_NEW_ACTION);
     }
 
+
 }
