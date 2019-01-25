@@ -23,7 +23,8 @@ import net.kalinec.dndencounters.playsessions.PlaySession;
 
 import java.util.Locale;
 
-public class PlayEncounter extends DnDEncountersActivity {
+public class PlayEncounter extends DnDEncountersActivity
+{
     public static final int PLAY_ENCOUNTER = 60;
     private PlaySession activeSession;
     private AdventureEncounter adventureEncounter;

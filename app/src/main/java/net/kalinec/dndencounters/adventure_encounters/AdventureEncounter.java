@@ -20,7 +20,27 @@ public class AdventureEncounter implements Serializable {
     private ArrayList<AdventureEncounterActor> actors;
     private ArrayList<AdventureEncounterTurn> completedTurns;
     private AdventureEncounterTurn currentTurn;
-    private boolean completed, setup;
+    private boolean completed, setup, monsterInitiative, monsterHp;
+
+    public boolean isMonsterInitiative()
+    {
+        return monsterInitiative;
+    }
+
+    public void setMonsterInitiative(boolean monsterInitiative)
+    {
+        this.monsterInitiative = monsterInitiative;
+    }
+
+    public boolean isMonsterHp()
+    {
+        return monsterHp;
+    }
+
+    public void setMonsterHp(boolean monsterHp)
+    {
+        this.monsterHp = monsterHp;
+    }
 
     public Encounter getEncounter() {
         return encounter;

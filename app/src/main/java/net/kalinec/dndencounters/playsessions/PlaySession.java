@@ -30,9 +30,22 @@ public class PlaySession implements Serializable
 		return module;
 	}
 
+	public Encounter getCurrentEncounter()
+	{
+		return currentEncounter;
+	}
+
 	public void setModule(Module module)
 	{
 		this.module = module;
+		//add all the encounters.
+		encounters.addAll(module.getEncounters());
+	}
+
+	public void removeModule()
+	{
+		encounters.removeAll(module.getEncounters());
+		this.module = null;
 	}
 
 	public boolean hasModule()

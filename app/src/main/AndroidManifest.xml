@@ -13,7 +13,9 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.modules.EditModule"></activity>
+        <activity android:name=".activities.adventure_encounters.UpdateAdventureEncounter"></activity>
+        <activity android:name=".activities.modules.SelectModule" />
+        <activity android:name=".activities.modules.EditModule" />
         <activity android:name=".activities.modules.AddModule" />
         <activity android:name=".activities.modules.ListModules" />
         <activity

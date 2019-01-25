@@ -93,7 +93,7 @@
     <string name="PlaySingleEncounterTxt">Play Single Encounter</string>
     <string name="CompleteAdventureTxt">Finish Adventure</string>
     <string name="AddEncounterToAdventureTxt">Add Encounter(s) to Adventure</string>
-    <string name="UnplayedHeaderTxt">Unplayed Encounters (click to play)</string>
+    <string name="UnplayedHeaderTxt">Encounter Queue</string>
     <string name="PlayedEncountersTxt">Completed Encounters (click to view)</string>
     <string name="ContinueEncounter">Continue Existing Encounter</string>
     <string name="ChangePartyTxt">Change Party</string>
@@ -248,4 +248,8 @@
     <string name="AddModuleTxt">Add Module</string>
     <string name="UpdateModuleTxt">Update Module</string>
     <string name="DeleteModuleTxt">Delete Module</string>
+    <string name="CreateEncounterToPlayTxt">Create Encounter</string>
+    <string name="PlayingModuleTxt">Playing Module:</string>
+    <string name="NoneTxt">None</string>
+    <string name="CurrentEncounterTxt">Current Encounter Being Played</string>
 </resources>

@@ -64,7 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/AssignMonsterTokensBtn" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/EncounterQueueDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -88,7 +88,7 @@
         android:text="@string/AssignPlayerInitiativeTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/EncounterQueueDisplay" />
 
     <Switch
         android:id="@+id/assignIndividualMonsterInitiativeSw"

@@ -42,4 +42,7 @@ dependencies {
     implementation 'org.apache.commons:commons-math3:3.6.1'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     implementation 'com.android.support:recyclerview-v7:28.0.0'
+    def nav_version = "1.0.0-alpha11"
+    implementation "android.arch.navigation:navigation-fragment:$nav_version" // use -ktx for Kotlin
+    implementation "android.arch.navigation:navigation-ui:$nav_version" // use -ktx for Kotlin
 }

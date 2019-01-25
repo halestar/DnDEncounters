@@ -162,6 +162,8 @@ public class SetupEncounter extends DnDEncountersActivity {
     public void completeSetup(View v)
     {
         selectedEncounter.clearActors();
+        selectedEncounter.setMonsterHp(rollForHp);
+	    selectedEncounter.setMonsterInitiative(individualInitiative);
         for(AdventureEncounterPlayer pc: encounterPlayers)
         {
             pc.setHasActed(false);
@@ -176,6 +178,7 @@ public class SetupEncounter extends DnDEncountersActivity {
         }
         InitiativeRoller initiativeDice = new InitiativeRoller(max_mod);
         int initiative = initiativeDice.roll();
+
         for(AdventureEncounterMonster monster: encounterMonsterList)
         {
             monster.setHasActed(false);
