@@ -17,10 +17,15 @@ public class MonsterTokenSpinnerAdapter extends BaseAdapter
     private List<MonsterToken> monsterTokens;
     private Context context;
     
-    MonsterTokenSpinnerAdapter(Context context)
+    public MonsterTokenSpinnerAdapter(Context context)
     {
         this.context = context;
         monsterTokens = MonsterTokens.getAllMonsterTokens(context);
+    }
+    
+    public int findPosition(MonsterToken mToken)
+    {
+        return monsterTokens.indexOf(mToken);
     }
     
     @Override

@@ -13,14 +13,19 @@ import android.widget.TextView;
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.activities.adventure_encounters.SetupEncounter;
+import net.kalinec.dndencounters.activities.adventure_encounters.UpdateAdventureEncounter;
+import net.kalinec.dndencounters.activities.adventure_encounters.UpdatePlayerInitiative;
 import net.kalinec.dndencounters.activities.encounter_turn.MonsterTurn;
 import net.kalinec.dndencounters.activities.encounter_turn.PlayerTurn;
 import net.kalinec.dndencounters.adventure_encounters.AdventureActorsListAdapter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
+import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
+import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterPlayer;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterTurn;
 import net.kalinec.dndencounters.playsessions.PlaySession;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class PlayEncounter extends DnDEncountersActivity
@@ -125,6 +130,31 @@ public class PlayEncounter extends DnDEncountersActivity
             activeSession.saveSession(getApplicationContext());
             playEncounter();
         }
+        else if(requestCode == UpdatePlayerInitiative.REQUEST_UPDATED_PLAYER_INITIATIVE && resultCode == RESULT_OK)
+        {
+        	Log.d("PlayEncounter", "Adventure Encounter before update:" + adventureEncounter);
+	        assert data != null;
+	        ArrayList<AdventureEncounterPlayer> encounterPlayers = (ArrayList<AdventureEncounterPlayer>)data.getSerializableExtra(AdventureEncounterPlayer.PASSED_ENCOUNTER_PLAYERS);
+	        Log.d("PlayEncounter", "Received the following updates: " + encounterPlayers);
+	        for(AdventureEncounterPlayer pc: encounterPlayers)
+	            adventureEncounter.updateActor(pc);
+	        Log.d("PlayEncounter", "Adventure Encounter is now:" + adventureEncounter);
+	        adventureEncounter.beginEncounter();
+	        activeSession.updateAdventureEncounter(adventureEncounter);
+	        activeSession.saveSession(getApplicationContext());
+	        updateTurn();
+        }
+        else if(requestCode == UpdateAdventureEncounter.REQUEST_UPDATED_ENCOUNTER && resultCode == RESULT_OK)
+        {
+	        assert data != null;
+	        ArrayList<AdventureEncounterMonster> encounterMonsters = (ArrayList<AdventureEncounterMonster>)data.getSerializableExtra(AdventureEncounterMonster.PASSED_ENCOUNTER_MONSTERS);
+	        for(AdventureEncounterMonster monster: encounterMonsters)
+		        adventureEncounter.updateActor(monster);
+	        adventureEncounter.beginEncounter();
+	        activeSession.updateAdventureEncounter(adventureEncounter);
+	        activeSession.saveSession(getApplicationContext());
+	        updateTurn();
+        }
     }
 
     public void continueEncounter(View v)
@@ -175,4 +205,18 @@ public class PlayEncounter extends DnDEncountersActivity
         setResult(RESULT_OK, data);
         finish();
     }
+    
+    public void updatePlayerInitiative(View v)
+    {
+	    Intent myIntent = new Intent(PlayEncounter.this, UpdatePlayerInitiative.class);
+	    myIntent.putExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER, adventureEncounter);
+	    startActivityForResult(myIntent, UpdatePlayerInitiative.REQUEST_UPDATED_PLAYER_INITIATIVE);
+    }
+	
+	public void updateAdventureEncounter(View v)
+	{
+		Intent myIntent = new Intent(PlayEncounter.this, UpdateAdventureEncounter.class);
+		myIntent.putExtra(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER, adventureEncounter);
+		startActivityForResult(myIntent, UpdateAdventureEncounter.REQUEST_UPDATED_ENCOUNTER);
+	}
 }

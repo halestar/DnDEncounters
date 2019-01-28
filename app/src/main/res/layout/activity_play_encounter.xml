@@ -10,56 +10,127 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/PartyNameTv"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout13"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@string/PartyNameTxt"
-            android:textSize="24sp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/PartyNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/PartyNameTxt"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="49dp"
+                tools:layout_editor_absoluteY="93dp" />
+
+            <Button
+                android:id="@+id/UpdatePartyInitiativeBt"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/fa_solids_family"
+                android:onClick="updatePlayerInitiative"
+                android:padding="0dp"
+                android:text="@string/fa_edit"
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteX="346dp"
+                tools:layout_editor_absoluteY="93dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/VsLeft"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout15"
+            app:layout_constraintEnd_toStartOf="@+id/VsHeader"
+            app:layout_constraintHorizontal_bias="0.835"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout13" />
 
         <TextView
-            android:id="@+id/textView32"
+            android:id="@+id/VsHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/VsTxt"
+            android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/PartyNameTv"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout13" />
 
-        <TextView
-            android:id="@+id/EncounterNameTv"
-            android:layout_width="wrap_content"
+        <View
+            android:id="@+id/VsRight"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/VsHeader"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout13" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout15"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/EncounterNameTxt"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/EditEncounter"
-            app:layout_constraintStart_toEndOf="@+id/textView32"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/EditEncounter"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="0"
-            android:fontFamily="@font/fa_solids_family"
-            android:padding="0dp"
-            android:text="@string/fa_edit"
-            android:textColor="@color/design_default_color_primary"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/VsHeader">
+
+            <TextView
+                android:id="@+id/EncounterNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/EncounterNameTxt"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:layout_editor_absoluteX="85dp"
+                tools:layout_editor_absoluteY="227dp" />
+
+            <Button
+                android:id="@+id/UpdateMonstersBt"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/fa_solids_family"
+                android:onClick="updateAdventureEncounter"
+                android:padding="0dp"
+                android:text="@string/fa_edit"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                tools:layout_editor_absoluteX="346dp"
+                tools:layout_editor_absoluteY="209dp" />
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/ActorListRv"
@@ -69,9 +140,9 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView32" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout15" />
 
         <TextView
             android:id="@+id/textView33"

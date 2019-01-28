@@ -252,4 +252,8 @@
     <string name="PlayingModuleTxt">Playing Module:</string>
     <string name="NoneTxt">None</string>
     <string name="CurrentEncounterTxt">Current Encounter Being Played</string>
+    <string name="UpdatePlayerInitiativeTxt">Update Player Initiative</string>
+    <string name="AliveTxt">Alive</string>
+    <string name="MonsterTokenTxt">Monster Token</string>
+    <string name="MonsterTokenColonTxt">Monster Token:</string>
 </resources>

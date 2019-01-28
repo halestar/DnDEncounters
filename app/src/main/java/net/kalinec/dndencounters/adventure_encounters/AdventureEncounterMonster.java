@@ -18,7 +18,12 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
     private boolean hasActed;
     private int hp;
     private UUID uuid;
-
+    
+    public void setToken(MonsterToken token)
+    {
+        this.token = token;
+    }
+    
     public int getMaxHp() {
         return maxHp;
     }
