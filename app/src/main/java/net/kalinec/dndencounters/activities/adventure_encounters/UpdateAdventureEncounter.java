@@ -28,6 +28,7 @@ public class UpdateAdventureEncounter extends DnDEncountersActivity
 	public static final int REQUEST_UPDATED_ENCOUNTER = 178;
 	private AdventureEncounter adventureEncounter;
 	private ArrayList<AdventureEncounterMonster> encounterMonsters;
+	private ArrayList<EncounterUpdater> updatedMonsters;
 	private RecyclerView MonsterListRv;
 	private AdventureEncounterMonsterActorListAdapter adventureEncounterMonsterActorListAdapter;
 	private List<MonsterToken> monsterTokens;
@@ -41,18 +42,14 @@ public class UpdateAdventureEncounter extends DnDEncountersActivity
 		assert bundle != null;
 		adventureEncounter = (AdventureEncounter) bundle.getSerializable(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
 		setContentView(R.layout.activity_update_adventure_encounter);
+
 		encounterMonsters = adventureEncounter.getAvailableMonsters();
+		//mkae the updater list.
+		updatedMonsters = new ArrayList<>();
+		for(AdventureEncounterMonster m: encounterMonsters)
+			updatedMonsters.add(new EncounterUpdater(m));
 		MonsterListRv = findViewById(R.id.MonsterListRv);
-		adventureEncounterMonsterActorListAdapter = new AdventureEncounterMonsterActorListAdapter(getApplicationContext(), new RvClickListener()
-		{
-			@Override
-			public void onClick(View view, int position)
-			{
-				encounterMonsters.remove(position);
-				adventureEncounterMonsterActorListAdapter.setMonsterList(encounterMonsters);
-			}
-		});
-		adventureEncounterMonsterActorListAdapter.setMonsterList(encounterMonsters);
+		adventureEncounterMonsterActorListAdapter = new AdventureEncounterMonsterActorListAdapter(getApplicationContext(), updatedMonsters);
 		MonsterListRv.setAdapter(adventureEncounterMonsterActorListAdapter);
 		MonsterListRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 		monsterTokens = MonsterTokens.getAllMonsterTokens(getApplicationContext());
@@ -95,8 +92,8 @@ public class UpdateAdventureEncounter extends DnDEncountersActivity
 					adventureMonster.setHp(adventureMonster.getMonster().getHp());
 					adventureMonster.setMaxHp(adventureMonster.getMonster().getHp());
 				}
-				encounterMonsters.add(adventureMonster);
-				adventureEncounterMonsterActorListAdapter.setMonsterList(encounterMonsters);
+				updatedMonsters.add(new EncounterUpdater(adventureMonster));
+				adventureEncounterMonsterActorListAdapter.setMonsterList(updatedMonsters);
 			}
 		}
 	}
@@ -109,21 +106,11 @@ public class UpdateAdventureEncounter extends DnDEncountersActivity
 	
 	public void updateEncounter(View v)
 	{
-		for(int i = 0; i < encounterMonsters.size(); i++)
-		{
-			AdventureEncounterMonsterActorListAdapter.AdventureEncounterMonsterActorViewHolder holder =
-					(AdventureEncounterMonsterActorListAdapter.AdventureEncounterMonsterActorViewHolder)MonsterListRv.findViewHolderForAdapterPosition(i);
-			assert holder != null;
-			encounterMonsters.get(i).setInitiative(holder.getInitiative());
-			encounterMonsters.get(i).setToken(holder.getMonsterToken());
-			encounterMonsters.get(i).setHp(holder.getCurrentHp());
-			if(holder.isAlive())
-				encounterMonsters.get(i).setStatus(AdventureEncounterActor.ALIVE);
-			else
-				encounterMonsters.get(i).setStatus(AdventureEncounterActor.DEAD);
-		}
+		ArrayList<AdventureEncounterMonster> newEncounterMonsters = new ArrayList<>();
+		for(EncounterUpdater m: updatedMonsters)
+			newEncounterMonsters.add(m.getUpdatedMonster());
 		Intent data = new Intent();
-		data.putExtra(AdventureEncounterMonster.PASSED_ENCOUNTER_MONSTERS, encounterMonsters);
+		data.putExtra(AdventureEncounterMonster.PASSED_ENCOUNTER_MONSTERS, newEncounterMonsters);
 		setResult(RESULT_OK, data);
 		finish();
 	}

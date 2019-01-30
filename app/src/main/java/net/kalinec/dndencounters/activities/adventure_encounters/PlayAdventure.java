@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
+import net.kalinec.dndencounters.MainActivity;
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.activities.characters.PcCentral;
 import net.kalinec.dndencounters.activities.encounters.AddEncounter;
 import net.kalinec.dndencounters.activities.encounters.PlayEncounter;
 import net.kalinec.dndencounters.activities.encounters.SelectEncounter;
@@ -164,6 +166,8 @@ public class PlayAdventure extends DnDEncountersActivity {
         {
             assert data != null;
             Encounter encounter = (Encounter)data.getSerializableExtra(Encounter.PASSED_ENCOUNTER);
+            activeSession.setCurrentEncounter(encounter);
+            activeSession.saveSession(getApplicationContext());
             playEncounter(encounter);
         }
         else if(requestCode == PlayEncounter.PLAY_ENCOUNTER && resultCode == RESULT_OK)
@@ -177,6 +181,8 @@ public class PlayAdventure extends DnDEncountersActivity {
         {
             assert data != null;
             Encounter newEncounter = (Encounter)data.getSerializableExtra(Encounter.PASSED_ENCOUNTER);
+            activeSession.setCurrentEncounter(newEncounter);
+            activeSession.saveSession(getApplicationContext());
             playEncounter(newEncounter);
         }
         else if(requestCode == SelectModule.REQUEST_EXISTING_MODULE && resultCode == RESULT_OK)
@@ -202,6 +208,13 @@ public class PlayAdventure extends DnDEncountersActivity {
         Intent myIntent = new Intent(PlayAdventure.this, SelectEncounters.class);
         startActivityForResult(myIntent, SelectEncounters.REQUEST_ENCOUNTER_LIST);
     }
+
+	public void viewParty(View v)
+	{
+		Intent myIntent = new Intent(PlayAdventure.this, PcCentral.class);
+		myIntent.putExtra(PlaySession.PASSED_SESSION, activeSession);
+		PlayAdventure.this.startActivity(myIntent);
+	}
 
     public void playEncounter(Encounter e)
     {

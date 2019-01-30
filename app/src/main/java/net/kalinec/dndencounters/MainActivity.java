@@ -26,12 +26,15 @@ import net.kalinec.dndencounters.activities.monster_tokens.ViewMonsterTokens;
 import net.kalinec.dndencounters.activities.parties.CreateParty;
 import net.kalinec.dndencounters.activities.players.Players;
 import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.monster_tokens.MonsterToken;
+import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
 import net.kalinec.dndencounters.parties.Party;
 import net.kalinec.dndencounters.playsessions.PlaySession;
 import net.kalinec.dndencounters.playsessions.PlaySessionManager;
 import net.kalinec.dndencounters.playsessions.PlaySessionsListAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends DnDEncountersActivity
@@ -71,50 +74,75 @@ public class MainActivity extends DnDEncountersActivity
 		Group activeSessionGroup = findViewById(R.id.activeSessionGroup);
 		Group activeAdventruesGroup = findViewById(R.id.activeAdventruesGroup);
 		RecyclerView activeAdventuresRv = findViewById(R.id.ActiveAdventuresRv);
-		
-		if(activeSession == null) {
-			activeSessionGroup.setVisibility(View.GONE);
-		}
-		else {
-			activeSessionGroup.setVisibility(View.VISIBLE);
-			partyNameTv.setText(activeSession.getPlayers().getName());
-			activeSessionNumPartyTv.setText(String.format(Locale.getDefault(), "%d", activeSession
-					.getPlayers().getMembers().size()));
-			activeSessionAplTv.setText(String.format(Locale.getDefault(), "%d", activeSession
-					.getPlayers().getApl()));
-			continueSessionBtn.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					continueAdventure();
-				}
-			});
-		}
-		
-		//any saved adventures?
-		ArrayList<PlaySession> activeAdventures = PlaySessionManager
-				.getActiveSessions(getApplicationContext());
-		if(activeAdventures == null || activeAdventures.size() == 0)
+		TextView MonsterTokenWarning = findViewById(R.id.MonsterTokenWarning);
+		Button beingAdventureBtn = findViewById(R.id.beingAdventureBtn);
+
+		List<MonsterToken> monsterTokens = MonsterTokens.getAllMonsterTokens(getApplicationContext());
+
+		if(monsterTokens.size() == 0)
 		{
-			//no adventures to show, so hide all
+			MonsterTokenWarning.setVisibility(View.VISIBLE);
+			activeSessionGroup.setVisibility(View.GONE);
 			activeAdventruesGroup.setVisibility(View.GONE);
+			beingAdventureBtn.setVisibility(View.GONE);
 		}
 		else
 		{
-			activeAdventruesGroup.setVisibility(View.VISIBLE);
-			playSessionsListAdapter = new PlaySessionsListAdapter(getApplicationContext(), new RvClickListener() {
-				@Override
-				public void onClick(View view, int position) {
-					PlaySession wantToPlay = playSessionsListAdapter.get(position);
-					if(activeSession != null)
-						PlaySessionManager.saveCurrentSession(getApplicationContext());
-					PlaySessionManager.removeFromActiveSessions(getApplicationContext(), wantToPlay);
-					activeSession = wantToPlay;
-					continueAdventure();
-				}
-			});
-			playSessionsListAdapter.setSessionList(activeAdventures);
-			activeAdventuresRv.setAdapter(playSessionsListAdapter);
-			activeAdventuresRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+			MonsterTokenWarning.setVisibility(View.GONE);
+			if (activeSession == null)
+			{
+				activeSessionGroup.setVisibility(View.GONE);
+			}
+			else
+			{
+				activeSessionGroup.setVisibility(View.VISIBLE);
+				partyNameTv.setText(activeSession.getPlayers().getName());
+				activeSessionNumPartyTv
+						.setText(String.format(Locale.getDefault(), "%d", activeSession
+								.getPlayers().getMembers().size()));
+				activeSessionAplTv.setText(String.format(Locale.getDefault(), "%d", activeSession
+						.getPlayers().getApl()));
+				continueSessionBtn.setOnClickListener(new View.OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						continueAdventure();
+					}
+				});
+			}
+
+			//any saved adventures?
+			ArrayList<PlaySession> activeAdventures = PlaySessionManager
+					.getActiveSessions(getApplicationContext());
+			if (activeAdventures == null || activeAdventures.size() == 0)
+			{
+				//no adventures to show, so hide all
+				activeAdventruesGroup.setVisibility(View.GONE);
+			}
+			else
+			{
+				activeAdventruesGroup.setVisibility(View.VISIBLE);
+				playSessionsListAdapter =
+						new PlaySessionsListAdapter(getApplicationContext(), new RvClickListener()
+						{
+							@Override
+							public void onClick(View view, int position)
+							{
+								PlaySession wantToPlay = playSessionsListAdapter.get(position);
+								if (activeSession != null)
+									PlaySessionManager.saveCurrentSession(getApplicationContext());
+								PlaySessionManager.removeFromActiveSessions(getApplicationContext(),
+								                                            wantToPlay);
+								activeSession = wantToPlay;
+								continueAdventure();
+							}
+						});
+				playSessionsListAdapter.setSessionList(activeAdventures);
+				activeAdventuresRv.setAdapter(playSessionsListAdapter);
+				activeAdventuresRv
+						.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+			}
 		}
 	}
 	

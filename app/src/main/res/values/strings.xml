@@ -19,6 +19,7 @@
     <string name="fa_arrow_circle_down">&#xf0ab;</string>
     <string name="fa_edit">&#xf044;</string>
     <string name="fa_plus_circle">&#xf055;</string>
+    <string name="fa_view">&#xf06e;</string>
 
 
     <!-- Dialogs -->
@@ -232,8 +233,12 @@
     <string name="UpdateSpecialAbilityTxt">Update Special Ability</string>
     <string name="NewActionTxt">Add New Monster Action</string>
     <string name="UpdateActionTxt">Update Monster Action</string>
+    <string name="NewLegendaryAbilityTxt">Add New Legendary Ability</string>
+    <string name="UpdateLegendaryAbilityTxt">Update Legendary Ability</string>
     <string name="SpecialAbilityName">Special Ability Name</string>
     <string name="SpecialAbilityDescription">Special Ability Description</string>
+    <string name="LegendaryAbilityName">Legendary Ability Name</string>
+    <string name="LegendaryAbilityDescription">Legendary Ability Description</string>
     <string name="ActionName">Action Name</string>
     <string name="ActionDescription">Action Description</string>
     <string name="ModuleNameTxt">Module Name</string>
@@ -256,4 +261,20 @@
     <string name="AliveTxt">Alive</string>
     <string name="MonsterTokenTxt">Monster Token</string>
     <string name="MonsterTokenColonTxt">Monster Token:</string>
+    <string name="ResistancesColonTxt">Resistances:</string>
+    <string name="ImmunitiesColonTxt">Immunities:</string>
+    <string name="VulnerabilitiesColonTxt">Vulnerabilities:</string>
+    <string name="LanguagesColonTxt">Languages:</string>
+    <string name="SensesColonTxt">Senses:</string>
+    <string name="LegendaryActionsTxt">Legendary Abilities</string>
+    <string name="AlignmentolonTxt">Alignment:</string>
+    <string name="HdTxt">HD</string>
+    <string name="AlignmentTxt">Alignment</string>
+    <string name="ResistancesTxt">Resistances</string>
+    <string name="ImmunitiesTxt">Immunities</string>
+    <string name="VulnerabilitiesTxt">Vulnerabilities</string>
+    <string name="LanguagesTxt">Languages</string>
+    <string name="SensesTxt">Senses</string>
+    <string name="LvColonTxt">Lv:</string>
+    <string name="TokenWarning">Warning! You must enter at least one Monster Token in order to start an adventure.</string>
 </resources>

@@ -35,9 +35,9 @@
         android:onClick="beginPlaySession"
         android:text="@string/BeginSessionTxt"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+        app:layout_constraintTop_toBottomOf="@+id/MonsterTokenWarning" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/activeSessionView"
@@ -178,5 +178,21 @@
         app:constraint_referenced_ids="ActiveAdvenuresCl,ActiveAdventruesHeaderTv,ActiveAdventuresRv" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/MonsterTokenWarning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/alert_shape"
+        android:text="@string/TokenWarning"
+        android:textColor="@color/alertTextColor"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
 </android.support.constraint.ConstraintLayout>

@@ -100,4 +100,40 @@ public class CustomMonster extends Monster implements Serializable
     public void setSpeed(String speed) {
         this.speed = speed;
     }
+
+    public void setAlignment(String alignment)
+    {
+        this.alignment = alignment;
+    }
+
+    public void setResistances(String resistances)
+    {
+        this.resistances = resistances;
+    }
+
+    public void setImmunities(String immunities)
+    {
+        this.immunities = immunities;
+    }
+
+    public void setVulnerabilities(String vulnerabilities)
+    {
+        this.vulnerabilities = vulnerabilities;
+    }
+
+    public void setLanguages(String languages)
+    {
+        this.languages = languages;
+    }
+
+    public void setSenses(String senses)
+    {
+        this.senses = senses;
+    }
+
+    public void setLegendaryAbilities(
+            ArrayList<MonsterAbility> legendaryAbilities)
+    {
+        this.legendaryAbilities = legendaryAbilities;
+    }
 }

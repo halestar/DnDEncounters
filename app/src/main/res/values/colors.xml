@@ -7,4 +7,7 @@
     <color name="colorYellow">#efb906</color>
     <color name="colorRed">#ff0000</color>
     <color name="colorGreen">#00ff00</color>
+    <color name="alertBgColor">#f2dede</color>
+    <color name="alertBorderColor">#ebccd1</color>
+    <color name="alertTextColor">#a94442</color>
 </resources>

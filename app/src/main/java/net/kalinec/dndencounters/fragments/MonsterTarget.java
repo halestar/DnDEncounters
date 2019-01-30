@@ -27,11 +27,11 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
     private static final String ACTIVE_MONSTER = "ACTIVE_MONSTER";
 
     private AdventureEncounterMonster activeMonster;
-    private RecyclerView MonsterInfoSpecialAbilitiesRv, MonsterInfoActionsRv;
+    private RecyclerView MonsterInfoSpecialAbilitiesRv, MonsterInfoActionsRv, LegendaryActionsRv;
 	private Button ActionsHideBt;
-	private Button SpecialAbilitiesHideBt;
+	private Button SpecialAbilitiesHideBt, LegendaryActionHideBt;
     private ToggleButton HpModTypeTb;
-    private boolean hidingActions, hidingAbilities;
+    private boolean hidingActions, hidingAbilities, hidingLegendaryActions;
     private EditText MonsterCurrentHpEt;
 
     public MonsterTarget() {
@@ -89,8 +89,20 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
 	    monsterInfoWisTv.setText(activeMonster.getMonster().getWisMod());
 	    TextView monsterInfoChaTv = v.findViewById(R.id.MonsterInfoChaTv);
 	    monsterInfoChaTv.setText(activeMonster.getMonster().getChaMod());
-        TextView MonsterrInfoSpeed = v.findViewById(R.id.MonsterrInfoSpeed);
-        MonsterrInfoSpeed.setText(activeMonster.getMonster().getSpeed());
+        TextView MonsterInfoSpeed = v.findViewById(R.id.MonsterInfoSpeed);
+	    MonsterInfoSpeed.setText(activeMonster.getMonster().getSpeed());
+	    TextView AlignmentTxt = v.findViewById(R.id.AlignmentTxt);
+	    AlignmentTxt.setText(activeMonster.getMonster().getAlignment());
+	    TextView ResistancesTv = v.findViewById(R.id.ResistancesTv);
+	    ResistancesTv.setText(activeMonster.getMonster().getResistances());
+	    TextView ImmunitiesTv = v.findViewById(R.id.ImmunitiesTv);
+	    ImmunitiesTv.setText(activeMonster.getMonster().getImmunities());
+	    TextView VulnerabilitiesTxt = v.findViewById(R.id.VulnerabilitiesTxt);
+	    VulnerabilitiesTxt.setText(activeMonster.getMonster().getVulnerabilities());
+	    TextView LanguagesTv = v.findViewById(R.id.LanguagesTv);
+	    LanguagesTv.setText(activeMonster.getMonster().getLanguages());
+	    TextView SensesTv = v.findViewById(R.id.SensesTv);
+	    SensesTv.setText(activeMonster.getMonster().getSenses());
         //special abilities
         MonsterInfoSpecialAbilitiesRv = v.findViewById(R.id.MonsterInfoSpecialAbilitiesRv);
 	    MonsterAbilitiesListAdapter monsterAbilitiesListAdapter
@@ -106,8 +118,15 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
         monsterActionsListAdapter.setMonsterAbilityList(activeMonster.getMonster().getActions());
         MonsterInfoActionsRv.setAdapter(monsterActionsListAdapter);
         MonsterInfoActionsRv.setLayoutManager(new LinearLayoutManager(getContext()));
+        //legendary Actions
+	    LegendaryActionsRv = v.findViewById(R.id.LegendaryActionsRv);
+	    MonsterAbilitiesListAdapter monsterLegendaryActionsListAdapter
+			    = new MonsterAbilitiesListAdapter(getContext());
+	    monsterLegendaryActionsListAdapter.setMonsterAbilityList(activeMonster.getMonster().getLegendaryAbilities());
+	    LegendaryActionsRv.setAdapter(monsterLegendaryActionsListAdapter);
+	    LegendaryActionsRv.setLayoutManager(new LinearLayoutManager(getContext()));
         //hide buttons
-        hidingActions = hidingAbilities = false;
+        hidingActions = hidingAbilities = hidingLegendaryActions = false;
         SpecialAbilitiesHideBt = v.findViewById(R.id.SpecialAbilitiesHideBt);
         SpecialAbilitiesHideBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,6 +163,24 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
                 }
             }
         });
+	    LegendaryActionHideBt = v.findViewById(R.id.LegendaryActionHideBt);
+	    LegendaryActionHideBt.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+			    if(hidingLegendaryActions)
+			    {
+				    hidingLegendaryActions = false;
+				    LegendaryActionsRv.setVisibility(View.VISIBLE);
+				    LegendaryActionHideBt.setText(R.string.fa_arrow_circle_down);
+			    }
+			    else
+			    {
+				    hidingLegendaryActions = true;
+				    LegendaryActionsRv.setVisibility(View.GONE);
+				    LegendaryActionHideBt.setText(R.string.fa_arrow_circle_right);
+			    }
+		    }
+	    });
         //current HP
         MonsterCurrentHpEt = v.findViewById(R.id.MonsterCurrentHpEt);
 	    MonsterCurrentHpEt.setText(String.format(Locale.getDefault(), "%d", activeMonster.getHp()));

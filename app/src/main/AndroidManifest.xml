@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.adventure_encounters.UpdatePlayerInitiative"></activity>
+        <activity android:name=".activities.characters.PcCentral"></activity>
+        <activity android:name=".activities.adventure_encounters.UpdatePlayerInitiative" />
         <activity android:name=".activities.adventure_encounters.UpdateAdventureEncounter" />
         <activity android:name=".activities.modules.SelectModule" />
         <activity android:name=".activities.modules.EditModule" />

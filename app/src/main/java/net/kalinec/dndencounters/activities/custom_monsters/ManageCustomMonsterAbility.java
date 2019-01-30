@@ -19,8 +19,10 @@ public class ManageCustomMonsterAbility extends DnDEncountersActivity {
 
     public final static int REQUEST_NEW_SPECIAL_ABILITY = 200;
     public final static int REQUEST_UPDATE_SPECIAL_ABILITY = 201;
-    public final static int REQUEST_NEW_ACTION = 202;
-    public final static int REQUEST_UPDATE_ACTION= 203;
+    public final static int REQUEST_NEW_LEGENDARY_ABILITY = 202;
+    public final static int REQUEST_NEW_ACTION = 203;
+    public final static int REQUEST_UPDATE_ACTION= 204;
+    public final static int REQUEST_UPDATE_LEGENDARY_ABILITY = 205;
 
     public final static String PASSED_ACTION = "PASSED_ACTION";
     public final static String PASSED_ABILITY = "PASSED_ABILITY";
@@ -37,7 +39,7 @@ public class ManageCustomMonsterAbility extends DnDEncountersActivity {
         Bundle bundle = getIntent().getExtras();
         assert bundle != null;
         action = bundle.getInt(PASSED_ACTION);
-        if(action == REQUEST_UPDATE_ACTION || action == REQUEST_UPDATE_SPECIAL_ABILITY)
+        if(action == REQUEST_UPDATE_ACTION || action == REQUEST_UPDATE_SPECIAL_ABILITY || action == REQUEST_UPDATE_LEGENDARY_ABILITY)
             ability = (MonsterAbility)bundle.getSerializable(PASSED_ABILITY);
         setContentView(R.layout.activity_manage_custom_monster_ability);
 
@@ -69,7 +71,7 @@ public class ManageCustomMonsterAbility extends DnDEncountersActivity {
             AbilityDescriptionEt.setHint(R.string.ActionDescription);
             SubmitBt.setText(R.string.NewActionTxt);
         }
-        else
+        else if(action == REQUEST_UPDATE_ACTION)
         {
             ActionHeaderTv.setText(R.string.UpdateActionTxt);
             AbilityNameEt.setHint(R.string.ActionName);
@@ -78,6 +80,23 @@ public class ManageCustomMonsterAbility extends DnDEncountersActivity {
             AbilityNameEt.setText(ability.getName());
             AbilityDescriptionEt.setText(ability.getDescription());
         }
+        else if(action == REQUEST_NEW_LEGENDARY_ABILITY)
+        {
+            ActionHeaderTv.setText(R.string.NewLegendaryAbilityTxt);
+            AbilityNameEt.setHint(R.string.LegendaryAbilityName);
+            AbilityDescriptionEt.setHint(R.string.LegendaryAbilityDescription);
+            SubmitBt.setText(R.string.NewLegendaryAbilityTxt);
+        }
+        else if(action == REQUEST_UPDATE_LEGENDARY_ABILITY)
+        {
+            ActionHeaderTv.setText(R.string.UpdateLegendaryAbilityTxt);
+            AbilityNameEt.setHint(R.string.LegendaryAbilityName);
+            AbilityDescriptionEt.setHint(R.string.LegendaryAbilityDescription);
+            SubmitBt.setText(R.string.UpdateLegendaryAbilityTxt);
+            AbilityNameEt.setText(ability.getName());
+            AbilityDescriptionEt.setText(ability.getDescription());
+        }
+
     }
 
     public void manageAbility(View v)

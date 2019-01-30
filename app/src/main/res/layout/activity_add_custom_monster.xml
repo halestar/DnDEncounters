@@ -122,22 +122,22 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout8">
 
         <EditText
-            android:id="@+id/CustomMonsterWisEt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/WisTxt"
-            android:inputType="number"
-            android:textAlignment="center" />
-
-        <EditText
             android:id="@+id/CustomMonsterIntEt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/IntTxt"
+            android:inputType="number"
+            android:textAlignment="center" />
+
+        <EditText
+            android:id="@+id/CustomMonsterWisEt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="@string/WisTxt"
             android:inputType="number"
             android:textAlignment="center" />
 
@@ -205,9 +205,100 @@
         android:ems="10"
         android:hint="@string/SpeedTxt"
         android:inputType="textPersonName"
+        android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout12" />
+
+    <EditText
+        android:id="@+id/AlignmentTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/AlignmentTxt"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpeed" />
+
+    <EditText
+        android:id="@+id/ResistancesTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/ResistancesTxt"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AlignmentTv" />
+
+    <EditText
+        android:id="@+id/ImmunitiesTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/ImmunitiesTxt"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ResistancesTv" />
+
+    <EditText
+        android:id="@+id/VulnerabilitiesTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/VulnerabilitiesTxt"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ImmunitiesTv" />
+
+    <EditText
+        android:id="@+id/LanguagesTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/LanguagesTxt"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/VulnerabilitiesTv" />
+
+    <EditText
+        android:id="@+id/SensesTv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/SensesTxt"
+        android:inputType="textMultiLine"
+        android:selectAllOnFocus="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LanguagesTv" />
 
     <TextView
         android:id="@+id/textView49"
@@ -219,7 +310,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpeed" />
+        app:layout_constraintTop_toBottomOf="@+id/SensesTv" />
 
     <TextView
         android:id="@+id/HitDiceDisplayTv"
@@ -227,9 +318,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="@string/HdTxt"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView49"
-        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpeed" />
+        app:layout_constraintTop_toBottomOf="@+id/SensesTv" />
 
     <Button
         android:id="@+id/button9"
@@ -241,12 +333,12 @@
         android:padding="0dp"
         android:text="@string/EnterHitDiceTxt"
         app:layout_constraintStart_toEndOf="@+id/HitDiceDisplayTv"
-        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterSpeed" />
+        app:layout_constraintTop_toBottomOf="@+id/SensesTv" />
 
     <TextView
         android:id="@+id/textView52"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="21dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -323,19 +415,57 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView53" />
 
+    <TextView
+        android:id="@+id/textView89"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/LegendaryActionsTxt"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/AddLegendaryActionBt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterActionsRv" />
+
+    <Button
+        android:id="@+id/AddLegendaryActionBt"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/fa_solids_family"
+        android:onClick="addLegendaryAbility"
+        android:padding="0dp"
+        android:text="@string/fa_plus_circle"
+        android:textColor="@color/design_default_color_primary_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterActionsRv" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/CustomMonsterLegendaryActionsRv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView89" />
+
     <Button
         android:id="@+id/button13"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:onClick="AddMonster"
         android:text="@string/AddCustomMonsterTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterActionsRv" />
+        app:layout_constraintTop_toBottomOf="@+id/CustomMonsterLegendaryActionsRv"/>
 
 </android.support.constraint.ConstraintLayout>
 </ScrollView>

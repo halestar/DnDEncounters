@@ -29,10 +29,11 @@ public class AddCustomMonster extends AppCompatActivity
     public static final int REQUEST_NEW_MONSTER = 101;
     private TextView HitDiceDisplayTv;
     private EditText CustomMonsterNameEt, CustomMonsterTypeEt, CustomMonsterSizeEt, CustomMonsterStrEt, CustomMonsterDexEt, CustomMonsterConEt,
-            CustomMonsterWisEt, CustomMonsterIntEt, CustomMonsterChaEt, CustomMonsterHpEt, CustomMonsterAcEt, CustomMonsterCr, CustomMonsterSpeed;
-    private RecyclerView CustomMonsterSpecialAbilitiesRv, CustomMonsterActionsRv;
-    private ArrayList<MonsterAbility> actions, specialAbilities;
-    private CustomMonsterAbilitiesListAdapter actionLA, specialAbilitiesLA;
+            CustomMonsterWisEt, CustomMonsterIntEt, CustomMonsterChaEt, CustomMonsterHpEt, CustomMonsterAcEt, CustomMonsterCr, CustomMonsterSpeed,
+            AlignmentTv, ResistancesTv, ImmunitiesTv, VulnerabilitiesTv, LanguagesTv, SensesTv;
+    private RecyclerView CustomMonsterSpecialAbilitiesRv, CustomMonsterActionsRv, CustomMonsterLegendaryActionsRv;
+    private ArrayList<MonsterAbility> actions, specialAbilities, legendaryAbilities;
+    private CustomMonsterAbilitiesListAdapter actionLA, specialAbilitiesLA, legendaryAbilitiesLA;
     private int editPosition = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -53,6 +54,12 @@ public class AddCustomMonster extends AppCompatActivity
         CustomMonsterAcEt = findViewById(R.id.CustomMonsterAcEt);
         CustomMonsterCr = findViewById(R.id.CustomMonsterCr);
         CustomMonsterSpeed = findViewById(R.id.CustomMonsterSpeed);
+        AlignmentTv = findViewById(R.id.AlignmentTv);
+        ResistancesTv = findViewById(R.id.ResistancesTv);
+        ImmunitiesTv = findViewById(R.id.ImmunitiesTv);
+        VulnerabilitiesTv = findViewById(R.id.VulnerabilitiesTv);
+        LanguagesTv = findViewById(R.id.LanguagesTv);
+        SensesTv = findViewById(R.id.SensesTv);
         //special abilities
         CustomMonsterSpecialAbilitiesRv = findViewById(R.id.CustomMonsterSpecialAbilitiesRv);
         specialAbilities = new ArrayList<>();
@@ -80,7 +87,7 @@ public class AddCustomMonster extends AppCompatActivity
         specialAbilitiesLA.setMonsterAbilityList(specialAbilities);
         CustomMonsterSpecialAbilitiesRv.setAdapter(specialAbilitiesLA);
         CustomMonsterSpecialAbilitiesRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
+        //actions
         CustomMonsterActionsRv = findViewById(R.id.CustomMonsterActionsRv);
         actions = new ArrayList<>();
         actionLA = new CustomMonsterAbilitiesListAdapter(getApplicationContext(), new RvClickListener() {
@@ -107,6 +114,33 @@ public class AddCustomMonster extends AppCompatActivity
         actionLA.setMonsterAbilityList(actions);
         CustomMonsterActionsRv.setAdapter(actionLA);
         CustomMonsterActionsRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        //legendary abilities
+        CustomMonsterLegendaryActionsRv = findViewById(R.id.CustomMonsterLegendaryActionsRv);
+        legendaryAbilities = new ArrayList<>();
+        legendaryAbilitiesLA = new CustomMonsterAbilitiesListAdapter(getApplicationContext(), new RvClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //edit special ability
+                MonsterAbility monsterAbility = legendaryAbilities.get(position);
+                editPosition = position;
+                Intent myIntent = new Intent(AddCustomMonster.this, ManageCustomMonsterAbility.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt(ManageCustomMonsterAbility.PASSED_ACTION, ManageCustomMonsterAbility.REQUEST_UPDATE_LEGENDARY_ABILITY);
+                bundle.putSerializable(ManageCustomMonsterAbility.PASSED_ABILITY, monsterAbility);
+                myIntent.putExtras(bundle);
+                startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_UPDATE_LEGENDARY_ABILITY);
+            }
+        }, new RvClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //delete legendasry ability
+                legendaryAbilities.remove(position);
+                legendaryAbilitiesLA.setMonsterAbilityList(legendaryAbilities);
+            }
+        });
+        legendaryAbilitiesLA.setMonsterAbilityList(legendaryAbilities);
+        CustomMonsterLegendaryActionsRv.setAdapter(legendaryAbilitiesLA);
+        CustomMonsterLegendaryActionsRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
     public void enterHitDice(View v)
@@ -138,6 +172,12 @@ public class AddCustomMonster extends AppCompatActivity
             specialAbilities.add(newAbility);
             specialAbilitiesLA.setMonsterAbilityList(specialAbilities);
         }
+        else if(requestCode == ManageCustomMonsterAbility.REQUEST_NEW_LEGENDARY_ABILITY && resultCode == RESULT_OK)
+        {
+            MonsterAbility newAbility = (MonsterAbility)data.getSerializableExtra(ManageCustomMonsterAbility.PASSED_ABILITY);
+            legendaryAbilities.add(newAbility);
+            legendaryAbilitiesLA.setMonsterAbilityList(legendaryAbilities);
+        }
         else if(requestCode == ManageCustomMonsterAbility.REQUEST_UPDATE_SPECIAL_ABILITY && resultCode == RESULT_OK)
         {
             if(editPosition >= 0)
@@ -155,6 +195,16 @@ public class AddCustomMonster extends AppCompatActivity
                 MonsterAbility newAbility = (MonsterAbility)data.getSerializableExtra(ManageCustomMonsterAbility.PASSED_ABILITY);
                 actions.set(editPosition, newAbility);
                 actionLA.setMonsterAbilityList(actions);
+                editPosition = -1;
+            }
+        }
+        else if(requestCode == ManageCustomMonsterAbility.REQUEST_UPDATE_LEGENDARY_ABILITY && resultCode == RESULT_OK)
+        {
+            if(editPosition >= 0)
+            {
+                MonsterAbility newAbility = (MonsterAbility)data.getSerializableExtra(ManageCustomMonsterAbility.PASSED_ABILITY);
+                legendaryAbilities.set(editPosition, newAbility);
+                legendaryAbilitiesLA.setMonsterAbilityList(legendaryAbilities);
                 editPosition = -1;
             }
         }
@@ -254,8 +304,15 @@ public class AddCustomMonster extends AppCompatActivity
         newMonster.setHitDice(new DiceParser(HitDiceDisplayTv.getText().toString()));
         newMonster.setCr(CustomMonsterCr.getText().toString());
         newMonster.setSpeed(CustomMonsterSpeed.getText().toString());
+        newMonster.setAlignment(AlignmentTv.getText().toString());
+        newMonster.setResistances(ResistancesTv.getText().toString());
+        newMonster.setImmunities(ImmunitiesTv.getText().toString());
+        newMonster.setVulnerabilities(VulnerabilitiesTv.getText().toString());
+        newMonster.setLanguages(LanguagesTv.getText().toString());
+        newMonster.setSenses(SensesTv.getText().toString());
         newMonster.setSpecialAbilities(specialAbilities);
         newMonster.setActions(actions);
+        newMonster.setLegendaryAbilities(legendaryAbilities);
         CustomMonsters.addCustomMonster(getApplicationContext(), newMonster);
         setResult(RESULT_OK);
         finish();
@@ -277,6 +334,15 @@ public class AddCustomMonster extends AppCompatActivity
         bundle.putInt(ManageCustomMonsterAbility.PASSED_ACTION, ManageCustomMonsterAbility.REQUEST_NEW_ACTION);
         myIntent.putExtras(bundle);
         startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_NEW_ACTION);
+    }
+
+    public void addLegendaryAbility(View v)
+    {
+        Intent myIntent = new Intent(AddCustomMonster.this, ManageCustomMonsterAbility.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt(ManageCustomMonsterAbility.PASSED_ACTION, ManageCustomMonsterAbility.REQUEST_NEW_LEGENDARY_ABILITY);
+        myIntent.putExtras(bundle);
+        startActivityForResult(myIntent, ManageCustomMonsterAbility.REQUEST_NEW_LEGENDARY_ABILITY);
     }
 
 

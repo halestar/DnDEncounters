@@ -18,13 +18,14 @@ public class Monster implements Serializable
 {
 	public final static String PASSED_MONSTER = "PASSED_MONSTER";
 	public static final String CR_ERROR = "Unk.";
+	public static final String NONE_ERROR = "None";
 	protected static final String NAME_ERROR = "Error Monster";
 	protected int mid;
-	protected String name, cr, monsterType, monsterSize;
+	protected String name, cr, monsterType, monsterSize, alignment, resistances, immunities, vulnerabilities, languages, senses;
 	protected int str, dex, con, intel, wis, cha;
 	protected int str_mod, dex_mod, con_mod, intel_mod, wis_mod, cha_mod;
 	protected int hp;
-	protected ArrayList<MonsterAbility> specialAbilities, actions;
+	protected ArrayList<MonsterAbility> specialAbilities, actions, legendaryAbilities;
 	protected int ac;
 	protected String speed;
 
@@ -32,8 +33,9 @@ public class Monster implements Serializable
 	{
 		name = cr = monsterType = monsterSize = "";
 		str = dex = con = intel = wis = cha = hp = mid = 0;
-		specialAbilities = actions = new ArrayList<>();
-		speed = "unk.";
+		specialAbilities = actions = legendaryAbilities = new ArrayList<>();
+		speed = alignment = "unk.";
+		resistances = immunities = vulnerabilities = languages = senses = NONE_ERROR;
 		determineMods();
 	}
 
@@ -95,6 +97,16 @@ public class Monster implements Serializable
 		try{monsterType = stats.getString("type");}catch (JSONException e){monsterType = CR_ERROR;}
 		try{monsterSize = stats.getString("size");}catch (JSONException e){monsterSize = CR_ERROR;}
 		try{speed = stats.getString("speed");}catch (JSONException e){speed = CR_ERROR;}
+		try{alignment = stats.getString("alignment");}catch (JSONException e){alignment = CR_ERROR;}
+		try{resistances = stats.getString("damage_resistances");}catch (JSONException e){resistances = NONE_ERROR;}
+		try{immunities = stats.getString("damage_immunities");}catch (JSONException e){immunities = "";}
+		try{immunities = (immunities == ""? "": immunities + ", ") + stats.getString("condition_immunities");}catch (JSONException e){}
+		if(immunities == "")
+			immunities = NONE_ERROR;
+		try{vulnerabilities = stats.getString("damage_vulnerabilities");}catch (JSONException e){vulnerabilities = NONE_ERROR;}
+		try{languages = stats.getString("languages");}catch (JSONException e){languages = NONE_ERROR;}
+		try{senses = stats.getString("senses");}catch (JSONException e){senses = NONE_ERROR;}
+
 		try
 		{
 			String hit_dice = stats.getString("hit_dice");
@@ -127,6 +139,18 @@ public class Monster implements Serializable
 		}
 		catch (JSONException e){
 			actions = new ArrayList<>();
+		}
+
+		//legendary abilities.
+		try
+		{
+			JSONArray sLegendaryAbilities = stats.getJSONArray("legendary_actions");
+			legendaryAbilities = new ArrayList<>();
+			for(int i = 0; i < sLegendaryAbilities.length(); i++)
+				legendaryAbilities.add(new MonsterAbility(sLegendaryAbilities.getJSONObject(i).getString("name"), sLegendaryAbilities.getJSONObject(i).getString("desc")));
+		}
+		catch (JSONException e){
+			legendaryAbilities = new ArrayList<>();
 		}
 
 	}
@@ -238,4 +262,41 @@ public class Monster implements Serializable
 	public String getSpeed() {
 		return speed;
 	}
+
+	public String getAlignment()
+	{
+		return alignment;
+	}
+
+	public String getResistances()
+	{
+		return resistances;
+	}
+
+	public String getImmunities()
+	{
+		return immunities;
+	}
+
+	public String getVulnerabilities()
+	{
+		return vulnerabilities;
+	}
+
+	public String getLanguages()
+	{
+		return languages;
+	}
+
+	public String getSenses()
+	{
+		return senses;
+	}
+
+	public ArrayList<MonsterAbility> getLegendaryAbilities()
+	{
+		return legendaryAbilities;
+	}
+
+
 }

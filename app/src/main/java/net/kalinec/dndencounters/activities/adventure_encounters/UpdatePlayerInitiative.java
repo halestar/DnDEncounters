@@ -21,6 +21,7 @@ public class UpdatePlayerInitiative extends DnDEncountersActivity
 	private ArrayList<AdventureEncounterPlayer> encounterPcs;
 	public static final int REQUEST_UPDATED_PLAYER_INITIATIVE = 170;
 	private RecyclerView PlayerInitiativeRv;
+	private PcInitiativeListAdapter pcInitiativeListAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -34,8 +35,7 @@ public class UpdatePlayerInitiative extends DnDEncountersActivity
 		assert adventureEncounter != null;
 		encounterPcs = adventureEncounter.getAvailablePlayers();
 		
-		PcInitiativeListAdapter pcInitiativeListAdapter
-				= new PcInitiativeListAdapter(getApplicationContext());
+		pcInitiativeListAdapter = new PcInitiativeListAdapter(getApplicationContext());
 		pcInitiativeListAdapter.setPlayerList(encounterPcs);
 		
 		PlayerInitiativeRv = findViewById(R.id.PlayerInitiativeRv);
@@ -45,16 +45,9 @@ public class UpdatePlayerInitiative extends DnDEncountersActivity
 	
 	public void completeAssignment(View v)
 	{
-		for(int i = 0; i < encounterPcs.size(); i++)
-		{
-			PcInitiativeListAdapter.PcInitiativeViewHolder holder = (PcInitiativeListAdapter.PcInitiativeViewHolder)PlayerInitiativeRv.findViewHolderForAdapterPosition(i);
-			assert holder != null;
-			encounterPcs.get(i).setInitiative(holder.getInitiative());
-			Log.d("AssignPlayerInitiative", "encounterPcs: " + encounterPcs.get(i));
-		}
 		Log.d("AssignPlayerInitiative", "encounterPcs: " + encounterPcs);
 		Intent data = new Intent();
-		data.putExtra(AdventureEncounterPlayer.PASSED_ENCOUNTER_PLAYERS, encounterPcs);
+		data.putExtra(AdventureEncounterPlayer.PASSED_ENCOUNTER_PLAYERS, pcInitiativeListAdapter.playerList);
 		setResult(RESULT_OK, data);
 		finish();
 	}

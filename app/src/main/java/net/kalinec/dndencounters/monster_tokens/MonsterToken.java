@@ -132,10 +132,10 @@ public class MonsterToken implements Serializable, SelectableItem
         textPaint.setTextSize(30);
 	
 	    StaticLayout mTextLayout
-			    = new StaticLayout(text, textPaint, 20, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+			    = new StaticLayout(text, textPaint, 64, Layout.Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
 
         // Create bitmap and canvas to draw to
-	    Bitmap b = Bitmap.createBitmap(20, mTextLayout.getHeight(), Bitmap.Config.ARGB_4444);
+	    Bitmap b = Bitmap.createBitmap(64, mTextLayout.getHeight(), Bitmap.Config.ARGB_4444);
         Canvas c = new Canvas(b);
 
         // Draw background
