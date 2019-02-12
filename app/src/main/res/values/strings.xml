@@ -277,4 +277,10 @@
     <string name="SensesTxt">Senses</string>
     <string name="LvColonTxt">Lv:</string>
     <string name="TokenWarning">Warning! You must enter at least one Monster Token in order to start an adventure.</string>
+    <string name="SyncToWebTxt">Login to Synchronize to Web Account</string>
+    <string name="EmailTxt">EMail:</string>
+    <string name="PasswordTxt">Password</string>
+    <string name="LoginTxt">Login and Synchronize</string>
+    <string name="SyncMenuName">Sync to Web</string>
+    <string name="LoggedIn">Logged In!</string>
 </resources>

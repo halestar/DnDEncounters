@@ -10,4 +10,8 @@
         android:id="@+id/action_dice_roller"
         android:orderInCategory="101"
         android:title="@string/RollDiceTxt" />
+    <item
+        android:id="@+id/action_sync_to_web"
+        android:orderInCategory="103"
+        android:title="@string/SyncMenuName" />
 </menu>
