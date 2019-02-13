@@ -36,7 +36,6 @@ public class Modules
 			{
 				moduleDb = new ArrayList<>();
 				File fin = new File(context.getFilesDir(), fname);
-				Log.d("Encounters", "fin length is: " + fin.length());
 				if(fin.exists() && fin.length() > 0)
 				{
 					ObjectInputStream in = new ObjectInputStream(context.openFileInput(fname));
@@ -57,7 +56,6 @@ public class Modules
 	private static void writeModules(Context context)
 	{
 		
-		Log.d("Encounters", "Wirintg obj file.  moduleDb: " + moduleDb);
 		FileOutputStream fos;
 		try
 		{
@@ -68,7 +66,6 @@ public class Modules
 				oos.writeObject(e);
 			oos.flush();
 			oos.close();
-			Log.d("Encounters", "Objects written correctly. ");
 		}
 		catch (IOException e)
 		{
@@ -90,18 +87,14 @@ public class Modules
 		writeModules(context);
 	}
 	
-	public static void updateModule(Context context, Module oldModule, Module newModule)
+	public static void updateModule(Context context, Module m)
 	{
 		verifyDb(context);
-		int pos = moduleDb.indexOf(oldModule);
-		Log.d("Encounters", "moduleDb=" + moduleDb);
-		Log.d("Encounters", "searching for=" + oldModule);
-		Log.d("Encounters", "to replace with=" + newModule);
-		Log.d("Encounters", "in update encounter, pos=" + pos);
+		int pos = moduleDb.indexOf(m);
 		if(pos >= 0)
-			moduleDb.set(pos, newModule);
+			moduleDb.set(pos, m);
 		else
-			moduleDb.add(newModule);
+			moduleDb.add(m);
 		moduleDb.sort(ALPHABETICAL_COMPARATOR);
 		writeModules(context);
 	}

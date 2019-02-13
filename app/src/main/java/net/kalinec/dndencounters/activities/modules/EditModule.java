@@ -162,15 +162,15 @@ public class EditModule extends DnDEncountersActivity
 			toast.show();
 			return;
 		}
-		Module newModule = new Module(ModuleNameEt.getText().toString());
-		newModule.setModuleDescription(ModuleDescriptionEt.getText().toString());
-		newModule.setTier(tier);
-		newModule.setOptimizedLevel(targetLv);
-		newModule.setEncounters(encounters);
-		Modules.updateModule(getApplicationContext(), module, newModule);
+		module.setModuleName(ModuleNameEt.getText().toString());
+		module.setModuleDescription(ModuleDescriptionEt.getText().toString());
+		module.setTier(tier);
+		module.setOptimizedLevel(targetLv);
+		module.setEncounters(encounters);
+		Modules.updateModule(getApplicationContext(), module);
 
 		Intent data = new Intent();
-		data.putExtra(Module.PASSED_MODULE, newModule);
+		data.putExtra(Module.PASSED_MODULE, module);
 		setResult(RESULT_OK, data);
 		finish();
 	}

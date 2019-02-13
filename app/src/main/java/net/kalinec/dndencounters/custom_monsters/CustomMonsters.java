@@ -93,15 +93,15 @@ public class CustomMonsters
 		writeCustomMonsters(context);
 	}
 
-	public static void updateCustomMonster(Context context, CustomMonster oldMonster, CustomMonster newMonster)
+	public static void updateCustomMonster(Context context, CustomMonster m)
 	{
 		if(customMonsters == null)
 			readCustomMonsters(context);
-		int pos = customMonsters.indexOf(oldMonster);
+		int pos = customMonsters.indexOf(m);
 		if(pos >= 0)
-			customMonsters.set(pos, newMonster);
+			customMonsters.set(pos, m);
 		else
-			customMonsters.add(newMonster);
+			customMonsters.add(m);
 		customMonsters.sort(ALPHABETICAL_COMPARATOR);
 		writeCustomMonsters(context);
 	}

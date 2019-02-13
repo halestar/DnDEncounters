@@ -38,7 +38,7 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 	public void setPlayerList(List<Player> playerList)
 	{
 		this.playerList.clear();
-		this.playerList = playerList;
+		this.playerList.addAll(playerList);
 		notifyDataSetChanged();
 	}
 

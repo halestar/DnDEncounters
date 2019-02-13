@@ -103,6 +103,14 @@
             android:onClick="uploadData"
             android:text="Sync To Web" />
 
+        <Button
+            android:id="@+id/logoutBt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorAccent"
+            android:onClick="logout"
+            android:text="@string/logout" />
+
     </LinearLayout>
 
     <TextView

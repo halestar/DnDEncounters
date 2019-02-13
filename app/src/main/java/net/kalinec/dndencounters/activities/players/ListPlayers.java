@@ -15,7 +15,7 @@ import net.kalinec.dndencounters.players.PlayerListAdapter;
 
 import java.util.List;
 
-public class Players extends DnDEncountersActivity
+public class ListPlayers extends DnDEncountersActivity
 {
 	private PlayerListAdapter playerListAdapter;
 
@@ -42,13 +42,13 @@ public class Players extends DnDEncountersActivity
 	
 	public void newPlayer(View target)
 	{
-		Intent myIntent = new Intent(Players.this, AddPlayer.class);
+		Intent myIntent = new Intent(ListPlayers.this, AddPlayer.class);
 		startActivityForResult(myIntent, AddPlayer.REQUEST_NEW_PLAYER_CAPTURE);
 	}
 
 	public void viewPlayer(Player p)
 	{
-		Intent myIntent = new Intent(Players.this, ViewPlayer.class);
+		Intent myIntent = new Intent(ListPlayers.this, ViewPlayer.class);
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(Player.PASSED_PLAYER, p);
 		myIntent.putExtras(bundle);

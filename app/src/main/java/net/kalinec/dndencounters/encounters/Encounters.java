@@ -35,7 +35,6 @@ public class Encounters
 			{
 				encountersDB = new ArrayList<>();
 				File fin = new File(context.getFilesDir(), fname);
-				Log.d("Encounters", "fin length is: " + fin.length());
 				if(fin.exists() && fin.length() > 0)
 				{
 					ObjectInputStream in = new ObjectInputStream(context.openFileInput(fname));
@@ -56,7 +55,6 @@ public class Encounters
 	private static void writeEncounters(Context context)
 	{
 		
-		Log.d("Encounters", "Wirintg obj file.  encountersDB: " + encountersDB);
 		FileOutputStream fos;
 		try
 		{
@@ -67,7 +65,6 @@ public class Encounters
 				oos.writeObject(e);
 			oos.flush();
 			oos.close();
-			Log.d("Encounters", "Objects written correctly. ");
 		}
 		catch (IOException e)
 		{
@@ -95,18 +92,14 @@ public class Encounters
 		writeEncounters(context);
 	}
 	
-	public static void updateEncounter(Context context, Encounter oldEncounter, Encounter newEncounter)
+	public static void updateEncounter(Context context, Encounter e)
 	{
 		verifyDb(context);
-		int pos = encountersDB.indexOf(oldEncounter);
-		Log.d("Encounters", "encountersDb=" + encountersDB);
-		Log.d("Encounters", "searching for=" + oldEncounter);
-		Log.d("Encounters", "to replace with=" + newEncounter);
-		Log.d("Encounters", "in update encounter, pos=" + pos);
+		int pos = encountersDB.indexOf(e);
 		if(pos >= 0)
-			encountersDB.set(pos, newEncounter);
+			encountersDB.set(pos, e);
 		else
-			encountersDB.add(newEncounter);
+			encountersDB.add(e);
 		encountersDB.sort(ALPHABETICAL_COMPARATOR);
 		writeEncounters(context);
 	}

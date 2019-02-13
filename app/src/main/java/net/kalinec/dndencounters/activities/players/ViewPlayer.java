@@ -68,9 +68,10 @@ public class ViewPlayer extends DnDEncountersActivity
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 		List<Player> players = Players.getAllPlayers(getApplicationContext());
-		ArrayList<Character> pcList = players.get(players.indexOf(selectedPlayer)).getPcs();
+		selectedPlayer = players.get(players.indexOf(selectedPlayer));
+		ArrayList<Character> pcList = selectedPlayer.getPcs();
 		characterListAdapter.setCharacterList(pcList);
-		
+		playerNameTv.setText(selectedPlayer.getName());
 	}
 	
 	public void newPC(View target)
@@ -98,7 +99,6 @@ public class ViewPlayer extends DnDEncountersActivity
 		bundle.putSerializable(Player.PASSED_PLAYER, selectedPlayer);
 		myIntent.putExtras(bundle);
 		startActivityForResult(myIntent, EditPlayer.REQUEST_UPDATED_PLAYER);
-		ViewPlayer.this.startActivity(myIntent);
 	}
 	
 	public void confirmDeletePlayer(View target)

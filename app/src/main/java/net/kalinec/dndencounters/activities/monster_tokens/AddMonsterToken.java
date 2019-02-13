@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
@@ -182,6 +183,12 @@ public class AddMonsterToken extends DnDEncountersActivity {
 
     public void addToken(View v)
     {
+        if(addTokenMonsterTokenNameEt.getText().toString() == "")
+        {
+            Toast errorToast = Toast.makeText(getApplicationContext(), "You must enter a monster token name", Toast.LENGTH_LONG);
+            errorToast.show();
+            return;
+        }
         MonsterToken newToken = new MonsterToken(tokenType);
         switch(tokenType)
         {

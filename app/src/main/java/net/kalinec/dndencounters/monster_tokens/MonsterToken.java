@@ -17,13 +17,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.UUID;
 
 public class MonsterToken implements Serializable, SelectableItem
 {
-    public static final int TOKEN_TYPE_COLORED_NUMBER = 1;
-    public static final int TOKEN_TYPE_NUMBER = 2;
-    public static final int TOKEN_TYPE_MINI = 3;
-    public static final int TOKEN_TYPE_COLOR = 4;
+    public static final int TOKEN_TYPE_COLORED_NUMBER = 3;
+    public static final int TOKEN_TYPE_NUMBER = 1;
+    public static final int TOKEN_TYPE_MINI = 4;
+    public static final int TOKEN_TYPE_COLOR = 2;
     public static final String PASSED_MONSTER_TOKEN = "PASSED_MONSTER_TOKEN";
     private byte[] miniPortrait;
     private String tokenName = "Random Token";
@@ -31,9 +32,12 @@ public class MonsterToken implements Serializable, SelectableItem
     private int tokenColor = Color.WHITE;
     private int tokenNumber = 0;
     private boolean isSelected = false;
+    private UUID uuid;
+    private long dbId;
 
     public MonsterToken(int tokenType)
     {
+        this.uuid = UUID.randomUUID();
         this.tokenType = tokenType;
     }
 
@@ -77,23 +81,6 @@ public class MonsterToken implements Serializable, SelectableItem
         return tokenType;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        MonsterToken that = (MonsterToken) o;
-        return tokenType == that.tokenType &&
-                tokenNumber == that.tokenNumber &&
-               Arrays.equals(miniPortrait, that.miniPortrait) &&
-               Objects.equals(tokenName, that.tokenName) &&
-               Objects.equals(tokenColor, that.tokenColor);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(miniPortrait, tokenName, tokenType, tokenColor, tokenNumber);
-    }
 
     @NonNull
     @Override
@@ -169,7 +156,44 @@ public class MonsterToken implements Serializable, SelectableItem
         }
         else if(tokenType == MonsterToken.TOKEN_TYPE_COLOR)
         {
-            holder.setBackgroundColor(tokenColor);
+            holder.setImageBitmap(drawText("", tokenColor));
         }
+    }
+
+	public void setTokenType(int tokenType)
+	{
+		this.tokenType = tokenType;
+	}
+
+	@Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        MonsterToken that = (MonsterToken) o;
+        return Objects.equals(uuid, that.uuid);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(uuid);
+    }
+
+    public long getDbId()
+    {
+        return dbId;
+    }
+
+    public void setDbId(long dbId)
+    {
+        this.dbId = dbId;
+    }
+
+    public UUID getUuid()
+    {
+        return uuid;
     }
 }

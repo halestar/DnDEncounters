@@ -135,13 +135,12 @@ public class EditEncounter extends DnDEncountersActivity
 	
 	public void updateEncounter(View v)
 	{
-		Encounter newEncounter = new Encounter();
-		newEncounter.setEncounterName(encounterName.getText().toString());
-		newEncounter.setMonsters(monsters);
+		selectedEncounter.setEncounterName(encounterName.getText().toString());
+		selectedEncounter.setMonsters(monsters);
 		if(writeEncounter)
-			Encounters.updateEncounter(getApplicationContext(), selectedEncounter, newEncounter);
+			Encounters.updateEncounter(getApplicationContext(), selectedEncounter);
 		Intent data = new Intent();
-		data.putExtra(Encounter.PASSED_ENCOUNTER, newEncounter);
+		data.putExtra(Encounter.PASSED_ENCOUNTER, selectedEncounter);
 		setResult(RESULT_OK, data);
 		finish();
 	}

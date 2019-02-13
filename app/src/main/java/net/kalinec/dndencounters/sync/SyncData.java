@@ -10,6 +10,8 @@ import net.kalinec.dndencounters.modules.Module;
 import net.kalinec.dndencounters.modules.Modules;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
+import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class SyncData implements Serializable
 	public ArrayList<Encounter> encounters;
 	public ArrayList<Module> modules;
 	public ArrayList<MonsterToken> monster_tokens;
+	public ArrayList<Player> players;
 
 	public SyncData(Context context)
 	{
@@ -27,5 +30,6 @@ public class SyncData implements Serializable
 		encounters = (ArrayList<Encounter>) Encounters.getAllEncounters(context);
 		modules = (ArrayList<Module>) Modules.getAllModules(context);
 		monster_tokens = (ArrayList<MonsterToken>) MonsterTokens.getAllMonsterTokens(context);
+		players = (ArrayList<Player>) Players.getAllPlayers(context);
 	}
 }

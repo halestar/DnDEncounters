@@ -11,11 +11,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Encounter implements Serializable, SelectableItem
 {
 	public final static String PASSED_ENCOUNTER = "PASSED_ENCOUNTER";
 	public final static String PASSED_ENCOUNTERS = "PASSED_ENCOUNTERS";
+	private UUID uuid;
+	private long dbId;
 	private String encounterName;
 	private List<Monster> monsters;
 	private int cr;
@@ -23,6 +26,7 @@ public class Encounter implements Serializable, SelectableItem
 
 	public Encounter(String name, List<Monster> monsters)
 	{
+		this.uuid = UUID.randomUUID();
 		this.encounterName = name;
 		this.monsters = monsters;
 		updateCr();
@@ -30,6 +34,7 @@ public class Encounter implements Serializable, SelectableItem
 
 	public Encounter()
 	{
+		this.uuid = UUID.randomUUID();
 		this.encounterName = "";
 		this.monsters = new ArrayList<>();
 	}
@@ -80,24 +85,24 @@ public class Encounter implements Serializable, SelectableItem
 	{
 		return cr;
 	}
-	
+
 	@Override
 	public boolean equals(Object o)
 	{
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		Encounter encounter = (Encounter) o;
-		return cr == encounter.cr &&
-		       Objects.equals(encounterName, encounter.encounterName) &&
-		       Objects.equals(monsters, encounter.monsters);
+		return Objects.equals(uuid, encounter.uuid);
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(encounterName, monsters, cr);
+		return Objects.hash(uuid);
 	}
-	
+
 	@NonNull
 	@Override
 	public String toString()
@@ -122,5 +127,20 @@ public class Encounter implements Serializable, SelectableItem
 	@Override
 	public String getSelectableText() {
 		return this.encounterName + "(CR: " + this.cr + ")";
+	}
+
+	public long getDbId()
+	{
+		return dbId;
+	}
+
+	public void setDbId(long dbId)
+	{
+		this.dbId = dbId;
+	}
+
+	public UUID getUuid()
+	{
+		return uuid;
 	}
 }

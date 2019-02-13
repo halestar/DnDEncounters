@@ -165,11 +165,11 @@ public class Monster implements Serializable
 		Monster monster = (Monster) o;
 		return mid == monster.mid;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
-		
+
 		return Objects.hash(mid);
 	}
 	

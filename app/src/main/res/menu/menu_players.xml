@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="net.kalinec.dndencounters.activities.players.Players">
+    tools:context="net.kalinec.dndencounters.activities.players.ListPlayers">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

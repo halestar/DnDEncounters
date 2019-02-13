@@ -17,11 +17,17 @@ public class Module implements Serializable
 	private int optimizedLevel;
 	private ArrayList<Encounter> encounters;
 	private UUID uuid;
+	private long dbId;
 
 	public Module(String moduleName)
 	{
 		this.moduleName = moduleName;
 		this.uuid = UUID.randomUUID();
+	}
+
+	public void setModuleName(String moduleName)
+	{
+		this.moduleName = moduleName;
 	}
 
 	public String getModuleName()
@@ -112,5 +118,15 @@ public class Module implements Serializable
 	public UUID getUuid()
 	{
 		return uuid;
+	}
+
+	public long getDbId()
+	{
+		return dbId;
+	}
+
+	public void setDbId(long dbId)
+	{
+		this.dbId = dbId;
 	}
 }

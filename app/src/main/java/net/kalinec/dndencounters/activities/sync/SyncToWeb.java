@@ -16,8 +16,20 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.characters.Character;
+import net.kalinec.dndencounters.custom_monsters.CustomMonster;
+import net.kalinec.dndencounters.custom_monsters.CustomMonsters;
+import net.kalinec.dndencounters.encounters.Encounter;
+import net.kalinec.dndencounters.encounters.Encounters;
+import net.kalinec.dndencounters.modules.Module;
+import net.kalinec.dndencounters.modules.Modules;
+import net.kalinec.dndencounters.monster_tokens.MonsterToken;
+import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
+import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 import net.kalinec.dndencounters.sync.SyncData;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,11 +40,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class SyncToWeb extends AppCompatActivity
 {
-	private final static String oAuthClientSecret = "7BKUT1OZ1KXELV3MQe5fZWr2i7wjQ2UogSEni2Mp";
+	private final static String oAuthClientSecret = "UAa3x2MsvC7oEJPUz8TzuUlTLYFguuL3leC1UVmK";
 	private final static int oAuthClientId = 2;
 	private final static String oAuthGrantPassword = "password";
 	private final static String oAuthGrantRefreh = "refresh_token";
@@ -55,6 +69,7 @@ public class SyncToWeb extends AppCompatActivity
 	private final static String BUNDLE_MSG = "message";
 	private final static int ACTION_UPDATE_MSG = 1;
 	private final static int ACTION_LOAD_TOKEN = 2;
+	private final static int ACTION_UPDATE_LINKS = 3;
 
 
 	@Override
@@ -85,6 +100,133 @@ public class SyncToWeb extends AppCompatActivity
 					readToken(bundle.getString(BUNDLE_MSG));
 					refreshScreen();
 				}
+				else if(action == ACTION_UPDATE_LINKS)
+				{
+					resultsTv.setText("from server: " + bundle.getString(BUNDLE_MSG));
+					try
+					{
+						JSONObject json = new JSONObject(bundle.getString(BUNDLE_MSG));
+						//update cuscom monsters
+						JSONArray custom_monsters = json.getJSONArray("custom_monsters");
+						List<CustomMonster> customMonsterList = CustomMonsters.getCustomMonsters(getApplicationContext());
+						for(int i = 0; i < custom_monsters.length(); i++)
+						{
+							JSONObject monster_json = custom_monsters.getJSONObject(i);
+							for(int j = 0; j < customMonsterList.size(); j++)
+							{
+								CustomMonster customMonster = customMonsterList.get(j);
+								if(customMonster.getUuid().toString() == monster_json.getString("uuid"))
+								{
+									customMonster.setDbId(Long.parseLong(monster_json.getString("dbId")));
+									CustomMonsters.updateCustomMonster(getApplicationContext(), customMonster);
+								}
+							}
+						}
+						//update encounters
+						JSONArray encounters = json.getJSONArray("encounters");
+						List<Encounter> encounterList = Encounters.getAllEncounters(getApplicationContext());
+						for(int i = 0; i < encounters.length(); i++)
+						{
+							JSONObject encounter_json = encounters.getJSONObject(i);
+							for(int j = 0; j < encounterList.size(); j++)
+							{
+								Encounter myEncounter = encounterList.get(j);
+								if(myEncounter.getUuid().toString() == encounter_json.getString("uuid"))
+								{
+									myEncounter.setDbId(Long.parseLong(encounter_json.getString("dbId")));
+									Encounters.updateEncounter(getApplicationContext(), myEncounter);
+								}
+							}
+						}
+						//update monster tokens
+						JSONArray tokens = json.getJSONArray("monster_tokens");
+						List<MonsterToken> monsterTokenList = MonsterTokens.getAllMonsterTokens(getApplicationContext());
+						for(int i = 0; i < tokens.length(); i++)
+						{
+							JSONObject token_json = tokens.getJSONObject(i);
+							for(int j = 0; j < monsterTokenList.size(); j++)
+							{
+								MonsterToken myToken = monsterTokenList.get(j);
+								if(myToken.getUuid().toString() == token_json.getString("uuid"))
+								{
+									myToken.setDbId(Long.parseLong(token_json.getString("dbId")));
+									MonsterTokens.updateMonsterToken(getApplicationContext(), myToken);
+								}
+							}
+						}
+						//update players
+						JSONArray players = json.getJSONArray("players");
+						List<Player> playerList = Players.getAllPlayers(getApplicationContext());
+						for(int i = 0; i < players.length(); i++)
+						{
+							JSONObject player_json = players.getJSONObject(i);
+							for(int j = 0; j < playerList.size(); j++)
+							{
+								Player myPlayer = playerList.get(j);
+								if(myPlayer.getUuid().toString() == player_json.getString("uuid"))
+								{
+									myPlayer.setDbId(Long.parseLong(player_json.getString("dbId")));
+									Players.updatePlayer(getApplicationContext(), myPlayer);
+									//next, we do all the characters.
+									JSONArray pcs = player_json.getJSONArray("pcs");
+									List<Character> pcList = myPlayer.getPcs();
+									for(int k = 0; k < pcs.length(); k++)
+									{
+										JSONObject pc_json = pcs.getJSONObject(k);
+										for(int l = 0; l < pcList.size(); l++)
+										{
+											Character myPc = pcList.get(l);
+											if(myPc.getUuid().toString() == pc_json.getString("uuid"))
+											{
+												myPc.setDbId(Integer.parseInt(pc_json.getString("dbId")));
+												Players.updatePc(getApplicationContext(), myPc);
+											}
+										}
+									}
+								}
+							}
+						}
+
+						//update players
+						JSONArray modules = json.getJSONArray("modules");
+						List<Module> moduleList = Modules.getAllModules(getApplicationContext());
+						for(int i = 0; i < modules.length(); i++)
+						{
+							JSONObject module_json = modules.getJSONObject(i);
+							for(int j = 0; j < moduleList.size(); j++)
+							{
+								Module myModule = moduleList.get(j);
+								if(myModule.getUuid().toString() == module_json.getString("uuid"))
+								{
+									myModule.setDbId(Long.parseLong(module_json.getString("dbId")));
+									Modules.updateModule(getApplicationContext(), myModule);
+									//next, we do all the characters.
+									JSONArray module_encounter = module_json.getJSONArray("encounters");
+									List<Encounter> moduleEncountersList = myModule.getEncounters();
+									for(int k = 0; k < module_encounter.length(); k++)
+									{
+										JSONObject module_encounter_json = module_encounter.getJSONObject(k);
+										for(int l = 0; l < moduleEncountersList.size(); l++)
+										{
+											Encounter myModuleEncounter = moduleEncountersList.get(l);
+											if(myModuleEncounter.getUuid().toString() == module_encounter_json.getString("uuid"))
+											{
+												myModuleEncounter.setDbId(Integer.parseInt(module_encounter_json.getString("dbId")));
+												Encounters.updateEncounter(getApplicationContext(), myModuleEncounter);
+											}
+										}
+									}
+								}
+							}
+						}
+						resultsTv.setText("Sync to Web Successful!");
+					}
+					catch (JSONException e)
+					{
+						resultsTv.setText("error decrypting json: " + e.toString());
+					}
+					refreshScreen();
+				}
 			}
 		};
 
@@ -92,10 +234,8 @@ public class SyncToWeb extends AppCompatActivity
 		refreshScreen();
 
 		Calendar cal = Calendar.getInstance();
-		if(cal.getTime().getTime() >= prefs.getLong(PREF_TOKEN_EXPIRATION_KEY, -1))
+		if(prefs.getString(PREF_REFRESH_TOKEN_KEY, null) != null && cal.getTime().getTime() >= prefs.getLong(PREF_TOKEN_EXPIRATION_KEY, -1))
 			refreshToken();
-
-
 	}
 
 	private void refreshScreen()
@@ -111,7 +251,6 @@ public class SyncToWeb extends AppCompatActivity
 		{
 			loginContainer.setVisibility(View.GONE);
 			loggedInLy.setVisibility(View.VISIBLE);
-			resultsTv.setText("have access token, expires in: " + Long.toString(prefs.getLong(PREF_TOKEN_EXPIRATION_KEY, -1)) + "time now: " + Calendar.getInstance().getTime().getTime());
 		}
 	}
 
@@ -164,6 +303,14 @@ public class SyncToWeb extends AppCompatActivity
 		{
 			prefs.edit().putString(PREF_TOKEN_EXPIRATION_KEY, null).apply();
 		}
+	}
+
+	public void logout(View v)
+	{
+		prefs.edit().putString(PREF_ACCESS_TOKEN_KEY, null).apply();
+		prefs.edit().putString(PREF_REFRESH_TOKEN_KEY, null).apply();
+		prefs.edit().putString(PREF_TOKEN_EXPIRATION_KEY, null).apply();
+		refreshScreen();
 	}
 
 	private void refreshToken()
@@ -428,7 +575,6 @@ public class SyncToWeb extends AppCompatActivity
 							sb.append(line);
 						}
 						String rsp = sb.toString();
-						JSONObject json = new JSONObject(rsp);
 						msg = mHandler.obtainMessage();
 						rBundle = new Bundle();
 						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
@@ -436,12 +582,12 @@ public class SyncToWeb extends AppCompatActivity
 						msg.setData(rBundle);
 						mHandler.sendMessage(msg);
 						//now read the token
-						/*msg = mHandler.obtainMessage();
+						msg = mHandler.obtainMessage();
 						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_LOAD_TOKEN);
+						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_LINKS);
 						rBundle.putString(BUNDLE_MSG, rsp);
 						msg.setData(rBundle);
-						mHandler.sendMessage(msg);*/
+						mHandler.sendMessage(msg);
 					}
 					else
 					{
@@ -470,15 +616,6 @@ public class SyncToWeb extends AppCompatActivity
 					rBundle = new Bundle();
 					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
 					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
-				}
-				catch (JSONException e)
-				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error adding to json: " + e.toString());
 					msg.setData(rBundle);
 					mHandler.sendMessage(msg);
 				}

@@ -24,7 +24,7 @@ import net.kalinec.dndencounters.activities.encounters.ViewEncounters;
 import net.kalinec.dndencounters.activities.modules.ListModules;
 import net.kalinec.dndencounters.activities.monster_tokens.ViewMonsterTokens;
 import net.kalinec.dndencounters.activities.parties.CreateParty;
-import net.kalinec.dndencounters.activities.players.Players;
+import net.kalinec.dndencounters.activities.players.ListPlayers;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
@@ -88,6 +88,7 @@ public class MainActivity extends DnDEncountersActivity
 		}
 		else
 		{
+			beingAdventureBtn.setVisibility(View.VISIBLE);
 			MonsterTokenWarning.setVisibility(View.GONE);
 			if (activeSession == null)
 			{
@@ -169,7 +170,7 @@ public class MainActivity extends DnDEncountersActivity
 		
 		if (id == R.id.nav_players)
 		{
-			Intent myIntent = new Intent(MainActivity.this, Players.class);
+			Intent myIntent = new Intent(MainActivity.this, ListPlayers.class);
 			MainActivity.this.startActivity(myIntent);
 		}
 		else if (id == R.id.nav_modules)
@@ -235,6 +236,14 @@ public class MainActivity extends DnDEncountersActivity
 				continueAdventure();
 			}
 		}
+		updateFront();
+	}
+
+	@Override
+	public void onResume()
+	{  // After a pause OR at startup
+		super.onResume();
+		//Refresh your stuff here
 		updateFront();
 	}
 }

@@ -11,11 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
+import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.Locale;
 
@@ -40,6 +42,8 @@ public class EditMonsterToken extends DnDEncountersActivity {
         Bundle bundle = getIntent().getExtras();
 	    assert bundle != null;
         selectedToken = (MonsterToken) bundle.getSerializable(MonsterToken.PASSED_MONSTER_TOKEN);
+        if(selectedToken.getTokenType() == MonsterToken.TOKEN_TYPE_MINI)
+            miniPortrait = selectedToken.getMiniPortrait();
 
         Log.d("ViewMonsterTokens", "received: " + selectedToken);
         setContentView(R.layout.activity_edit_monster_token);
@@ -173,27 +177,33 @@ public class EditMonsterToken extends DnDEncountersActivity {
 
     public void updateMonsterToken(View v)
     {
-        MonsterToken newMt = new MonsterToken(selectedToken.getTokenType());
-        newMt.setTokenName(addTokenMonsterTokenNameEt.getText().toString());
+        if(addTokenMonsterTokenNameEt.getText().toString() == "")
+        {
+            Toast errorToast = Toast.makeText(getApplicationContext(), "You must enter a monster token name", Toast.LENGTH_LONG);
+            errorToast.show();
+            return;
+        }
+        selectedToken.setTokenType(selectedToken.getTokenType());
+        selectedToken.setTokenName(addTokenMonsterTokenNameEt.getText().toString());
         switch(selectedToken.getTokenType())
         {
             case MonsterToken.TOKEN_TYPE_NUMBER:
-                newMt.setTokenNumber(Integer.parseInt(SingleNumberEt.getText().toString()));
+                selectedToken.setTokenNumber(Integer.parseInt(SingleNumberEt.getText().toString()));
                 break;
             case MonsterToken.TOKEN_TYPE_COLOR:
-                newMt.setTokenColor(singleColor);
+                selectedToken.setTokenColor(singleColor);
                 break;
             case MonsterToken.TOKEN_TYPE_COLORED_NUMBER:
-                newMt.setTokenNumber(Integer.parseInt(ColoredNumberEt.getText().toString()));
-                newMt.setTokenColor(coloredNumberColor);
+                selectedToken.setTokenNumber(Integer.parseInt(ColoredNumberEt.getText().toString()));
+                selectedToken.setTokenColor(coloredNumberColor);
                 break;
             case MonsterToken.TOKEN_TYPE_MINI:
-                newMt.setMiniPortrait(miniPortrait);
+                selectedToken.setMiniPortrait(miniPortrait);
                 break;
         }
-        MonsterTokens.updateMonsterToken(getApplicationContext(), selectedToken, newMt);
+        MonsterTokens.updateMonsterToken(getApplicationContext(), selectedToken);
         Intent data = new Intent();
-        data.putExtra(MonsterToken.PASSED_MONSTER_TOKEN, newMt);
+        data.putExtra(MonsterToken.PASSED_MONSTER_TOKEN, selectedToken);
         setResult(RESULT_OK, data);
         finish();
     }

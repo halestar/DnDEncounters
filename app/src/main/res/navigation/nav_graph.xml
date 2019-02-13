@@ -12,7 +12,7 @@
         tools:layout="@layout/activity_main" />
     <activity
         android:id="@+id/players"
-        android:name="net.kalinec.dndencounters.activities.players.Players"
+        android:name="net.kalinec.dndencounters.activities.players.ListPlayers"
         android:label="activity_players"
         tools:layout="@layout/activity_players" />
 </navigation>

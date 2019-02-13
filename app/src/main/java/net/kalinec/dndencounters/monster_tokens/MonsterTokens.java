@@ -83,14 +83,14 @@ public class MonsterTokens
 		writeEncounters(context);
 	}
 	
-	public static void updateMonsterToken(Context context, MonsterToken oldMt, MonsterToken newMt)
+	public static void updateMonsterToken(Context context, MonsterToken mt)
 	{
 		verifyDb(context);
-		int pos = tokensDb.indexOf(oldMt);
+		int pos = tokensDb.indexOf(mt);
 		if(pos >= 0)
-			tokensDb.set(pos, newMt);
+			tokensDb.set(pos, mt);
 		else
-			tokensDb.add(newMt);
+			tokensDb.add(mt);
 		tokensDb.sort(ALPHABETICAL_COMPARATOR);
 		writeEncounters(context);
 	}

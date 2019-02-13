@@ -8,11 +8,13 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CustomMonster extends Monster implements Serializable
 {
     private UUID uuid;
+    private long dbId;
 
     public CustomMonster(int mid, JSONObject stats)
     {
@@ -135,5 +137,34 @@ public class CustomMonster extends Monster implements Serializable
             ArrayList<MonsterAbility> legendaryAbilities)
     {
         this.legendaryAbilities = legendaryAbilities;
+    }
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		if (!super.equals(o))
+			return false;
+		CustomMonster that = (CustomMonster) o;
+		return Objects.equals(uuid, that.uuid);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(super.hashCode(), uuid);
+	}
+
+	public long getDbId()
+    {
+        return dbId;
+    }
+
+    public void setDbId(long dbId)
+    {
+        this.dbId = dbId;
     }
 }
