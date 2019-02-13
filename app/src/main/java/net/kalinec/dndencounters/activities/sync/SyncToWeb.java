@@ -70,6 +70,7 @@ public class SyncToWeb extends AppCompatActivity
 	private final static int ACTION_UPDATE_MSG = 1;
 	private final static int ACTION_LOAD_TOKEN = 2;
 	private final static int ACTION_UPDATE_LINKS = 3;
+	private final static int ACTION_LOAD_SYNC_DATA = 4;
 
 
 	@Override
@@ -94,7 +95,7 @@ public class SyncToWeb extends AppCompatActivity
 				Bundle bundle = msg.getData();
 				int action = bundle.getInt(BUNDLE_ACTION);
 				if(action == ACTION_UPDATE_MSG)
-					resultsTv.append(bundle.getString(BUNDLE_MSG));
+					Log.d("SyncToWeb", "from server: " + bundle.getString(BUNDLE_MSG));
 				else if(action == ACTION_LOAD_TOKEN)
 				{
 					readToken(bundle.getString(BUNDLE_MSG));
@@ -102,129 +103,14 @@ public class SyncToWeb extends AppCompatActivity
 				}
 				else if(action == ACTION_UPDATE_LINKS)
 				{
-					resultsTv.setText("from server: " + bundle.getString(BUNDLE_MSG));
-					try
-					{
-						JSONObject json = new JSONObject(bundle.getString(BUNDLE_MSG));
-						//update cuscom monsters
-						JSONArray custom_monsters = json.getJSONArray("custom_monsters");
-						List<CustomMonster> customMonsterList = CustomMonsters.getCustomMonsters(getApplicationContext());
-						for(int i = 0; i < custom_monsters.length(); i++)
-						{
-							JSONObject monster_json = custom_monsters.getJSONObject(i);
-							for(int j = 0; j < customMonsterList.size(); j++)
-							{
-								CustomMonster customMonster = customMonsterList.get(j);
-								if(customMonster.getUuid().toString() == monster_json.getString("uuid"))
-								{
-									customMonster.setDbId(Long.parseLong(monster_json.getString("dbId")));
-									CustomMonsters.updateCustomMonster(getApplicationContext(), customMonster);
-								}
-							}
-						}
-						//update encounters
-						JSONArray encounters = json.getJSONArray("encounters");
-						List<Encounter> encounterList = Encounters.getAllEncounters(getApplicationContext());
-						for(int i = 0; i < encounters.length(); i++)
-						{
-							JSONObject encounter_json = encounters.getJSONObject(i);
-							for(int j = 0; j < encounterList.size(); j++)
-							{
-								Encounter myEncounter = encounterList.get(j);
-								if(myEncounter.getUuid().toString() == encounter_json.getString("uuid"))
-								{
-									myEncounter.setDbId(Long.parseLong(encounter_json.getString("dbId")));
-									Encounters.updateEncounter(getApplicationContext(), myEncounter);
-								}
-							}
-						}
-						//update monster tokens
-						JSONArray tokens = json.getJSONArray("monster_tokens");
-						List<MonsterToken> monsterTokenList = MonsterTokens.getAllMonsterTokens(getApplicationContext());
-						for(int i = 0; i < tokens.length(); i++)
-						{
-							JSONObject token_json = tokens.getJSONObject(i);
-							for(int j = 0; j < monsterTokenList.size(); j++)
-							{
-								MonsterToken myToken = monsterTokenList.get(j);
-								if(myToken.getUuid().toString() == token_json.getString("uuid"))
-								{
-									myToken.setDbId(Long.parseLong(token_json.getString("dbId")));
-									MonsterTokens.updateMonsterToken(getApplicationContext(), myToken);
-								}
-							}
-						}
-						//update players
-						JSONArray players = json.getJSONArray("players");
-						List<Player> playerList = Players.getAllPlayers(getApplicationContext());
-						for(int i = 0; i < players.length(); i++)
-						{
-							JSONObject player_json = players.getJSONObject(i);
-							for(int j = 0; j < playerList.size(); j++)
-							{
-								Player myPlayer = playerList.get(j);
-								if(myPlayer.getUuid().toString() == player_json.getString("uuid"))
-								{
-									myPlayer.setDbId(Long.parseLong(player_json.getString("dbId")));
-									Players.updatePlayer(getApplicationContext(), myPlayer);
-									//next, we do all the characters.
-									JSONArray pcs = player_json.getJSONArray("pcs");
-									List<Character> pcList = myPlayer.getPcs();
-									for(int k = 0; k < pcs.length(); k++)
-									{
-										JSONObject pc_json = pcs.getJSONObject(k);
-										for(int l = 0; l < pcList.size(); l++)
-										{
-											Character myPc = pcList.get(l);
-											if(myPc.getUuid().toString() == pc_json.getString("uuid"))
-											{
-												myPc.setDbId(Integer.parseInt(pc_json.getString("dbId")));
-												Players.updatePc(getApplicationContext(), myPc);
-											}
-										}
-									}
-								}
-							}
-						}
-
-						//update players
-						JSONArray modules = json.getJSONArray("modules");
-						List<Module> moduleList = Modules.getAllModules(getApplicationContext());
-						for(int i = 0; i < modules.length(); i++)
-						{
-							JSONObject module_json = modules.getJSONObject(i);
-							for(int j = 0; j < moduleList.size(); j++)
-							{
-								Module myModule = moduleList.get(j);
-								if(myModule.getUuid().toString() == module_json.getString("uuid"))
-								{
-									myModule.setDbId(Long.parseLong(module_json.getString("dbId")));
-									Modules.updateModule(getApplicationContext(), myModule);
-									//next, we do all the characters.
-									JSONArray module_encounter = module_json.getJSONArray("encounters");
-									List<Encounter> moduleEncountersList = myModule.getEncounters();
-									for(int k = 0; k < module_encounter.length(); k++)
-									{
-										JSONObject module_encounter_json = module_encounter.getJSONObject(k);
-										for(int l = 0; l < moduleEncountersList.size(); l++)
-										{
-											Encounter myModuleEncounter = moduleEncountersList.get(l);
-											if(myModuleEncounter.getUuid().toString() == module_encounter_json.getString("uuid"))
-											{
-												myModuleEncounter.setDbId(Integer.parseInt(module_encounter_json.getString("dbId")));
-												Encounters.updateEncounter(getApplicationContext(), myModuleEncounter);
-											}
-										}
-									}
-								}
-							}
-						}
-						resultsTv.setText("Sync to Web Successful!");
-					}
-					catch (JSONException e)
-					{
-						resultsTv.setText("error decrypting json: " + e.toString());
-					}
+					Log.d("SyncToWeb", "from server: " + bundle.getString(BUNDLE_MSG));
+					updateLinks(bundle);
+					refreshScreen();
+				}
+				else if(action == ACTION_LOAD_SYNC_DATA)
+				{
+					Log.d("SyncToWeb", "from server: " + bundle.getString(BUNDLE_MSG));
+					loadSyncData(bundle);
 					refreshScreen();
 				}
 			}
@@ -236,6 +122,184 @@ public class SyncToWeb extends AppCompatActivity
 		Calendar cal = Calendar.getInstance();
 		if(prefs.getString(PREF_REFRESH_TOKEN_KEY, null) != null && cal.getTime().getTime() >= prefs.getLong(PREF_TOKEN_EXPIRATION_KEY, -1))
 			refreshToken();
+	}
+
+	private void updateLinks(Bundle data)
+	{
+		try
+		{
+			JSONObject json = new JSONObject(data.getString(BUNDLE_MSG));
+			//update cuscom monsters
+			JSONArray custom_monsters = json.getJSONArray("custom_monsters");
+			List<CustomMonster> customMonsterList = CustomMonsters.getCustomMonsters(getApplicationContext());
+			for(int i = 0; i < custom_monsters.length(); i++)
+			{
+				JSONObject monster_json = custom_monsters.getJSONObject(i);
+				for(int j = 0; j < customMonsterList.size(); j++)
+				{
+					CustomMonster customMonster = customMonsterList.get(j);
+					if(customMonster.getUuid().toString() == monster_json.getString("uuid"))
+					{
+						customMonster.setDbId(Long.parseLong(monster_json.getString("dbId")));
+						CustomMonsters.updateCustomMonster(getApplicationContext(), customMonster);
+					}
+				}
+			}
+			//update encounters
+			JSONArray encounters = json.getJSONArray("encounters");
+			List<Encounter> encounterList = Encounters.getAllEncounters(getApplicationContext());
+			for(int i = 0; i < encounters.length(); i++)
+			{
+				JSONObject encounter_json = encounters.getJSONObject(i);
+				for(int j = 0; j < encounterList.size(); j++)
+				{
+					Encounter myEncounter = encounterList.get(j);
+					if(myEncounter.getUuid().toString() == encounter_json.getString("uuid"))
+					{
+						myEncounter.setDbId(Long.parseLong(encounter_json.getString("dbId")));
+						Encounters.updateEncounter(getApplicationContext(), myEncounter);
+					}
+				}
+			}
+			//update monster tokens
+			JSONArray tokens = json.getJSONArray("monster_tokens");
+			List<MonsterToken> monsterTokenList = MonsterTokens.getAllMonsterTokens(getApplicationContext());
+			for(int i = 0; i < tokens.length(); i++)
+			{
+				JSONObject token_json = tokens.getJSONObject(i);
+				for(int j = 0; j < monsterTokenList.size(); j++)
+				{
+					MonsterToken myToken = monsterTokenList.get(j);
+					if(myToken.getUuid().toString() == token_json.getString("uuid"))
+					{
+						myToken.setDbId(Long.parseLong(token_json.getString("dbId")));
+						MonsterTokens.updateMonsterToken(getApplicationContext(), myToken);
+					}
+				}
+			}
+			//update players
+			JSONArray players = json.getJSONArray("players");
+			List<Player> playerList = Players.getAllPlayers(getApplicationContext());
+			for(int i = 0; i < players.length(); i++)
+			{
+				JSONObject player_json = players.getJSONObject(i);
+				for(int j = 0; j < playerList.size(); j++)
+				{
+					Player myPlayer = playerList.get(j);
+					if(myPlayer.getUuid().toString() == player_json.getString("uuid"))
+					{
+						myPlayer.setDbId(Long.parseLong(player_json.getString("dbId")));
+						Players.updatePlayer(getApplicationContext(), myPlayer);
+						//next, we do all the characters.
+						JSONArray pcs = player_json.getJSONArray("pcs");
+						List<Character> pcList = myPlayer.getPcs();
+						for(int k = 0; k < pcs.length(); k++)
+						{
+							JSONObject pc_json = pcs.getJSONObject(k);
+							for(int l = 0; l < pcList.size(); l++)
+							{
+								Character myPc = pcList.get(l);
+								if(myPc.getUuid().toString() == pc_json.getString("uuid"))
+								{
+									myPc.setDbId(Integer.parseInt(pc_json.getString("dbId")));
+									Players.updatePc(getApplicationContext(), myPc);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//update players
+			JSONArray modules = json.getJSONArray("modules");
+			List<Module> moduleList = Modules.getAllModules(getApplicationContext());
+			for(int i = 0; i < modules.length(); i++)
+			{
+				JSONObject module_json = modules.getJSONObject(i);
+				for(int j = 0; j < moduleList.size(); j++)
+				{
+					Module myModule = moduleList.get(j);
+					if(myModule.getUuid().toString() == module_json.getString("uuid"))
+					{
+						myModule.setDbId(Long.parseLong(module_json.getString("dbId")));
+						Modules.updateModule(getApplicationContext(), myModule);
+						//next, we do all the characters.
+						JSONArray module_encounter = module_json.getJSONArray("encounters");
+						List<Encounter> moduleEncountersList = myModule.getEncounters();
+						for(int k = 0; k < module_encounter.length(); k++)
+						{
+							JSONObject module_encounter_json = module_encounter.getJSONObject(k);
+							for(int l = 0; l < moduleEncountersList.size(); l++)
+							{
+								Encounter myModuleEncounter = moduleEncountersList.get(l);
+								if(myModuleEncounter.getUuid().toString() == module_encounter_json.getString("uuid"))
+								{
+									myModuleEncounter.setDbId(Integer.parseInt(module_encounter_json.getString("dbId")));
+									Encounters.updateEncounter(getApplicationContext(), myModuleEncounter);
+								}
+							}
+						}
+					}
+				}
+			}
+			resultsTv.setText("Sync to Web Successful!");
+		}
+		catch (JSONException e)
+		{
+			resultsTv.setText("error decrypting json: " + e.toString());
+		}
+	}
+
+
+	private void loadSyncData(Bundle data)
+	{
+		try
+		{
+			JSONObject json = new JSONObject(data.getString(BUNDLE_MSG));
+			JSONArray players_json = json.getJSONArray("players");
+			for(int i = 0; i < players_json.length(); i++)
+			{
+				JSONObject player_json = players_json.getJSONObject(i);
+				//try to load the player.
+				Player myPlayer = Players.getPlayerByUuid(getApplicationContext(), player_json.getString("uuid"));
+				if(myPlayer == null)
+				{
+					//in this case, we must add it.
+
+				}
+				else
+				{
+					//in this case, we update it.
+				}
+			}
+
+
+			JSONArray monsters_json = json.getJSONArray("custom_monsters");
+			for(int i = 0; i < monsters_json.length(); i++)
+			{
+				JSONObject monster_json = monsters_json.getJSONObject(i);
+				//try to load the monster.
+				CustomMonster myMonster = CustomMonsters.getMonsterByUuid(getApplicationContext(), monster_json.getString("uuid"));
+				if(myMonster == null)
+				{
+					//in this case, we must add it.
+
+				}
+				else
+				{
+					//in this case, we update it.
+				}
+			}
+
+
+			JSONArray encounter_json = json.getJSONArray("encounters");
+			JSONArray token_json = json.getJSONArray("monster_tokens");
+			JSONArray module_json = json.getJSONArray("modules");
+		}
+		catch (JSONException e)
+		{
+			resultsTv.setText("error decrypting json: " + e.toString());
+		}
 	}
 
 	private void refreshScreen()
@@ -661,20 +725,19 @@ public class SyncToWeb extends AppCompatActivity
 							sb.append(line);
 						}
 						String rsp = sb.toString();
-						JSONObject json = new JSONObject(rsp);
 						msg = mHandler.obtainMessage();
 						rBundle = new Bundle();
 						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
 						rBundle.putString(BUNDLE_MSG, "JSON Response: " + rsp);
 						msg.setData(rBundle);
 						mHandler.sendMessage(msg);
-						//now read the token
-						/*msg = mHandler.obtainMessage();
+						//now read the sync data
+						msg = mHandler.obtainMessage();
 						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_LOAD_TOKEN);
+						rBundle.putInt(BUNDLE_ACTION, ACTION_LOAD_SYNC_DATA);
 						rBundle.putString(BUNDLE_MSG, rsp);
 						msg.setData(rBundle);
-						mHandler.sendMessage(msg);*/
+						mHandler.sendMessage(msg);
 					}
 					else
 					{
@@ -703,15 +766,6 @@ public class SyncToWeb extends AppCompatActivity
 					rBundle = new Bundle();
 					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
 					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
-				}
-				catch (JSONException e)
-				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error adding to json: " + e.toString());
 					msg.setData(rBundle);
 					mHandler.sendMessage(msg);
 				}

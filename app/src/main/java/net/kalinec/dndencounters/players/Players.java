@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 public class Players implements Serializable
 {
@@ -149,6 +150,17 @@ public class Players implements Serializable
 		for(Player p: playersDb)
 		{
 			if(p.getPcs().contains(pc))
+				return p;
+		}
+		return null;
+	}
+
+	public static Player getPlayerByUuid(Context context, String uuid)
+	{
+		verifyDb(context);
+		for(Player p: playersDb)
+		{
+			if(p.getUuid().toString().equals(uuid))
 				return p;
 		}
 		return null;

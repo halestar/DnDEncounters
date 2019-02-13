@@ -5,6 +5,7 @@ import android.util.Log;
 
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.monsters.Monster;
+import net.kalinec.dndencounters.players.Player;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -113,5 +114,17 @@ public class CustomMonsters
 		customMonsters.remove(e);
 		customMonsters.sort(ALPHABETICAL_COMPARATOR);
 		writeCustomMonsters(context);
+	}
+
+	public static CustomMonster getMonsterByUuid(Context context, String uuid)
+	{
+		if(customMonsters == null)
+			readCustomMonsters(context);
+		for(CustomMonster p: customMonsters)
+		{
+			if(p.getUuid().toString().equals(uuid))
+				return p;
+		}
+		return null;
 	}
 }
