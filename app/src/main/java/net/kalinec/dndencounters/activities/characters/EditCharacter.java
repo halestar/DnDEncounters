@@ -9,13 +9,14 @@ import android.widget.EditText;
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.CharacterDao;
+import net.kalinec.dndencounters.players.Players;
 
 import java.util.Locale;
 
 public class EditCharacter extends DnDEncountersActivity
 {
+	
+	public static final int REQUEST_UPDATED_CHARACTER = 343;
 	private Character selectedCharacter;
 	private EditText characterNameTxt, characterRaceTxt, characterClassTxt,
 			characterAcTxt, characterHpTxt, characterPpTxt,
@@ -58,7 +59,6 @@ public class EditCharacter extends DnDEncountersActivity
 	
 	public void updatePC(View target)
 	{
-		CharacterDao characterDao = AppDatabase.getDatabase(getApplicationContext()).characterDao();
 		selectedCharacter.setName(characterNameTxt.getText().toString());
 		selectedCharacter.setCharacterClass(characterClassTxt.getText().toString());
 		selectedCharacter.setCharacterRace(characterRaceTxt.getText().toString());
@@ -70,7 +70,7 @@ public class EditCharacter extends DnDEncountersActivity
 		selectedCharacter.setLevel(Integer.parseInt(characterLvTxt.getText().toString()));
 		selectedCharacter.setSpellDc(Integer.parseInt(characterDcTxt.getText().toString()));
 		
-		characterDao.update(selectedCharacter);
+		Players.updatePc(getApplicationContext(), selectedCharacter);
 		finish();
 	}
 	
@@ -101,8 +101,7 @@ public class EditCharacter extends DnDEncountersActivity
 	
 	public void deletePc()
 	{
-		CharacterDao characterDao = AppDatabase.getDatabase(getApplicationContext()).characterDao();
-		characterDao.delete(selectedCharacter);
+		Players.removePc(getApplicationContext(), selectedCharacter);
 		finish();
 	}
 }

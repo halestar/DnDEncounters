@@ -1,7 +1,5 @@
 package net.kalinec.dndencounters.activities.players;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,12 +16,11 @@ import net.kalinec.dndencounters.activities.characters.AddCharacter;
 import net.kalinec.dndencounters.activities.characters.EditCharacter;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.characters.CharacterListAdapter;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.CharacterDao;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewPlayer extends DnDEncountersActivity
@@ -31,6 +28,7 @@ public class ViewPlayer extends DnDEncountersActivity
 	protected Player selectedPlayer;
 	protected TextView playerNameTv;
 	private CharacterListAdapter characterListAdapter;
+	public static int REQUEST_VIEW_PLAYER = 349;
 	
 	
 	@Override
@@ -45,9 +43,7 @@ public class ViewPlayer extends DnDEncountersActivity
 		playerNameTv = findViewById(R.id.playerName);
 		playerNameTv.setText(selectedPlayer.getName());
 
-		CharacterDao characterDao = AppDatabase.getDatabase(getApplicationContext()).characterDao();
-		LiveData<List<Character>> pcList = characterDao.getCharactersByPlayerId(selectedPlayer
-				                                                                        .getUid());
+		ArrayList<Character > pcList = selectedPlayer.getPcs();
 
 		characterListAdapter = new CharacterListAdapter(getApplicationContext(), new RvClickListener() {
 			@Override
@@ -56,12 +52,7 @@ public class ViewPlayer extends DnDEncountersActivity
 				editPc(pc);
 			}
 		});
-		pcList.observe(this, new Observer<List<Character>>() {
-			@Override
-			public void onChanged(@Nullable List<Character> characters) {
-				characterListAdapter.setCharacterList(characters);
-			}
-		});
+		characterListAdapter.setCharacterList(pcList);
 		
 		
 		RecyclerView recyclerview_characters = findViewById(R.id.recyclerview_characters);
@@ -72,13 +63,23 @@ public class ViewPlayer extends DnDEncountersActivity
 
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		List<Player> players = Players.getAllPlayers(getApplicationContext());
+		ArrayList<Character> pcList = players.get(players.indexOf(selectedPlayer)).getPcs();
+		characterListAdapter.setCharacterList(pcList);
+		
+	}
+	
 	public void newPC(View target)
 	{
 		Intent myIntent = new Intent(ViewPlayer.this, AddCharacter.class);
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(Player.PASSED_PLAYER, selectedPlayer);
 		myIntent.putExtras(bundle);
-		ViewPlayer.this.startActivity(myIntent);
+		startActivityForResult(myIntent, AddCharacter.REQUEST_NEW_CHARACTER);
 	}
 
 	public void editPc(Character pc)
@@ -87,7 +88,7 @@ public class ViewPlayer extends DnDEncountersActivity
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(Character.PASSED_CHARACTER, pc);
 		myIntent.putExtras(bundle);
-		ViewPlayer.this.startActivity(myIntent);
+		startActivityForResult(myIntent, EditCharacter.REQUEST_UPDATED_CHARACTER);
 	}
 	
 	public void editPlayer(View target)
@@ -96,6 +97,7 @@ public class ViewPlayer extends DnDEncountersActivity
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(Player.PASSED_PLAYER, selectedPlayer);
 		myIntent.putExtras(bundle);
+		startActivityForResult(myIntent, EditPlayer.REQUEST_UPDATED_PLAYER);
 		ViewPlayer.this.startActivity(myIntent);
 	}
 	
@@ -124,8 +126,7 @@ public class ViewPlayer extends DnDEncountersActivity
 	
 	public void deletePlayer()
 	{
-		PlayerDao playerDao = AppDatabase.getDatabase(getApplicationContext()).playerDao();
-		playerDao.delete(selectedPlayer);
+		Players.removePlayer(getApplicationContext(), selectedPlayer);
 		finish();
 	}
 	

@@ -1,30 +1,18 @@
 package net.kalinec.dndencounters.characters;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
-
-import net.kalinec.dndencounters.players.Player;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
-@Entity(tableName = "characters",
-		foreignKeys = @ForeignKey(entity = Player.class,
-				parentColumns = "uid",
-				childColumns = "playerId",
-				onDelete = ForeignKey.CASCADE),
-		indices = {@Index("name"), @Index("playerId")})
 public class Character implements Serializable
 {
 	
 	public final static String PASSED_CHARACTER = "PASSED_CHARACTER";
 	
-	@PrimaryKey(autoGenerate = true)
-	public int pid;
-	public int playerId;
+	public UUID uuid;
+	public int dbId;
 	public String name;
 	public String characterClass;
 	public String characterRace;
@@ -35,14 +23,14 @@ public class Character implements Serializable
 	public int level;
 	public int spellDc;
 	public Character(
-			@NonNull String name, int playerId, int ac, int hp,
+			@NonNull String name, int ac, int hp,
 			int pp,
 			@NonNull String characterClass,
 			int level
 	                )
 	{
+		this.uuid = UUID.randomUUID();
 		this.name = name;
-		this.playerId = playerId;
 		this.ac = ac;
 		this.hp = hp;
 		this.pp = pp;
@@ -50,10 +38,9 @@ public class Character implements Serializable
 		this.level = level;
 	}
 	
-	public Character(Player owner)
+	public Character()
 	{
-		this.playerId = owner.getUid();
-		
+		this.uuid = UUID.randomUUID();
 	}
 	
 	@NonNull
@@ -156,23 +143,34 @@ public class Character implements Serializable
 		       (!characterRace.equals("") ? characterRace + " " : "") +
 		       characterClass + ")";
 	}
-
-	public int getPlayerId() {
-		return playerId;
-	}
-
+	
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o)
+	{
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Character character = (Character) o;
-		return pid == character.pid &&
-				playerId == character.playerId;
+		return Objects.equals(uuid, character.uuid);
 	}
-
+	
 	@Override
-	public int hashCode() {
-
-		return Objects.hash(pid, playerId);
+	public int hashCode()
+	{
+		return Objects.hash(uuid);
+	}
+	
+	public UUID getUuid()
+	{
+		return uuid;
+	}
+	
+	public int getDbId()
+	{
+		return dbId;
+	}
+	
+	public void setDbId(int dbId)
+	{
+		this.dbId = dbId;
 	}
 }

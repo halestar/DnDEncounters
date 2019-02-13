@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,6 +21,7 @@ import java.util.Locale;
 
 public class AdventureActorsListAdapter extends RecyclerView.Adapter<AdventureActorsListAdapter.AdventureActorsViewHolder>
 {
+	protected Context context;
 	private static final Comparator<AdventureEncounterActor> INITIATIVE_COMPARATOR = new Comparator<AdventureEncounterActor>() {
 		@Override
 		public int compare(AdventureEncounterActor a, AdventureEncounterActor b) {
@@ -32,6 +35,7 @@ public class AdventureActorsListAdapter extends RecyclerView.Adapter<AdventureAc
 	
 	public AdventureActorsListAdapter(Context context)
 	{
+		this.context = context;
 		this.layoutInflater = LayoutInflater.from(context);
 	}
 
@@ -73,7 +77,10 @@ public class AdventureActorsListAdapter extends RecyclerView.Adapter<AdventureAc
 				((AdventureEncounterMonster)actor).getToken().makePortrait(holder.ActorPortraitIv);
 			else
 			{
-				Bitmap portrait = ((AdventureEncounterPlayer) actor).getPlayer().getMiniPortrait();
+				Player player = Players.findOwner(context, ((AdventureEncounterPlayer) actor).getPc());
+				Bitmap portrait = null;
+				if(player != null)
+					portrait = player.getMiniPortrait();
 				if(portrait == null)
 					holder.ActorPortraitIv.setImageResource(R.drawable.app_icon);
 				else

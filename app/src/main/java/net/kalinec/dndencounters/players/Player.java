@@ -1,25 +1,36 @@
 package net.kalinec.dndencounters.players;
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import java.io.Serializable;
+import net.kalinec.dndencounters.characters.Character;
 
-@Entity(tableName = "players")
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
+
 public class Player implements Serializable
 {
 	
 	public final static String PASSED_PLAYER = "PASSED_PLAYER";
 	
-	@PrimaryKey(autoGenerate = true)
-	public int uid;
-	public String name;
+	private UUID uuid;
+	private long dbId;
+	private String name;
 	public String dci;
-	@ColumnInfo(typeAffinity = ColumnInfo.BLOB)
 	private byte[] portrait;
+	private ArrayList<Character> pcs = new ArrayList<>();
+	
+	public ArrayList<Character> getPcs()
+	{
+		return pcs;
+	}
+	
+	public void setPcs(ArrayList<Character> pcs)
+	{
+		this.pcs = pcs;
+	}
 	
 	public String getDci()
 	{
@@ -43,12 +54,8 @@ public class Player implements Serializable
 	
 	public Player(String name)
 	{
+		this.uuid = UUID.randomUUID();
 		this.name = name;
-	}
-	
-	public int getUid()
-	{
-		return uid;
 	}
 	
 	public String getName()
@@ -65,5 +72,35 @@ public class Player implements Serializable
 		if(portrait != null)
 			return BitmapFactory.decodeByteArray(portrait, 0, portrait.length);
 		return null;
+	}
+	
+	public UUID getUuid()
+	{
+		return uuid;
+	}
+	
+	public long getDbId()
+	{
+		return dbId;
+	}
+	
+	public void setDbId(long dbId)
+	{
+		this.dbId = dbId;
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Player player = (Player) o;
+		return Objects.equals(uuid, player.uuid);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(uuid);
 	}
 }

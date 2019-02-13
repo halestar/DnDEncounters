@@ -3,7 +3,6 @@ package net.kalinec.dndencounters.adventure_encounters;
 import android.support.annotation.NonNull;
 
 import net.kalinec.dndencounters.characters.Character;
-import net.kalinec.dndencounters.players.Player;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -13,14 +12,12 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
 
     public static final String PASSED_ENCOUNTER_PLAYERS = "PASSED_ENCOUNTER_PLAYERS";
     private Character pc;
-    private Player player;
     private int initiative, status;
     private boolean hasActed;
     private UUID uuid;
 
-    public AdventureEncounterPlayer(Character pc, Player player) {
+    public AdventureEncounterPlayer(Character pc) {
         this.pc = pc;
-        this.player = player;
         this.initiative = 0;
         this.uuid = UUID.randomUUID();
     }
@@ -54,11 +51,7 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
     public Character getPc() {
         return pc;
     }
-
-    public Player getPlayer() {
-        return player;
-    }
-
+    
     @Override
     public void setHasActed(boolean hasActed) {
         this.hasActed = hasActed;
@@ -90,4 +83,5 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
 		       ", hasActed=" + hasActed +
 		       '}';
 	}
+	
 }

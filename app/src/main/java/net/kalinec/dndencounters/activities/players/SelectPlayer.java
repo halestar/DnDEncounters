@@ -1,10 +1,7 @@
 package net.kalinec.dndencounters.activities.players;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -12,11 +9,10 @@ import android.widget.SearchView;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.players.Player;
 import net.kalinec.dndencounters.players.PlayerListAdapter;
+import net.kalinec.dndencounters.players.Players;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +28,7 @@ public class SelectPlayer extends DnDEncountersActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_player);
 
-        PlayerDao playerDao = AppDatabase.getDatabase(getApplicationContext()).playerDao();
-		LiveData<List<Player>> players = playerDao.getAllPlayers();
+		List<Player> players = Players.getAllPlayers(getApplicationContext());
         playerListAdapter = new PlayerListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -41,12 +36,7 @@ public class SelectPlayer extends DnDEncountersActivity {
                 selectPlayer(p);
             }
         });
-        players.observe(this, new Observer<List<Player>>() {
-            @Override
-            public void onChanged(@Nullable List<Player> players) {
-                playerListAdapter.setPlayerList(players);
-            }
-        });
+        playerListAdapter.setPlayerList(players);
 
         playerSearchRv = findViewById(R.id.playerSearchRv);
         playerSearchRv.setAdapter(playerListAdapter);

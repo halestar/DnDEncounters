@@ -8,9 +8,8 @@ import android.widget.EditText;
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.CharacterDao;
 import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 
 public class AddCharacter extends DnDEncountersActivity
 {
@@ -47,8 +46,7 @@ public class AddCharacter extends DnDEncountersActivity
 	
 	public void addPC(View target)
 	{
-		CharacterDao characterDao = AppDatabase.getDatabase(getApplicationContext()).characterDao();
-		Character newPc = new Character(owner);
+		Character newPc = new Character();
 		newPc.setName(characterNameTxt.getText().toString());
 		newPc.setCharacterClass(characterClassTxt.getText().toString());
 		newPc.setCharacterRace(characterRaceTxt.getText().toString());
@@ -66,7 +64,8 @@ public class AddCharacter extends DnDEncountersActivity
 			newPc.setSpellDc(0);
 		}
 		
-		characterDao.insert(newPc);
+		owner.getPcs().add(newPc);
+		Players.updatePlayer(getApplicationContext(), owner);
 		Intent data = new Intent();
 		data.putExtra(Character.PASSED_CHARACTER, newPc);
 		setResult(RESULT_OK, data);

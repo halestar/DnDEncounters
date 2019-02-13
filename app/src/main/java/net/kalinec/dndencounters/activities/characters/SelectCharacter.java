@@ -1,10 +1,7 @@
 package net.kalinec.dndencounters.activities.characters;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,9 +11,8 @@ import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
 import net.kalinec.dndencounters.characters.PcListAdapter;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.CharacterDao;
 import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.players.Players;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +28,7 @@ public class SelectCharacter extends DnDEncountersActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_character);
-        CharacterDao characterDao = AppDatabase.getDatabase(getApplicationContext()).characterDao();
-	    LiveData<List<Character>> pcs = characterDao.getAllCharacters();
+	    List<Character> pcs = Players.getAllPcs(getApplicationContext());
         pcListAdapter = new PcListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -41,12 +36,7 @@ public class SelectCharacter extends DnDEncountersActivity {
                 selectPc(c);
             }
         });
-        pcs.observe(this, new Observer<List<Character>>() {
-            @Override
-            public void onChanged(@Nullable List<Character> characters) {
-                pcListAdapter.setCharacterList(characters);
-            }
-        });
+        pcListAdapter.setCharacterList(pcs);
 
         characterSearchRv = findViewById(R.id.characterSearchRv);
         characterSearchRv.setAdapter(pcListAdapter);

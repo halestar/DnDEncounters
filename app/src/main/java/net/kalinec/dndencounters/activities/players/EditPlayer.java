@@ -11,15 +11,15 @@ import android.widget.ImageView;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 
 import java.io.ByteArrayOutputStream;
 
 public class EditPlayer extends DnDEncountersActivity
 {
 	static final int REQUEST_IMAGE_CAPTURE = 1;
+	static final int REQUEST_UPDATED_PLAYER = 345;
 	private EditText nameTxt, dciTxt;
 	private Bitmap portrait;
 	private ImageView portraitContainer;
@@ -48,7 +48,6 @@ public class EditPlayer extends DnDEncountersActivity
 	
 	public void updatePlayer(View target)
 	{
-		PlayerDao playerDao = AppDatabase.getDatabase(getApplicationContext()).playerDao();
 		selectedPlayer.setName(nameTxt.getText().toString());
 		selectedPlayer.setDci(dciTxt.getText().toString());
 		if(portrait != null)
@@ -58,7 +57,7 @@ public class EditPlayer extends DnDEncountersActivity
 			selectedPlayer.setPortrait(stream.toByteArray());
 			portrait.recycle();
 		}
-		playerDao.update(selectedPlayer);
+		Players.updatePlayer(getApplicationContext(), selectedPlayer);
 		finish();
 	}
 	

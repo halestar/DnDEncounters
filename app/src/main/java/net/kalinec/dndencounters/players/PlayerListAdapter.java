@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.db.AppDatabase;
 import net.kalinec.dndencounters.lib.RvClickListener;
 
 import java.util.ArrayList;
@@ -71,24 +70,13 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
 		if (player != null)
 		{
 			holder.PlayerNameTv.setText(player.getName());
-			int numPcs = AppDatabase.getDatabase(context).playerDao().numPcs(player.getUid());
+			int numPcs = player.getPcs().size();
 			holder.PlayerNumPcs.setText(
 					String.format(Locale.getDefault(), "%d", numPcs) + " PC(s)");
 			if(player.getPortrait() != null) {
 				Bitmap bmp = BitmapFactory.decodeByteArray(player.getPortrait(), 0, player.getPortrait().length);
 				holder.PlayerPortraitIv.setImageBitmap(bmp);
 			}
-			/*holder.itemView.setOnClickListener(new View.OnClickListener()
-			{
-				@Override
-				public void onClick(View v)
-				{
-					Bundle bundle = new Bundle();
-					bundle.putSerializable(Player.PASSED_PLAYER, player);
-					destinationIntent.putExtras(bundle);
-					context.startActivity(destinationIntent);
-				}
-			});*/
 		}
 	}
 	

@@ -8,10 +8,8 @@ import android.widget.EditText;
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
 import net.kalinec.dndencounters.characters.Character;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.CharacterDao;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 
 public class CreatePlayerAndCharacter extends DnDEncountersActivity {
 
@@ -35,12 +33,8 @@ public class CreatePlayerAndCharacter extends DnDEncountersActivity {
 
     public void createPPc(View v)
     {
-        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
-        PlayerDao playerDao = db.playerDao();
-        CharacterDao characterDao = db.characterDao();
         Player newPlayer = new Player(addPPCNameEt.getText().toString());
         newPlayer.setDci(addPPCDciEt.getText().toString());
-        long insertId = playerDao.insert(newPlayer);
         //make the character.
         String pcName = addPPCPcNameTxt.getText().toString();
         String pcClass = addPPCPcClassTxt.getText().toString();
@@ -57,10 +51,11 @@ public class CreatePlayerAndCharacter extends DnDEncountersActivity {
         {
             pcDc = 0;
         }
-        Character newPc = new Character(pcName, (int)(insertId), pcAc, pcHp, pcPp, pcClass, pcLv);
+        Character newPc = new Character(pcName, pcAc, pcHp, pcPp, pcClass, pcLv);
         newPc.setCharacterRace(pcRace);
         newPc.setSpellDc(pcDc);
-        characterDao.insert(newPc);
+        newPlayer.getPcs().add(newPc);
+	    Players.addPlayer(getApplicationContext(), newPlayer);
 
         Intent data = new Intent();
         data.putExtra(Player.PASSED_PLAYER, newPlayer);

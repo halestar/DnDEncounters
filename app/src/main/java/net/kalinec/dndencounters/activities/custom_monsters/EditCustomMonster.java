@@ -2,10 +2,9 @@ package net.kalinec.dndencounters.activities.custom_monsters;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,17 +14,13 @@ import android.widget.Toast;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.activities.players.ViewPlayer;
 import net.kalinec.dndencounters.custom_monsters.CustomMonster;
 import net.kalinec.dndencounters.custom_monsters.CustomMonsterAbilitiesListAdapter;
 import net.kalinec.dndencounters.custom_monsters.CustomMonsters;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.dice.DiceParser;
 import net.kalinec.dndencounters.dice.DiceRollerDialog;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monsters.MonsterAbility;
-import net.kalinec.dndencounters.players.Player;
 
 import java.util.ArrayList;
 

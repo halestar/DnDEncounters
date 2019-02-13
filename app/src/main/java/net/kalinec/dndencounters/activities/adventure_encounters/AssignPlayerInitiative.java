@@ -13,9 +13,6 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounter;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterPlayer;
 import net.kalinec.dndencounters.adventure_encounters.PcInitiativeListAdapter;
 import net.kalinec.dndencounters.characters.Character;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.PlayerDao;
-import net.kalinec.dndencounters.players.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,11 +38,7 @@ public class AssignPlayerInitiative extends DnDEncountersActivity
 		List<Character> pcs = adventureEncounter.getParty().getMembers();
 		encounterPcs = new ArrayList<>();
 		for(Character pc: pcs)
-		{
-			PlayerDao playerDao = AppDatabase.getDatabase(getApplicationContext()).playerDao();
-			Player owner = playerDao.getPlayerById(pc.getPlayerId());
-			encounterPcs.add(new AdventureEncounterPlayer(pc, owner));
-		}
+			encounterPcs.add(new AdventureEncounterPlayer(pc));
 
 		pcInitiativeListAdapter = new PcInitiativeListAdapter(getApplicationContext());
 		pcInitiativeListAdapter.setPlayerList(encounterPcs);

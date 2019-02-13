@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.db.AppDatabase;
-import net.kalinec.dndencounters.db.PlayerDao;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.players.Player;
+import net.kalinec.dndencounters.players.Players;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -117,9 +116,11 @@ public class PcListAdapter extends RecyclerView.Adapter<PcListAdapter.PcViewHold
 		if (character != null)
 		{
 			holder.characterNameTv.setText(character.getName());
-			PlayerDao playerDao = AppDatabase.getDatabase(context).playerDao();
-			Player owner = playerDao.getPlayerById(character.getPlayerId());
-			holder.playeNameTv.setText(owner.getName());
+			Player owner = Players.findOwner(context, character);
+			if(owner != null)
+				holder.playeNameTv.setText(owner.getName());
+			else
+				holder.playeNameTv.setText("Unowned");
 			holder.characterLevelTv.setText(
 					"Lv. " + String.format(Locale.getDefault(), "%d", character.getLevel()));
 		}

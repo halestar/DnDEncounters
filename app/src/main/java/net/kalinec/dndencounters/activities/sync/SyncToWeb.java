@@ -1,14 +1,11 @@
 package net.kalinec.dndencounters.activities.sync;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.constraint.Group;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -19,9 +16,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.custom_monsters.CustomMonster;
-import net.kalinec.dndencounters.custom_monsters.CustomMonsters;
-import net.kalinec.dndencounters.players.Player;
 import net.kalinec.dndencounters.sync.SyncData;
 
 import org.json.JSONException;
@@ -31,19 +25,14 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.DateTimeException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.List;
 
 public class SyncToWeb extends AppCompatActivity
 {
-	private final static String oAuthClientSecret = "Cgvey7BVwU5jU4WpotjMCI63bWyfbwDKDOFPUUi1";
+	private final static String oAuthClientSecret = "7BKUT1OZ1KXELV3MQe5fZWr2i7wjQ2UogSEni2Mp";
 	private final static int oAuthClientId = 2;
 	private final static String oAuthGrantPassword = "password";
 	private final static String oAuthGrantRefreh = "refresh_token";
