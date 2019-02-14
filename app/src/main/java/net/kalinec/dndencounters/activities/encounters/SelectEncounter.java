@@ -2,6 +2,8 @@ package net.kalinec.dndencounters.activities.encounters;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -81,6 +83,17 @@ public class SelectEncounter extends DnDEncountersActivity {
                 return true;
             }
         });
+        
+        FloatingActionButton addEncounterBt = findViewById(R.id.addEncounterBt);
+        addEncounterBt.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+	            Intent myIntent = new Intent(SelectEncounter.this, AddEncounter.class);
+	            startActivityForResult(myIntent, AddEncounter.REQUEST_NEW_ENCOUNTER);
+            }
+        });
     }
 
     public void selectEncounter(Encounter encounter)
@@ -90,4 +103,18 @@ public class SelectEncounter extends DnDEncountersActivity {
         setResult(RESULT_OK, data);
         finish();
     }
+	
+	@Override
+	protected void onActivityResult(
+			int requestCode, int resultCode, @Nullable Intent data
+	                               )
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode == AddEncounter.REQUEST_NEW_ENCOUNTER && resultCode == RESULT_OK)
+		{
+			assert data != null;
+			Encounter newEncounter = (Encounter)data.getSerializableExtra(Encounter.PASSED_ENCOUNTER);
+			selectEncounter(newEncounter);
+		}
+	}
 }

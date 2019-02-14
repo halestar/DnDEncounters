@@ -34,6 +34,7 @@ import net.kalinec.dndencounters.monsters.MonsterAbility;
 import net.kalinec.dndencounters.monsters.Monsters;
 import net.kalinec.dndencounters.players.Player;
 import net.kalinec.dndencounters.players.Players;
+import net.kalinec.dndencounters.sync.LinkData;
 import net.kalinec.dndencounters.sync.SyncData;
 import net.kalinec.dndencounters.sync.SyncPayload;
 import net.kalinec.dndencounters.sync.SyncPlayerPayload;
@@ -42,10 +43,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,8 +59,8 @@ import java.util.List;
 
 public class SyncToWeb extends AppCompatActivity
 {
-	private final static String oAuthClientSecret = "kntUujSsz01kgIJ4da2SsJrgmg2BoWYDep717R2h";
-	private final static int oAuthClientId = 4;
+	private final static String oAuthClientSecret = "XeIfnwBYHOKirZrEgaPOZjd0uqQxFgMPbqrGPmVz";
+	private final static int oAuthClientId = 2;
 	private final static String oAuthGrantPassword = "password";
 	private final static String oAuthGrantRefreh = "refresh_token";
 	private final static String webUrl = "http://192.168.10.10";
@@ -552,7 +556,7 @@ public class SyncToWeb extends AppCompatActivity
 		player.setDci(stats.getString("dci"));
 		
 		if(!stats.getString("portrait").equals("null") && !stats.getString("portrait").equals(""))
-			player.setPortrait(Base64.decode(stats.getString("mini"), Base64.DEFAULT));
+			player.setPortrait(Base64.decode(stats.getString("portrait"), Base64.DEFAULT));
 		
 		ArrayList<Character> playerPcs = new ArrayList<>();
 		ArrayList<SyncPayload> pcPayload = new ArrayList<>();
@@ -589,7 +593,7 @@ public class SyncToWeb extends AppCompatActivity
 		player.setDci(stats.getString("dci"));
 		
 		if(!stats.getString("portrait").equals("null") && !stats.getString("portrait").equals(""))
-			player.setPortrait(Base64.decode(stats.getString("mini"), Base64.DEFAULT));
+			player.setPortrait(Base64.decode(stats.getString("portrait"), Base64.DEFAULT));
 		
 		ArrayList<Character> playerPcs = new ArrayList<>();
 		ArrayList<SyncPayload> pcPayload = new ArrayList<>();
@@ -731,23 +735,26 @@ public class SyncToWeb extends AppCompatActivity
 		try
 		{
 			JSONObject json = new JSONObject(data.getString(BUNDLE_MSG));
+			LinkData linkData = new LinkData();
 			
 			JSONArray players_json = json.getJSONArray("players");
-			ArrayList<SyncPlayerPayload> players = syncPlayers(players_json);
+			linkData.players = syncPlayers(players_json);
 			
 			JSONArray monsters_json = json.getJSONArray("custom_monsters");
-			ArrayList<SyncPayload> custom_monsters = syncCustomMonsters(monsters_json);
+			linkData.custom_monsters = syncCustomMonsters(monsters_json);
 			
 			JSONArray encounter_json = json.getJSONArray("encounters");
-			ArrayList<SyncPayload> encounters = syncEncounters(encounter_json);
+			linkData.encounters = syncEncounters(encounter_json);
 			
 			JSONArray token_json = json.getJSONArray("monster_tokens");
-			ArrayList<SyncPayload> monster_tokens = syncMonsterTokens(token_json);
+			linkData.monster_tokens = syncMonsterTokens(token_json);
 			
 			JSONArray module_json = json.getJSONArray("modules");
-			ArrayList<SyncPayload> modules = syncModules(module_json);
+			linkData.modules = syncModules(module_json);
 			
 			resultsTv.setText("Sync from Web Successful!");
+			uploadLinks(linkData);
+			
 		}
 		catch (JSONException e)
 		{
@@ -1052,6 +1059,8 @@ public class SyncToWeb extends AppCompatActivity
 		loadingPanel.setVisibility(View.VISIBLE);
 		resultsTv.setText("Start uploadData\n");
 		final SyncData syncData = new SyncData(getApplicationContext());
+		Gson gson = new Gson();
+		final String sData = gson.toJson(syncData);
 
 		Runnable aRunnable = new Runnable()
 		{
@@ -1070,14 +1079,22 @@ public class SyncToWeb extends AppCompatActivity
 					conn.setRequestProperty("authorization", "Bearer " + prefs.getString(PREF_ACCESS_TOKEN_KEY, ""));
 					conn.setDoOutput(true);
 					conn.setDoInput(true);
-
-					Gson gson = new Gson();
-
-
-					DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-					os.writeBytes(gson.toJson(syncData));
-					os.flush();
+					
+					BufferedOutputStream os = new BufferedOutputStream(conn.getOutputStream());
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+					
+					msg = mHandler.obtainMessage();
+					rBundle = new Bundle();
+					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
+					rBundle.putString(BUNDLE_MSG, "In uploadData, sending: " + sData);
+					msg.setData(rBundle);
+					mHandler.sendMessage(msg);
+					
+					writer.write(sData);
+					writer.flush();
+					writer.close();
 					os.close();
+					conn.connect();
 					int status = conn.getResponseCode();
 
 					if(status == HttpURLConnection.HTTP_OK)
@@ -1227,5 +1244,92 @@ public class SyncToWeb extends AppCompatActivity
 		Thread thread = new Thread(aRunnable);
 		thread.start();
 
+	}
+	
+	public void uploadLinks(LinkData data)
+	{
+		Gson gson = new Gson();
+		final String sData = gson.toJson(data);
+		
+		Runnable aRunnable = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Message msg;
+				Bundle rBundle;
+				try
+				{
+					URL url = new URL(webUrl + "/api/sync/db");
+					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					conn.setRequestMethod("POST");
+					conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+					conn.setRequestProperty("Accept","application/json");
+					conn.setRequestProperty("authorization", "Bearer " + prefs.getString(PREF_ACCESS_TOKEN_KEY, ""));
+					conn.setDoOutput(true);
+					conn.setDoInput(true);
+					
+					BufferedOutputStream os = new BufferedOutputStream(conn.getOutputStream());
+					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+					
+					msg = mHandler.obtainMessage();
+					rBundle = new Bundle();
+					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
+					rBundle.putString(BUNDLE_MSG, "In uploadData, sending: " + sData);
+					msg.setData(rBundle);
+					mHandler.sendMessage(msg);
+					
+					writer.write(sData);
+					writer.flush();
+					writer.close();
+					os.close();
+					
+					conn.connect();
+					int status = conn.getResponseCode();
+					
+					if(status == HttpURLConnection.HTTP_OK)
+					{
+						
+						msg = mHandler.obtainMessage();
+						rBundle = new Bundle();
+						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
+						rBundle.putString(BUNDLE_MSG, "Update Links Sucess!");
+						msg.setData(rBundle);
+						mHandler.sendMessage(msg);
+					}
+					else
+					{
+						msg = mHandler.obtainMessage();
+						rBundle = new Bundle();
+						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
+						rBundle.putString(BUNDLE_MSG, "Request returned error: " +
+						                              conn.getResponseMessage());
+						msg.setData(rBundle);
+						mHandler.sendMessage(msg);
+					}
+					conn.disconnect();
+				}
+				catch (MalformedURLException e)
+				{
+					msg = mHandler.obtainMessage();
+					rBundle = new Bundle();
+					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
+					rBundle.putString(BUNDLE_MSG, "Error with URL: " + e.toString());
+					msg.setData(rBundle);
+					mHandler.sendMessage(msg);
+				}
+				catch (IOException e)
+				{
+					msg = mHandler.obtainMessage();
+					rBundle = new Bundle();
+					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
+					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
+					msg.setData(rBundle);
+					mHandler.sendMessage(msg);
+				}
+			}
+		};
+		Thread thread = new Thread(aRunnable);
+		thread.start();
 	}
 }

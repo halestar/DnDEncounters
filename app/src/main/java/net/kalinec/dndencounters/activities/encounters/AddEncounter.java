@@ -39,8 +39,6 @@ public class AddEncounter extends DnDEncountersActivity
 	{
 		super.onCreate(savedInstanceState);
 		Bundle bundle = getIntent().getExtras();
-		if(bundle != null)
-			writeEncounter = bundle.getBoolean(WRITE_ENCOUNTER, true);
 		setContentView(R.layout.activity_add_encounter);
 		
 		encounterName = findViewById(R.id.editEncounterNameEt);
@@ -130,8 +128,7 @@ public class AddEncounter extends DnDEncountersActivity
 		Encounter newEncounter = new Encounter();
 		newEncounter.setEncounterName(encounterName.getText().toString());
 		newEncounter.setMonsters(monsters);
-		if(writeEncounter)
-			Encounters.addEncounter(getApplicationContext(), newEncounter);
+		Encounters.addEncounter(getApplicationContext(), newEncounter);
 		Intent data = new Intent();
 		data.putExtra(Encounter.PASSED_ENCOUNTER, newEncounter);
 		setResult(RESULT_OK, data);

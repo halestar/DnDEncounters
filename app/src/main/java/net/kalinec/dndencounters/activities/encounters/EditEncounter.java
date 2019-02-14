@@ -33,7 +33,6 @@ public class EditEncounter extends DnDEncountersActivity
 	private EncounterMonsterListAdapter encounterMonsterListAdapter;
 	private Encounter selectedEncounter;
 	public final static String WRITE_ENCOUNTER = "WRITE_ENCOUNTER";
-	private boolean writeEncounter = true;
 	public static final int REQUEST_UPDATED_ENCOUNTER = 515;
 	
 	@Override
@@ -43,8 +42,6 @@ public class EditEncounter extends DnDEncountersActivity
 		Bundle bundle = getIntent().getExtras();
 		assert bundle != null;
 		selectedEncounter = (Encounter) bundle.getSerializable(Encounter.PASSED_ENCOUNTER);
-		writeEncounter = bundle.getBoolean(WRITE_ENCOUNTER, true);
-		Log.d("EditEncounter", "selected encounter=" + selectedEncounter);
 		setContentView(R.layout.activity_edit_encounter);
 		
 		encounterName = findViewById(R.id.editEncounterNameEt);
@@ -137,8 +134,7 @@ public class EditEncounter extends DnDEncountersActivity
 	{
 		selectedEncounter.setEncounterName(encounterName.getText().toString());
 		selectedEncounter.setMonsters(monsters);
-		if(writeEncounter)
-			Encounters.updateEncounter(getApplicationContext(), selectedEncounter);
+		Encounters.updateEncounter(getApplicationContext(), selectedEncounter);
 		Intent data = new Intent();
 		data.putExtra(Encounter.PASSED_ENCOUNTER, selectedEncounter);
 		setResult(RESULT_OK, data);

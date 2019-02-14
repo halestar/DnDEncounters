@@ -1,29 +1,25 @@
 package net.kalinec.dndencounters.activities.modules;
 
 import android.content.Intent;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import net.kalinec.dndencounters.DnDEncountersActivity;
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.activities.custom_monsters.ManageCustomMonsterAbility;
-import net.kalinec.dndencounters.activities.encounters.AddEncounter;
 import net.kalinec.dndencounters.activities.encounters.EditEncounter;
-import net.kalinec.dndencounters.activities.monsters.SelectMonster;
+import net.kalinec.dndencounters.activities.encounters.SelectEncounter;
+import net.kalinec.dndencounters.activities.encounters.SelectEncounters;
 import net.kalinec.dndencounters.encounters.Encounter;
 import net.kalinec.dndencounters.encounters.EncounterManagerListAdapter;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.modules.Module;
 import net.kalinec.dndencounters.modules.Modules;
-import net.kalinec.dndencounters.monsters.Monster;
 
 import java.util.ArrayList;
 
@@ -60,7 +56,6 @@ public class AddModule extends DnDEncountersActivity
                    	    Intent myIntent = new Intent(AddModule.this, EditEncounter.class);
 						Bundle bundle = new Bundle();
 						bundle.putSerializable(Encounter.PASSED_ENCOUNTER, encounters.get(position));
-						bundle.putBoolean(EditEncounter.WRITE_ENCOUNTER, false);
 						myIntent.putExtras(bundle);
 						startActivityForResult(myIntent, EditEncounter.REQUEST_UPDATED_ENCOUNTER);
                    }
@@ -84,11 +79,8 @@ public class AddModule extends DnDEncountersActivity
 			@Override
 			public void onClick(View v)
 			{
-				Intent myIntent = new Intent(AddModule.this, AddEncounter.class);
-				Bundle bundle = new Bundle();
-				bundle.putBoolean(AddEncounter.WRITE_ENCOUNTER, false);
-				myIntent.putExtras(bundle);
-				startActivityForResult(myIntent, AddEncounter.REQUEST_NEW_ENCOUNTER);
+				Intent myIntent = new Intent(AddModule.this, SelectEncounters.class);
+				startActivityForResult(myIntent, SelectEncounter.REQUEST_SELECT_ENCOUNTER);
 			}
 		});
 	}
@@ -96,11 +88,11 @@ public class AddModule extends DnDEncountersActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
 	{
-		if(requestCode == AddEncounter.REQUEST_NEW_ENCOUNTER && resultCode == RESULT_OK)
+		if(requestCode == SelectEncounter.REQUEST_SELECT_ENCOUNTER && resultCode == RESULT_OK)
 		{
 			assert data != null;
-			Encounter newEncounter = (Encounter)data.getSerializableExtra(Encounter.PASSED_ENCOUNTER);
-			encounters.add(newEncounter);
+			ArrayList<Encounter> selectedEncounters = (ArrayList<Encounter>)data.getSerializableExtra(Encounter.PASSED_ENCOUNTERS);
+			encounters.addAll(selectedEncounters);
 			encounterAdapter.setEncounterList(encounters);
 		}
 		else if(requestCode == EditEncounter.REQUEST_UPDATED_ENCOUNTER && resultCode == RESULT_OK)

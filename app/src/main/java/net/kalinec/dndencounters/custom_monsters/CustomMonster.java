@@ -20,6 +20,7 @@ public class CustomMonster extends Monster implements Serializable
     {
         super(mid, stats);
         uuid = UUID.randomUUID();
+        this.mid = -1;
     }
 
     public UUID getUuid()
@@ -32,6 +33,7 @@ public class CustomMonster extends Monster implements Serializable
         super();
         this.name = name;
         uuid = UUID.randomUUID();
+        this.mid = -1;
     }
 
     public void setHp(int hp)
