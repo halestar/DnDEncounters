@@ -1,19 +1,10 @@
 package net.kalinec.dndencounters.custom_monsters;
 
 import android.content.Context;
-import android.util.Log;
-
-import net.kalinec.dndencounters.encounters.Encounter;
-import net.kalinec.dndencounters.monsters.Monster;
-import net.kalinec.dndencounters.players.Player;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -123,6 +114,18 @@ public class CustomMonsters
 		for(CustomMonster p: customMonsters)
 		{
 			if(p.getUuid().toString().equals(uuid))
+				return p;
+		}
+		return null;
+	}
+	
+	public static CustomMonster getMonsterByDbId(Context context, long dbId)
+	{
+		if(customMonsters == null)
+			readCustomMonsters(context);
+		for(CustomMonster p: customMonsters)
+		{
+			if(p.getDbId() == dbId)
 				return p;
 		}
 		return null;

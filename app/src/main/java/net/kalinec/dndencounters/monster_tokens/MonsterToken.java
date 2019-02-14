@@ -25,6 +25,12 @@ public class MonsterToken implements Serializable, SelectableItem
     public static final int TOKEN_TYPE_NUMBER = 1;
     public static final int TOKEN_TYPE_MINI = 4;
     public static final int TOKEN_TYPE_COLOR = 2;
+    
+    public static final String WEB_TOKEN_NUMBER = "NUMBER";
+    public static final String WEB_TOKEN_COLOR = "COLOR";
+    public static final String WEB_TOKEN_COLORED_NUMBER = "COLORED_NUMBER";
+    public static final String WEB_TOKEN_MINI = "MINI";
+    
     public static final String PASSED_MONSTER_TOKEN = "PASSED_MONSTER_TOKEN";
     private byte[] miniPortrait;
     private String tokenName = "Random Token";

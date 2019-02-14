@@ -39,7 +39,7 @@ public class Player implements Serializable
 	
 	public void setDci(String dci)
 	{
-		this.dci = dci;
+		this.dci = dci.equals("null")? "": dci;
 	}
 	
 	public byte[] getPortrait()

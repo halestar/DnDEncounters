@@ -40,18 +40,18 @@ public class CustomMonster extends Monster implements Serializable
     }
 
     public void setCr(String cr) {
-        this.cr = cr;
+        this.cr = (cr.equals("null")? "": cr);
     }
 
     public void setMonsterType(String monsterType) {
-        this.monsterType = monsterType;
+        this.monsterType = (monsterType.equals("null")? "": monsterType);
     }
     public void setMonsterName(String monsterName) {
-        this.name = monsterName;
+        this.name = (monsterName.equals("null")? "": monsterName);
     }
 
     public void setMonsterSize(String monsterSize) {
-        this.monsterSize = monsterSize;
+        this.monsterSize = (monsterSize.equals("null")? "": monsterSize);
     }
 
     public void setStr(int str) {
@@ -100,37 +100,37 @@ public class CustomMonster extends Monster implements Serializable
         this.hitDice = hitDice;
     }
     public void setSpeed(String speed) {
-        this.speed = speed;
+        this.speed = (monsterSize.equals("null")? "": monsterSize);
     }
 
     public void setAlignment(String alignment)
     {
-        this.alignment = alignment;
+        this.alignment = (alignment.equals("null")? "": alignment);
     }
 
     public void setResistances(String resistances)
     {
-        this.resistances = resistances;
+        this.resistances = (resistances.equals("null")? "": resistances);
     }
 
     public void setImmunities(String immunities)
     {
-        this.immunities = immunities;
+        this.immunities = (immunities.equals("null")? "": immunities);
     }
 
     public void setVulnerabilities(String vulnerabilities)
     {
-        this.vulnerabilities = vulnerabilities;
+        this.vulnerabilities = (vulnerabilities.equals("null")? "": vulnerabilities);
     }
 
     public void setLanguages(String languages)
     {
-        this.languages = languages;
+        this.languages = (languages.equals("null")? "": languages);
     }
 
     public void setSenses(String senses)
     {
-        this.senses = senses;
+        this.senses = (senses.equals("null")? "": senses);
     }
 
     public void setLegendaryAbilities(

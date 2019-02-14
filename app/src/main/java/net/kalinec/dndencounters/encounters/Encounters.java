@@ -1,7 +1,6 @@
 package net.kalinec.dndencounters.encounters;
 
 import android.content.Context;
-import android.util.Log;
 
 import net.kalinec.dndencounters.lib.SelectableItem;
 
@@ -110,5 +109,27 @@ public class Encounters
 		encountersDB.remove(e);
 		encountersDB.sort(ALPHABETICAL_COMPARATOR);
 		writeEncounters(context);
+	}
+	
+	public static Encounter getEncounterByUuid(Context context, String uuid)
+	{
+		verifyDb(context);
+		for(Encounter p: encountersDB)
+		{
+			if(p.getUuid().toString().equals(uuid))
+				return p;
+		}
+		return null;
+	}
+	
+	public static Encounter getMonsterByDbId(Context context, long dbId)
+	{
+		verifyDb(context);
+		for(Encounter p: encountersDB)
+		{
+			if(p.getDbId() == dbId)
+				return p;
+		}
+		return null;
 	}
 }

@@ -102,4 +102,15 @@ public class MonsterTokens
 		tokensDb.sort(ALPHABETICAL_COMPARATOR);
 		writeEncounters(context);
 	}
+	
+	public static MonsterToken getMonsterByUuid(Context context, String uuid)
+	{
+		verifyDb(context);
+		for(MonsterToken p: tokensDb)
+		{
+			if(p.getUuid().toString().equals(uuid))
+				return p;
+		}
+		return null;
+	}
 }

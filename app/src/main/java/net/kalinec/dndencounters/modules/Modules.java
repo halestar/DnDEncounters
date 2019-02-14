@@ -1,10 +1,6 @@
 package net.kalinec.dndencounters.modules;
 
 import android.content.Context;
-import android.util.Log;
-
-import net.kalinec.dndencounters.encounters.Encounter;
-import net.kalinec.dndencounters.lib.SelectableItem;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -105,5 +101,16 @@ public class Modules
 		moduleDb.remove(e);
 		moduleDb.sort(ALPHABETICAL_COMPARATOR);
 		writeModules(context);
+	}
+	
+	public static Module getModuleByUuid(Context context, String uuid)
+	{
+		verifyDb(context);
+		for(Module p: moduleDb)
+		{
+			if(p.getUuid().toString().equals(uuid))
+				return p;
+		}
+		return null;
 	}
 }
