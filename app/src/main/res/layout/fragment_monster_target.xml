@@ -11,7 +11,7 @@
 
 
     <ImageView
-        android:id="@+id/MonsterInfoPortraitIv"
+        android:id="@+id/MonsterInfoTokenSp"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="8dp"
@@ -32,7 +32,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/textView24"
-        app:layout_constraintStart_toEndOf="@+id/MonsterInfoPortraitIv"
+        app:layout_constraintStart_toEndOf="@+id/MonsterInfoTokenSp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/MonsterSizeTxt"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/MonsterInfoPortraitIv"
+        app:layout_constraintStart_toEndOf="@+id/MonsterInfoTokenSp"
         app:layout_constraintTop_toBottomOf="@+id/MonsterInfoNameTv" />
 
     <TextView
@@ -95,7 +95,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoPortraitIv">
+        app:layout_constraintTop_toBottomOf="@+id/MonsterInfoTokenSp">
 
         <TextView
             android:id="@+id/textView21"

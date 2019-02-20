@@ -16,10 +16,9 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import net.kalinec.dndencounters.R;
-import net.kalinec.dndencounters.activities.adventure_encounters.EncounterUpdater;
-import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.encounters.EncounterUpdater;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
-import net.kalinec.dndencounters.monster_tokens.MonsterTokenSpinnerAdapter;
+import net.kalinec.dndencounters.monster_tokens.MonsterTokenOnlySpinnerAdapter;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
 
 import java.util.ArrayList;
@@ -65,15 +64,26 @@ public class AdventureEncounterMonsterActorListAdapter extends RecyclerView.Adap
 	public void onBindViewHolder(@NonNull AdventureEncounterMonsterActorListAdapter.AdventureEncounterMonsterActorViewHolder holder, int position)
 	{
 		final EncounterUpdater updater = encounterUpdateList.get(position);
+		final int updaterPos = position;
 		if (updater != null)
 		{
 			holder.MonsterNameTv.setText(updater.getMonster().getName());
 			holder.MonsterInitiativeEt.setText(Integer.toString(updater.getInitiative()));
+			holder.MonsterInitiativePosEt.setText(Integer.toString(updater.getInitiativePos()));
 			holder.MonsterHpEt.setText(Integer.toString(updater.getCurrentHp()));
 			holder.MonsterDeathTb.setChecked(updater.isAlive());
-			MonsterTokenSpinnerAdapter monsterTokenAdapter = new MonsterTokenSpinnerAdapter(this.context);
+			MonsterTokenOnlySpinnerAdapter monsterTokenAdapter = new MonsterTokenOnlySpinnerAdapter(this.context);
 			holder.MonsterTokenSp.setAdapter(monsterTokenAdapter);
 			holder.MonsterTokenSp.setSelection(monsterTokenAdapter.findPosition(updater.getAssignedToken()));
+			holder.RemoveMonsterBt.setOnClickListener(new View.OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					encounterUpdateList.remove(updaterPos);
+					notifyDataSetChanged();
+				}
+			});
 		}
 	}
 	
@@ -83,11 +93,10 @@ public class AdventureEncounterMonsterActorListAdapter extends RecyclerView.Adap
 		return encounterUpdateList.size();
 	}
 	
-	public static class AdventureEncounterMonsterActorViewHolder extends RecyclerView.ViewHolder implements
-	                                                                                      View.OnClickListener
+	public static class AdventureEncounterMonsterActorViewHolder extends RecyclerView.ViewHolder
 	{
 		private TextView MonsterNameTv;
-		private EditText MonsterInitiativeEt, MonsterHpEt;
+		private EditText MonsterInitiativeEt, MonsterHpEt, MonsterInitiativePosEt;
 		private Spinner MonsterTokenSp;
 		private ToggleButton MonsterDeathTb;
 		private Button RemoveMonsterBt;
@@ -108,6 +117,26 @@ public class AdventureEncounterMonsterActorListAdapter extends RecyclerView.Adap
 				public void onTextChanged(CharSequence s, int start, int before, int count)
 				{
 					encounterUpdateList.get(getAdapterPosition()).setInitiative(Integer.parseInt(MonsterInitiativeEt.getText().toString()));
+				}
+
+				@Override
+				public void afterTextChanged(Editable s)
+				{
+
+				}
+			});
+			MonsterInitiativePosEt = itemView.findViewById(R.id.MonsterInitiativePosEt);
+			MonsterInitiativePosEt.addTextChangedListener(new TextWatcher()
+			{
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after)
+				{
+				}
+
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count)
+				{
+					encounterUpdateList.get(getAdapterPosition()).setInitiativePos(Integer.parseInt(MonsterInitiativePosEt.getText().toString()));
 				}
 
 				@Override
@@ -163,14 +192,6 @@ public class AdventureEncounterMonsterActorListAdapter extends RecyclerView.Adap
 				}
 			});
 			RemoveMonsterBt = itemView.findViewById(R.id.RemoveMonsterBt);
-			RemoveMonsterBt.setOnClickListener(this);
-			
-		}
-		
-		@Override
-		public void onClick(View v)
-		{
-			encounterUpdateList.remove(getAdapterPosition());
 		}
 	}
 }

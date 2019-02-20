@@ -148,6 +148,7 @@
     <string name="TokenPortraitTxt">Token Portrait</string>
     <string name="FinishMonsterTxt">Finish with Monster</string>
     <string name="MakeDeadMonsterTxt">Mark Monster Dead</string>
+    <string name="MakeAliveMonsterTxt">Mark Monster Alive</string>
     <string name="PcPpColonTxt">PP:</string>
     <string name="AvailablePlayersTxt">Available Players</string>
     <string name="FinishMonsterTurnTxt">Finishg Monster Turn</string>
@@ -284,4 +285,10 @@
     <string name="SyncMenuName">Sync to Web</string>
     <string name="LoggedIn">Logged In!</string>
     <string name="logout">Log Out</string>
+    <string name="NewCustomBasedOnTemplateTxt">Make New Custom Monster Based On This</string>
+    <string name="EnterDiceColonTxt">Enter Number of Dice:</string>
+    <string name="PostionColonTxt">Position:</string>
+    <string name="AddPPCTxt">Add New Player and Character</string>
+    <string name="AddPCTxt">Add New Character</string>
+    <string name="AddExistingPCTxt">Add Existing Character</string>
 </resources>

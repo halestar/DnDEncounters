@@ -62,7 +62,6 @@ public class MainActivity extends DnDEncountersActivity
 		navigationView.setNavigationItemSelectedListener(this);
 		activeSession = PlaySessionManager.getCurrentSession(getApplicationContext());
 		updateFront();
-		
 	}
 	
 	private void updateFront()
@@ -159,6 +158,7 @@ public class MainActivity extends DnDEncountersActivity
 		{
 			super.onBackPressed();
 		}
+		updateFront();
 	}
 	
 	@SuppressWarnings("StatementWithEmptyBody")

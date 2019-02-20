@@ -5,6 +5,7 @@
     <uses-feature
         android:name="android.hardware.camera2"
         android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -15,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.sync.SyncToWeb"></activity>
+        <activity android:name=".activities.encounters.EditEncounterActor"></activity>
+        <activity android:name=".activities.monsters.ViewSrMonster" />
+        <activity android:name=".activities.sync.SyncToWeb" />
         <activity android:name=".activities.characters.PcCentral" />
         <activity android:name=".activities.adventure_encounters.UpdatePlayerInitiative" />
         <activity android:name=".activities.adventure_encounters.UpdateAdventureEncounter" />
@@ -46,7 +49,8 @@
         <activity android:name=".activities.encounters.AddEncounter" />
         <activity android:name=".activities.monsters.SelectMonster" />
         <activity android:name=".activities.encounters.EditEncounter" />
-        <activity android:name=".activities.parties.CreateParty" />
+        <activity android:name=".activities.parties.CreateParty"
+            android:windowSoftInputMode="stateVisible"/>
         <activity android:name=".activities.characters.SelectCharacter" />
         <activity android:name=".activities.players.CreatePlayerAndCharacter" />
         <activity android:name=".activities.players.SelectPlayer" />

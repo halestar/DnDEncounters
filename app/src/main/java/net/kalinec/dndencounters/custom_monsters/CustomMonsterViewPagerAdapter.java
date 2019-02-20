@@ -8,8 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import net.kalinec.dndencounters.activities.custom_monsters.ViewCustomMonstersFragment;
 import net.kalinec.dndencounters.activities.custom_monsters.ViewMonstersFragment;
+import net.kalinec.dndencounters.lib.OnMonsterSelectedListener;
 
-public class CustomMonsterViewPagerAdapter extends FragmentPagerAdapter {
+public class CustomMonsterViewPagerAdapter extends FragmentPagerAdapter
+{
 
     public CustomMonsterViewPagerAdapter(FragmentManager fm) {
         super(fm);

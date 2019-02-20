@@ -10,217 +10,222 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/PlayAdventurePartyNameTv"
-            android:layout_width="0dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/PartyInfoLy"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/PartyNameTxt"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/EditPartyBt"
+            android:background="@drawable/rounded_corners_blue_fill"
+            app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/NumPartyMemberDisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/TotalPartyMembersTxt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
+            <TextView
+                android:id="@+id/PlayAdventurePartyNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/PartyNameTxt"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/EditPartyBt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/NumMembersTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/NumPcTxt"
-            app:layout_constraintStart_toEndOf="@+id/NumPartyMemberDisplay"
-            app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
+            <TextView
+                android:id="@+id/NumPartyMemberDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/TotalPartyMembersTxt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
 
-        <TextView
-            android:id="@+id/AplDisplay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/AplTxt"
-            app:layout_constraintEnd_toStartOf="@+id/aplTxt"
-            app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
+            <TextView
+                android:id="@+id/NumMembersTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/NumPcTxt"
+                app:layout_constraintStart_toEndOf="@+id/NumPartyMemberDisplay"
+                app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
 
-        <TextView
-            android:id="@+id/aplTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/AplTxt"
-            app:layout_constraintEnd_toStartOf="@+id/EditPartyBt"
-            app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
+            <TextView
+                android:id="@+id/AplDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/AplTxt"
+                app:layout_constraintEnd_toStartOf="@+id/aplTxt"
+                app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
 
-        <Button
-            android:id="@+id/EditPartyBt"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="0"
-            android:fontFamily="@font/fa_solids_family"
-            android:onClick="changeParty"
-            android:padding="0dp"
-            android:text="@string/fa_edit"
-            android:textColor="@color/design_default_color_primary"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toStartOf="@+id/ViewPartyBt"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/aplTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/AplTxt"
+                app:layout_constraintEnd_toStartOf="@+id/EditPartyBt"
+                app:layout_constraintTop_toBottomOf="@+id/PlayAdventurePartyNameTv" />
 
-        <Button
-            android:id="@+id/ViewPartyBt"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="0"
-            android:fontFamily="@font/fa_solids_family"
-            android:onClick="viewParty"
-            android:padding="0dp"
-            android:text="@string/fa_view"
-            android:textColor="@color/colorPrimary"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <Button
+                android:id="@+id/EditPartyBt"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/fa_solids_family"
+                android:onClick="changeParty"
+                android:padding="0dp"
+                android:text="@string/fa_edit"
+                android:textColor="@color/design_default_color_primary"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toStartOf="@+id/ViewPartyBt"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/PartyDivider"
-            android:layout_width="0dp"
-            android:layout_height="3dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="?android:attr/listDivider"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/EditPartyBt" />
+            <Button
+                android:id="@+id/ViewPartyBt"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/fa_solids_family"
+                android:onClick="viewParty"
+                android:padding="0dp"
+                android:text="@string/fa_view"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/PlayingModuleDisplay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/PlayingModuleTxt"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/ModuleAssignBt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PartyDivider" />
-
-        <TextView
-            android:id="@+id/ModuleNameTv"
-            android:layout_width="0dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/ModuleInfoLy"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/NoneTxt"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/ModuleAssignBt"
+            android:background="@drawable/rounded_corners_red_fill"
+            app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PlayingModuleDisplay" />
+            app:layout_constraintTop_toBottomOf="@+id/PartyInfoLy">
 
-        <Button
-            android:id="@+id/ModuleAssignBt"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="0"
-            android:fontFamily="@font/fa_solids_family"
-            android:onClick="toggleModule"
-            android:padding="0dp"
-            android:text="@string/fa_plus_circle"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PartyDivider" />
+            <TextView
+                android:id="@+id/PlayingModuleDisplay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/PlayingModuleTxt"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/ModuleAssignBt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <View
-            android:id="@+id/PlayingModuleDivider"
-            android:layout_width="0dp"
-            android:layout_height="3dp"
+            <TextView
+                android:id="@+id/ModuleNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/NoneTxt"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/ModuleAssignBt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/PlayingModuleDisplay" />
+
+            <Button
+                android:id="@+id/ModuleAssignBt"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/fa_solids_family"
+                android:onClick="toggleModule"
+                android:padding="0dp"
+                android:text="@string/fa_plus_circle"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/CurrentEncounterLy"
+            android:layout_width="match_parent"
+            android:layout_height="87dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/rounded_corners_red_fill"
+            app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ModuleAssignBt" />
+            app:layout_constraintTop_toBottomOf="@+id/ModuleInfoLy">
 
-        <TextView
-            android:id="@+id/EncounterPlayedDisplay"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/CurrentEncounterTxt"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/ContinueEncounterBt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PlayingModuleDivider" />
+            <TextView
+                android:id="@+id/EncounterPlayedDisplay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/CurrentEncounterTxt"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/ContinueEncounterBt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/EncounterPlayedTv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/NoneTxt"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/ContinueEncounterBt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/EncounterPlayedDisplay" />
+            <TextView
+                android:id="@+id/EncounterPlayedTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/NoneTxt"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/ContinueEncounterBt"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/EncounterPlayedDisplay" />
 
-        <Button
-            android:id="@+id/ContinueEncounterBt"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_weight="0"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/fa_solids_family"
-            android:onClick="continueEncounter"
-            android:padding="0dp"
-            android:text="@string/fa_play"
-            android:textColor="@color/colorYellow"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PlayingModuleDivider" />
-
-        <View
-            android:id="@+id/CurrentEncounterDivider"
-            android:layout_width="0dp"
-            android:layout_height="3dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="?android:attr/listDivider"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ContinueEncounterBt" />
+            <Button
+                android:id="@+id/ContinueEncounterBt"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0"
+                android:fontFamily="@font/fa_solids_family"
+                android:onClick="continueEncounter"
+                android:padding="0dp"
+                android:text="@string/fa_play"
+                android:textColor="@color/colorYellow"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/QuickEncounterPlayContainer"
@@ -233,11 +238,11 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/CurrentEncounterDivider">
+            app:layout_constraintTop_toBottomOf="@+id/CurrentEncounterLy">
 
             <Button
                 android:id="@+id/PlaySingleEncounterBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="selectEncounterToPlay"
@@ -245,7 +250,7 @@
 
             <Button
                 android:id="@+id/CreateNewEncounterBt"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="createEncounter"
@@ -271,6 +276,7 @@
             android:layout_height="32dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="0"
             android:fontFamily="@font/fa_solids_family"
             android:onClick="addEncounters"
@@ -278,6 +284,7 @@
             android:text="@string/fa_plus_circle"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintBottom_toTopOf="@+id/AdventureEncountersRv"
             app:layout_constraintStart_toEndOf="@+id/EncounterQueueDisplay"
             app:layout_constraintTop_toBottomOf="@+id/QuickEncounterPlayContainer" />
 

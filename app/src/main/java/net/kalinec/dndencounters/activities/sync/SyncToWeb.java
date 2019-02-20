@@ -59,7 +59,7 @@ import java.util.List;
 
 public class SyncToWeb extends AppCompatActivity
 {
-	private final static String oAuthClientSecret = "XeIfnwBYHOKirZrEgaPOZjd0uqQxFgMPbqrGPmVz";
+	private final static String oAuthClientSecret = "u2gs7Qdg9d10FZIfQdHs3qR8RgyZhbLTNfKGcXEh";
 	private final static int oAuthClientId = 2;
 	private final static String oAuthGrantPassword = "password";
 	private final static String oAuthGrantRefreh = "refresh_token";

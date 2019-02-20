@@ -72,10 +72,15 @@ public class Party implements Serializable
 	
 	private void updateApl()
 	{
-		int level = 0;
-		for(Character pc: members)
-			level += pc.getLevel();
-		apl = (int)Math.floor(level/members.size());
+		if(members.size() == 0)
+			apl = 0;
+		else
+		{
+			int level = 0;
+			for (Character pc : members)
+				level += pc.getLevel();
+			apl = (int) Math.floor(level / members.size());
+		}
 	}
 	
 	@NonNull

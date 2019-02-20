@@ -10,4 +10,5 @@
     <color name="alertBgColor">#f2dede</color>
     <color name="alertBorderColor">#ebccd1</color>
     <color name="alertTextColor">#a94442</color>
+    <color name="RowStripe">#929191</color>
 </resources>

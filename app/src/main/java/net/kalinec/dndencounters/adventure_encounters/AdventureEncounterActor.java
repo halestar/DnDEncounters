@@ -5,6 +5,8 @@ import java.util.UUID;
 
 public interface AdventureEncounterActor extends Serializable
 {
+
+	String PASSED_ACTOR = "PASSED_ACTOR";
 	
 	int ALIVE = 1;
 	int DEAD = 2;
@@ -31,4 +33,8 @@ public interface AdventureEncounterActor extends Serializable
 	String getName();
 	
 	int getHp();
+
+	void setInitiativePosition(int position);
+
+	int getInitiativePosition();
 }

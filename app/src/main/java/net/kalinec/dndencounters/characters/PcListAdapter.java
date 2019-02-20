@@ -1,12 +1,14 @@
 package net.kalinec.dndencounters.characters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.kalinec.dndencounters.R;
@@ -123,6 +125,10 @@ public class PcListAdapter extends RecyclerView.Adapter<PcListAdapter.PcViewHold
 				holder.playeNameTv.setText("Unowned");
 			holder.characterLevelTv.setText(
 					"Lv. " + String.format(Locale.getDefault(), "%d", character.getLevel()));
+			if((position % 2) == 0)
+				holder.RowLy.setBackgroundResource(R.color.RowStripe);
+			else
+				holder.RowLy.setBackgroundColor(Color.WHITE);
 		}
 	}
 	
@@ -136,10 +142,12 @@ public class PcListAdapter extends RecyclerView.Adapter<PcListAdapter.PcViewHold
 	{
 		private TextView characterNameTv, playeNameTv, characterLevelTv;
 		private RvClickListener mListener;
+		private LinearLayout RowLy;
 		
 		PcViewHolder(View itemView, RvClickListener listener)
 		{
 			super(itemView);
+			RowLy = itemView.findViewById(R.id.RowLy);
 			characterNameTv = itemView.findViewById(R.id.characterNameTv);
 			playeNameTv = itemView.findViewById(R.id.playeNameTv);
 			characterLevelTv = itemView.findViewById(R.id.characterLevelTv);

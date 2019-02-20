@@ -1,5 +1,6 @@
 package net.kalinec.dndencounters.activities.custom_monsters;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 
 import net.kalinec.dndencounters.R;
+import net.kalinec.dndencounters.activities.monsters.ViewSrMonster;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
+import net.kalinec.dndencounters.custom_monsters.CustomMonster;
 import net.kalinec.dndencounters.lib.OnMonsterSelectedListener;
 import net.kalinec.dndencounters.lib.RvClickListener;
 import net.kalinec.dndencounters.monsters.Monster;
@@ -77,7 +80,16 @@ public class ViewMonstersFragment extends Fragment {
             {
                 Monster monster = currentMonsterList.get(position);
                 if(mListener != null)
+                {
                     mListener.onMonsterSelected(monster);
+                }
+                else {
+                    Intent myIntent = new Intent(getContext(), ViewSrMonster.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Monster.PASSED_MONSTER, monster);
+                    myIntent.putExtras(bundle);
+                    startActivityForResult(myIntent, ViewSrMonster.VIEW_SR_MONSTER);
+                }
             }
         });
         monsterListAdapter.setMonsterList(monsterList);

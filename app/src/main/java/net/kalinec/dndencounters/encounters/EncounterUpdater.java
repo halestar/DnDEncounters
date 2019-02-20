@@ -1,4 +1,4 @@
-package net.kalinec.dndencounters.activities.adventure_encounters;
+package net.kalinec.dndencounters.encounters;
 
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
@@ -6,7 +6,7 @@ import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 
 public class EncounterUpdater
 {
-	private int initiative, currentHp;
+	private int initiative, initiativePos, currentHp;
 	private boolean isAlive;
 	private MonsterToken assignedToken;
 	private AdventureEncounterMonster monster;
@@ -15,6 +15,7 @@ public class EncounterUpdater
 	{
 		this.monster = monster;
 		this.initiative = monster.getInitiative();
+		this.initiativePos = monster.getInitiativePosition();
 		this.currentHp = monster.getHp();
 		this.isAlive = (monster.getStatus() == AdventureEncounterActor.ALIVE);
 		this.assignedToken = monster.getToken();
@@ -65,9 +66,20 @@ public class EncounterUpdater
 		this.assignedToken = assignedToken;
 	}
 
+	public int getInitiativePos()
+	{
+		return initiativePos;
+	}
+
+	public void setInitiativePos(int initiativePos)
+	{
+		this.initiativePos = initiativePos;
+	}
+
 	public AdventureEncounterMonster getUpdatedMonster()
 	{
 		monster.setInitiative(initiative);
+		monster.setInitiativePosition(initiativePos);
 		monster.setHp(currentHp);
 		monster.setToken(assignedToken);
 		if(isAlive)
@@ -76,4 +88,5 @@ public class EncounterUpdater
 			monster.setStatus(AdventureEncounterActor.DEAD);
 		return monster;
 	}
+
 }

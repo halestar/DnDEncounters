@@ -1,12 +1,14 @@
 package net.kalinec.dndencounters.monster_tokens;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -61,6 +63,10 @@ public class MonsterTokenAssignerListAdapter extends RecyclerView.Adapter<Monste
 		{
 			holder.encounterMonsterNameTv.setText(monster.getMonster().getName());
 			holder.monsterTokenSp.setAdapter(monsterTokenSpinnerAdapter);
+			if((position % 2) == 0)
+				holder.rootLy.setBackgroundResource(R.color.RowStripe);
+			else
+				holder.rootLy.setBackgroundColor(Color.WHITE);
 		}
 	}
 	
@@ -75,10 +81,12 @@ public class MonsterTokenAssignerListAdapter extends RecyclerView.Adapter<Monste
 		private TextView encounterMonsterNameTv;
 		private Spinner monsterTokenSp;
 		private RvItemClickListener mListener;
+		private LinearLayout rootLy;
 		
 		MonsterTokenAssigngerViewHolder(View itemView, RvItemClickListener listener)
 		{
 			super(itemView);
+			rootLy = itemView.findViewById(R.id.rootLy);
 			encounterMonsterNameTv = itemView.findViewById(R.id.encounterMonsterNameTv);
 			monsterTokenSp = itemView.findViewById(R.id.monsterTokenSp);
 			mListener = listener;

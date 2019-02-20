@@ -63,7 +63,7 @@ public class MonsterTarget extends Fragment implements View.OnClickListener {
 
         View v = inflater.inflate(R.layout.fragment_monster_target, container, false);
         //monster portrait
-	    ImageView monsterInfoPortraitIv = v.findViewById(R.id.MonsterInfoPortraitIv);
+	    ImageView monsterInfoPortraitIv = v.findViewById(R.id.MonsterInfoTokenSp);
 	    activeMonster.getToken().makePortrait(monsterInfoPortraitIv);
 
         //fill in monster info

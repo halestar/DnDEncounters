@@ -3,6 +3,7 @@ package net.kalinec.dndencounters.activities.adventure_encounters;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -36,16 +37,18 @@ public class PlayAdventure extends DnDEncountersActivity {
 
     public static final int PLAY_ADVENTURE = 80;
     private PlaySession activeSession;
-    private TextView aplTxt, NumMembersTxt, PlayAdventurePartyNameTv, ModuleNameTv;
+    private TextView aplTxt, NumMembersTxt, PlayAdventurePartyNameTv, ModuleNameTv, EncounterPlayedTv;
     private PlayingEncounterListAdapter playingEncounterListAdapter;
     private SimpleEncounterListAdapter simpleEncounterListAdapter;
-    private Button ModuleAssignBt;
+    private Button ModuleAssignBt, ContinueEncounterBt;
+    private ConstraintLayout CurrentEncounterLy, ModuleInfoLy;
 
     private void hasModule()
     {
         ModuleNameTv.setText(activeSession.getModule().getModuleName());
         ModuleAssignBt.setText(R.string.fa_times_circle);
         ModuleAssignBt.setTextColor(getResources().getColor(R.color.colorAccent, null));
+	    ModuleInfoLy.setBackgroundResource(R.drawable.rounded_corners_green_fill);
     }
 
     private void noModule()
@@ -53,9 +56,43 @@ public class PlayAdventure extends DnDEncountersActivity {
         ModuleNameTv.setText(R.string.NoneTxt);
         ModuleAssignBt.setText(R.string.fa_plus_circle);
         ModuleAssignBt.setTextColor(getResources().getColor(R.color.colorPrimaryDark, null));
+	    ModuleInfoLy.setBackgroundResource(R.drawable.rounded_corners_red_fill);
     }
-    
-    @Override
+
+    private void updateFront()
+    {
+        PlayAdventurePartyNameTv.setText(activeSession.getPlayers().getName());
+        aplTxt.setText(String.format(Locale.getDefault(), "%d", activeSession.getPlayers()
+                                                                             .getApl()));
+        NumMembersTxt.setText(String.format(Locale.getDefault(), "%d", activeSession.getPlayers()
+                                                                                    .getMembers().size()));
+        if(activeSession.hasModule())
+            hasModule();
+        else
+            noModule();
+
+        if(activeSession.encounterInProgress())
+        {
+            EncounterPlayedTv.setText(activeSession.getCurrentEncounter().getEncounterName());
+            ContinueEncounterBt.setVisibility(View.VISIBLE);
+	        CurrentEncounterLy.setBackgroundResource(R.drawable.rounded_corners_yellow_fill);
+        }
+        else
+        {
+            EncounterPlayedTv.setText(R.string.NoneTxt);
+            ContinueEncounterBt.setVisibility(View.INVISIBLE);
+	        CurrentEncounterLy.setBackgroundResource(R.drawable.rounded_corners_red_fill);
+        }
+    }
+
+	@Override
+	protected void onPostResume()
+	{
+		super.onPostResume();
+		updateFront();
+	}
+
+	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
@@ -68,35 +105,19 @@ public class PlayAdventure extends DnDEncountersActivity {
         setContentView(R.layout.activity_play_adventure);
         //start setting up the info.  Party information first.
         PlayAdventurePartyNameTv = findViewById(R.id.PlayAdventurePartyNameTv);
-        PlayAdventurePartyNameTv.setText(activeSession.getPlayers().getName());
         aplTxt = findViewById(R.id.aplTxt);
-        aplTxt.setText(String.format(Locale.getDefault(), "%d", activeSession.getPlayers()
-                .getApl()));
         NumMembersTxt = findViewById(R.id.NumMembersTxt);
-        NumMembersTxt.setText(String.format(Locale.getDefault(), "%d", activeSession.getPlayers()
-                .getMembers().size()));
 
         //Next, set up the module info.
         ModuleNameTv = findViewById(R.id.ModuleNameTv);
         ModuleAssignBt = findViewById(R.id.ModuleAssignBt);
-        if(activeSession.hasModule())
-            hasModule();
-        else
-            noModule();
 
         //current encounter
-        Button ContinueEncounterBt = findViewById(R.id.ContinueEncounterBt);
-        TextView EncounterPlayedTv = findViewById(R.id.EncounterPlayedTv);
-        if(activeSession.encounterInProgress())
-        {
-            EncounterPlayedTv.setText(activeSession.getCurrentEncounter().getEncounterName());
-            ContinueEncounterBt.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            EncounterPlayedTv.setText(R.string.NoneTxt);
-            ContinueEncounterBt.setVisibility(View.INVISIBLE);
-        }
+        ContinueEncounterBt = findViewById(R.id.ContinueEncounterBt);
+        EncounterPlayedTv = findViewById(R.id.EncounterPlayedTv);
+	    ModuleInfoLy = findViewById(R.id.ModuleInfoLy);
+	    CurrentEncounterLy = findViewById(R.id.CurrentEncounterLy);
+
 
 
         //Encounter Queue
@@ -126,7 +147,7 @@ public class PlayAdventure extends DnDEncountersActivity {
         simpleEncounterListAdapter.setEncounterList(activeSession.getCompletedEncounters());
         completedEncountersRv.setAdapter(simpleEncounterListAdapter);
         completedEncountersRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
+        updateFront();
     }
 
     public void changeParty(View v)
@@ -192,8 +213,8 @@ public class PlayAdventure extends DnDEncountersActivity {
             activeSession.setModule(selectedModule);
 		    activeSession.saveSession(getApplicationContext());
 	        playingEncounterListAdapter.setEncounterList(activeSession.getEncounters());
-		    hasModule();
         }
+        updateFront();
     }
 
     public void removePlayingEncounter(Encounter e)

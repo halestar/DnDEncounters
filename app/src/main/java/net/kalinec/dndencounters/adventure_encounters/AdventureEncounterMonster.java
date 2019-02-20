@@ -18,6 +18,7 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
     private boolean hasActed;
     private int hp;
     private UUID uuid;
+    private int initiativePosition;
     
     public void setToken(MonsterToken token)
     {
@@ -38,6 +39,7 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
         this.monster = monster;
         this.token = token;
         uuid = UUID.randomUUID();
+        this.initiativePosition = 1;
     }
 
     public int getInitiative() {
@@ -92,6 +94,18 @@ public class AdventureEncounterMonster implements AdventureEncounterActor, Seria
 
     public int getHp() {
         return hp;
+    }
+
+    @Override
+    public void setInitiativePosition(int position)
+    {
+        this.initiativePosition = position;
+    }
+
+    @Override
+    public int getInitiativePosition()
+    {
+        return initiativePosition;
     }
 
     public void setHp(int hp) {

@@ -21,6 +21,7 @@ public class AdventureEncounter implements Serializable {
     private ArrayList<AdventureEncounterTurn> completedTurns;
     private AdventureEncounterTurn currentTurn;
     private boolean completed, setup, monsterInitiative, monsterHp;
+    private int turnNumber;
 
     public boolean isMonsterInitiative()
     {
@@ -46,7 +47,6 @@ public class AdventureEncounter implements Serializable {
         return encounter;
     }
 
-    private int turnNumber;
 
     public AdventureEncounterTurn getCurrentTurn() {
         return currentTurn;
@@ -183,6 +183,17 @@ public class AdventureEncounter implements Serializable {
         return availableMonsters;
     }
 
+    public ArrayList<AdventureEncounterMonster> getAllAvailableMonsters()
+    {
+        ArrayList<AdventureEncounterMonster> availableMonsters = new ArrayList<>();
+        for(AdventureEncounterActor a: actors)
+        {
+            if(a.getActorType() == AdventureEncounterActor.MONSTER_ACTOR)
+                availableMonsters.add((AdventureEncounterMonster)a);
+        }
+        return availableMonsters;
+    }
+
     public ArrayList<AdventureEncounterPlayer> getAvailablePlayers()
     {
         ArrayList<AdventureEncounterPlayer> availablePlayers = new ArrayList<>();
@@ -196,14 +207,18 @@ public class AdventureEncounter implements Serializable {
 
     public void updateActor(AdventureEncounterActor actor)
     {
+    	boolean found = false;
         for(int i = 0; i < actors.size(); i++)
         {
             if(actors.get(i).getUuid().equals(actor.getUuid()))
             {
                 actors.set(i, actor);
+                found = true;
                 break;
             }
         }
+        if(!found)
+        	actors.add(actor);
     }
 
     public List<AdventureEncounterActor> getActors() {

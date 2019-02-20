@@ -15,11 +15,13 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
     private int initiative, status;
     private boolean hasActed;
     private UUID uuid;
+    private int initiativePosition;
 
     public AdventureEncounterPlayer(Character pc) {
         this.pc = pc;
         this.initiative = 0;
         this.uuid = UUID.randomUUID();
+        this.initiativePosition = 1;
     }
     @Override
     public int getInitiative() {
@@ -71,8 +73,20 @@ public class AdventureEncounterPlayer implements AdventureEncounterActor, Serial
     public int getHp() {
         return pc.getHp();
     }
-	
-	@NonNull
+
+    @Override
+    public void setInitiativePosition(int position)
+    {
+        this.initiativePosition = position;
+    }
+
+    @Override
+    public int getInitiativePosition()
+    {
+        return initiativePosition;
+    }
+
+    @NonNull
 	@Override
 	public String toString()
 	{

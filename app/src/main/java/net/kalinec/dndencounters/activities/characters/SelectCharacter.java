@@ -22,13 +22,14 @@ public class SelectCharacter extends DnDEncountersActivity {
     public static final int REQUEST_SELECT_CHARACTER = 40;
     private PcListAdapter pcListAdapter;
     private RecyclerView characterSearchRv;
+    private List<Character> pcs;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_character);
-	    List<Character> pcs = Players.getAllPcs(getApplicationContext());
+	    pcs = Players.getAllPcs(getApplicationContext());
         pcListAdapter = new PcListAdapter(getApplicationContext(), new RvClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -71,7 +72,7 @@ public class SelectCharacter extends DnDEncountersActivity {
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                List<Character> filteredPcs = filter(pcListAdapter.getCharacterList(), newText);
+                List<Character> filteredPcs = filter(pcs, newText);
                 pcListAdapter.setCharacterList(filteredPcs);
                 characterSearchRv.scrollToPosition(0);
                 return true;

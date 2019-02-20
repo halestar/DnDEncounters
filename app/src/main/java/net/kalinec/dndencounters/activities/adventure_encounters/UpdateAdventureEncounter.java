@@ -15,7 +15,7 @@ import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterActor;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonster;
 import net.kalinec.dndencounters.adventure_encounters.AdventureEncounterMonsterActorListAdapter;
 import net.kalinec.dndencounters.dice.InitiativeRoller;
-import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.encounters.EncounterUpdater;
 import net.kalinec.dndencounters.monster_tokens.MonsterToken;
 import net.kalinec.dndencounters.monster_tokens.MonsterTokens;
 import net.kalinec.dndencounters.monsters.Monster;
@@ -43,7 +43,7 @@ public class UpdateAdventureEncounter extends DnDEncountersActivity
 		adventureEncounter = (AdventureEncounter) bundle.getSerializable(AdventureEncounter.PASSED_ADVENTURE_ENCOUNTER);
 		setContentView(R.layout.activity_update_adventure_encounter);
 
-		encounterMonsters = adventureEncounter.getAvailableMonsters();
+		encounterMonsters = adventureEncounter.getAllAvailableMonsters();
 		//mkae the updater list.
 		updatedMonsters = new ArrayList<>();
 		for(AdventureEncounterMonster m: encounterMonsters)

@@ -19,6 +19,7 @@ import net.kalinec.dndencounters.custom_monsters.CustomMonsters;
 import net.kalinec.dndencounters.dice.DiceParser;
 import net.kalinec.dndencounters.dice.DiceRollerDialog;
 import net.kalinec.dndencounters.lib.RvClickListener;
+import net.kalinec.dndencounters.monsters.Monster;
 import net.kalinec.dndencounters.monsters.MonsterAbility;
 
 import java.util.ArrayList;
@@ -35,10 +36,47 @@ public class AddCustomMonster extends AppCompatActivity
     private ArrayList<MonsterAbility> actions, specialAbilities, legendaryAbilities;
     private CustomMonsterAbilitiesListAdapter actionLA, specialAbilitiesLA, legendaryAbilitiesLA;
     private int editPosition = -1;
+    private Monster template = null;
+
+    private void fillTemplate()
+    {
+        if(template != null)
+        {
+            CustomMonsterNameEt.setText(template.getName());
+            CustomMonsterTypeEt.setText(template.getMonsterType());
+            CustomMonsterSizeEt.setText(template.getMonsterSize());
+            CustomMonsterStrEt.setText(Integer.toString(template.getStr()));
+            CustomMonsterDexEt.setText(Integer.toString(template.getDex()));
+            CustomMonsterConEt.setText(Integer.toString(template.getCon()));
+            CustomMonsterWisEt.setText(Integer.toString(template.getWis()));
+            CustomMonsterIntEt.setText(Integer.toString(template.getIntel()));
+            CustomMonsterChaEt.setText(Integer.toString(template.getCha()));
+            CustomMonsterHpEt.setText(Integer.toString(template.getHp()));
+            CustomMonsterAcEt.setText(Integer.toString(template.getAc()));
+            CustomMonsterCr.setText(template.getCr());
+            CustomMonsterSpeed.setText(template.getSpeed());
+            AlignmentTv.setText(template.getAlignment());
+            ResistancesTv.setText(template.getResistances());
+            ImmunitiesTv.setText(template.getImmunities());
+            VulnerabilitiesTv.setText(template.getVulnerabilities());
+            LanguagesTv.setText(template.getLanguages());
+            SensesTv.setText(template.getSenses());
+            actions = template.getActions();
+            actionLA.setMonsterAbilityList(actions);
+            specialAbilities = template.getSpecialAbilities();
+            specialAbilitiesLA.setMonsterAbilityList(specialAbilities);
+            legendaryAbilities = template.getLegendaryAbilities();
+	        legendaryAbilitiesLA.setMonsterAbilityList(legendaryAbilities);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null)
+            template = (Monster)bundle.getSerializable(CustomMonster.PASSED_MONSTER);
         setContentView(R.layout.activity_add_custom_monster);
         HitDiceDisplayTv = findViewById(R.id.HitDiceDisplayTv);
         CustomMonsterNameEt = findViewById(R.id.CustomMonsterNameEt);
@@ -141,6 +179,7 @@ public class AddCustomMonster extends AppCompatActivity
         legendaryAbilitiesLA.setMonsterAbilityList(legendaryAbilities);
         CustomMonsterLegendaryActionsRv.setAdapter(legendaryAbilitiesLA);
         CustomMonsterLegendaryActionsRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+	    fillTemplate();
     }
 
     public void enterHitDice(View v)
