@@ -147,7 +147,7 @@
             android:id="@+id/activeSessionGroup"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:constraint_referenced_ids="activeSessionView,ParyNameHeaderTv,partyNameTv,NumMembersHeaderTv,activeSessionNumPartyTv,AplHeaderTv,activeSessionAplTv,continueSessionBtn" />
+            app:constraint_referenced_ids="ParyNameHeaderTv,partyNameTv,NumMembersHeaderTv,activeSessionNumPartyTv,AplHeaderTv,activeSessionAplTv,continueSessionBtn" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -191,7 +191,7 @@
         android:id="@+id/activeAdventruesGroup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:constraint_referenced_ids="ActiveAdvenuresCl,ActiveAdventruesHeaderTv,ActiveAdventuresRv" />
+        app:constraint_referenced_ids="ActiveAdventruesHeaderTv,ActiveAdventuresRv" />
 
     </android.support.constraint.ConstraintLayout>
 

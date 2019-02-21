@@ -42,6 +42,10 @@ public class MainActivity extends DnDEncountersActivity
 {
 	private PlaySession activeSession = null;
 	private PlaySessionsListAdapter playSessionsListAdapter;
+	private Button continueSessionBtn, beingAdventureBtn;
+	private TextView partyNameTv, activeSessionNumPartyTv, activeSessionAplTv, MonsterTokenWarning;
+	private Group activeSessionGroup, activeAdventruesGroup;
+	private RecyclerView activeAdventuresRv;
 
 
 	@Override
@@ -60,21 +64,40 @@ public class MainActivity extends DnDEncountersActivity
 		
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
-		activeSession = PlaySessionManager.getCurrentSession(getApplicationContext());
-		updateFront();
+
+
+		continueSessionBtn = findViewById(R.id.continueSessionBtn);
+		partyNameTv = findViewById(R.id.partyNameTv);
+		activeSessionNumPartyTv = findViewById(R.id.activeSessionNumPartyTv);
+		activeSessionAplTv = findViewById(R.id.activeSessionAplTv);
+		activeSessionGroup = findViewById(R.id.activeSessionGroup);
+		activeAdventruesGroup = findViewById(R.id.activeAdventruesGroup);
+		activeAdventuresRv = findViewById(R.id.ActiveAdventuresRv);
+		MonsterTokenWarning = findViewById(R.id.MonsterTokenWarning);
+		beingAdventureBtn = findViewById(R.id.beingAdventureBtn);
+
+		activeAdventuresRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+		playSessionsListAdapter =
+				new PlaySessionsListAdapter(getApplicationContext(), new RvClickListener()
+				{
+					@Override
+					public void onClick(View view, int position)
+					{
+						PlaySession wantToPlay = playSessionsListAdapter.get(position);
+						if (activeSession != null)
+							PlaySessionManager.saveCurrentSession(getApplicationContext());
+						PlaySessionManager.removeFromActiveSessions(getApplicationContext(),
+						                                            wantToPlay);
+						activeSession = wantToPlay;
+						activeSession.saveSession(getApplicationContext());
+						continueAdventure();
+					}
+				});
 	}
 	
 	private void updateFront()
 	{
-		Button continueSessionBtn = findViewById(R.id.continueSessionBtn);
-		TextView partyNameTv = findViewById(R.id.partyNameTv);
-		TextView activeSessionNumPartyTv = findViewById(R.id.activeSessionNumPartyTv);
-		TextView activeSessionAplTv = findViewById(R.id.activeSessionAplTv);
-		Group activeSessionGroup = findViewById(R.id.activeSessionGroup);
-		Group activeAdventruesGroup = findViewById(R.id.activeAdventruesGroup);
-		RecyclerView activeAdventuresRv = findViewById(R.id.ActiveAdventuresRv);
-		TextView MonsterTokenWarning = findViewById(R.id.MonsterTokenWarning);
-		Button beingAdventureBtn = findViewById(R.id.beingAdventureBtn);
+		activeSession = PlaySessionManager.getCurrentSession(getApplicationContext());
 
 		List<MonsterToken> monsterTokens = MonsterTokens.getAllMonsterTokens(getApplicationContext());
 
@@ -123,25 +146,8 @@ public class MainActivity extends DnDEncountersActivity
 			else
 			{
 				activeAdventruesGroup.setVisibility(View.VISIBLE);
-				playSessionsListAdapter =
-						new PlaySessionsListAdapter(getApplicationContext(), new RvClickListener()
-						{
-							@Override
-							public void onClick(View view, int position)
-							{
-								PlaySession wantToPlay = playSessionsListAdapter.get(position);
-								if (activeSession != null)
-									PlaySessionManager.saveCurrentSession(getApplicationContext());
-								PlaySessionManager.removeFromActiveSessions(getApplicationContext(),
-								                                            wantToPlay);
-								activeSession = wantToPlay;
-								continueAdventure();
-							}
-						});
 				playSessionsListAdapter.setSessionList(activeAdventures);
 				activeAdventuresRv.setAdapter(playSessionsListAdapter);
-				activeAdventuresRv
-						.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 			}
 		}
 	}
@@ -236,7 +242,6 @@ public class MainActivity extends DnDEncountersActivity
 				continueAdventure();
 			}
 		}
-		updateFront();
 	}
 
 	@Override
