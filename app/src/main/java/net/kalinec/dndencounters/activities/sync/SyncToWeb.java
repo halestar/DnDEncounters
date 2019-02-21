@@ -1,5 +1,6 @@
 package net.kalinec.dndencounters.activities.sync;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
@@ -11,10 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -48,6 +52,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -59,7 +64,6 @@ import java.util.List;
 
 public class SyncToWeb extends AppCompatActivity
 {
-	private final static String oAuthClientSecret = "u2gs7Qdg9d10FZIfQdHs3qR8RgyZhbLTNfKGcXEh";
 	private final static int oAuthClientId = 2;
 	private final static String oAuthGrantPassword = "password";
 	private final static String oAuthGrantRefreh = "refresh_token";
@@ -67,13 +71,13 @@ public class SyncToWeb extends AppCompatActivity
 	private EditText emailEt, passwordEt;
 	private TextView resultsTv;
 	private LinearLayout loginContainer, loggedInLy;
-	private RelativeLayout loadingPanel;
 
 	public Handler mHandler;
 
 	private SharedPreferences prefs;
 	private final static String PREF_KEY = "net.kalinec.dnd";
 	private final static String PREF_EMAIL_KEY = "net.kalinec.dnd.email";
+	private final static String PREF_CLIENT_SECRET_KEY = "net.kalinec.dnd.client_secret";
 	private final static String PREF_ACCESS_TOKEN_KEY = "net.kalinec.dnd.access_token";
 	private final static String PREF_REFRESH_TOKEN_KEY = "net.kalinec.dnd.refresh_token";
 	private final static String PREF_TOKEN_EXPIRATION_KEY = "net.kalinec.dnd.expires_in";
@@ -84,7 +88,11 @@ public class SyncToWeb extends AppCompatActivity
 	private final static int ACTION_LOAD_TOKEN = 2;
 	private final static int ACTION_UPDATE_LINKS = 3;
 	private final static int ACTION_LOAD_SYNC_DATA = 4;
-
+	private final static int ACTION_READ_CLIENT_SECRET = 5;
+	private final static int ACTION_ERROR = 6;
+	private final static int ACTION_FINISH_UPDATE_LINKS = 7;
+	private final static int ACTION_SHOW_PROGRESS = 8;
+	private ProgressBar pdBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -95,10 +103,10 @@ public class SyncToWeb extends AppCompatActivity
 		emailEt = findViewById(R.id.emailEt);
 		emailEt.setText(prefs.getString(PREF_EMAIL_KEY, ""));
 		passwordEt = findViewById(R.id.passwordEt);
-		resultsTv = findViewById(R.id.resultsTv);
 		loginContainer = findViewById(R.id.loginContainer);
 		loggedInLy = findViewById(R.id.loggedInLy);
-		loadingPanel = findViewById(R.id.loadingPanel);
+		pdBar = findViewById(R.id.pdBar);
+		resultsTv = findViewById(R.id.resultsTv);
 
 		mHandler = new Handler()
 		{
@@ -108,7 +116,7 @@ public class SyncToWeb extends AppCompatActivity
 				Bundle bundle = msg.getData();
 				int action = bundle.getInt(BUNDLE_ACTION);
 				if(action == ACTION_UPDATE_MSG)
-					Log.d("SyncToWeb", "from server: " + bundle.getString(BUNDLE_MSG));
+					resultsTv.setText(bundle.getString(BUNDLE_MSG));
 				else if(action == ACTION_LOAD_TOKEN)
 				{
 					readToken(bundle.getString(BUNDLE_MSG));
@@ -116,15 +124,36 @@ public class SyncToWeb extends AppCompatActivity
 				}
 				else if(action == ACTION_UPDATE_LINKS)
 				{
-					Log.d("SyncToWeb", "from server: " + bundle.getString(BUNDLE_MSG));
 					updateLinks(bundle);
 					refreshScreen();
 				}
 				else if(action == ACTION_LOAD_SYNC_DATA)
 				{
-					Log.d("SyncToWeb", "from server: " + bundle.getString(BUNDLE_MSG));
 					loadSyncData(bundle);
 					refreshScreen();
+				}
+				else if(action == ACTION_READ_CLIENT_SECRET)
+				{
+					readClientSecret(bundle.getString(BUNDLE_MSG));
+				}
+				else if(action == ACTION_ERROR)
+				{
+					pdBar.setVisibility(View.INVISIBLE);
+					resultsTv.setVisibility(View.INVISIBLE);
+					Toast toast = Toast.makeText(getApplicationContext(), "Error: " + bundle.getString(BUNDLE_MSG), Toast.LENGTH_LONG);
+					toast.show();
+				}
+				else if(action == ACTION_FINISH_UPDATE_LINKS)
+				{
+					pdBar.setVisibility(View.INVISIBLE);
+					resultsTv.setVisibility(View.INVISIBLE);
+					Toast toast = Toast.makeText(getApplicationContext(), "Successfully synced data from web!", Toast.LENGTH_LONG);
+					toast.show();
+				}
+				else if(action == ACTION_SHOW_PROGRESS)
+				{
+					pdBar.setVisibility(View.VISIBLE);
+					resultsTv.setVisibility(View.VISIBLE);
 				}
 			}
 		};
@@ -141,6 +170,7 @@ public class SyncToWeb extends AppCompatActivity
 	{
 		try
 		{
+			resultsTv.setText("Reading reply from server...");
 			JSONObject json = new JSONObject(data.getString(BUNDLE_MSG));
 			//update cuscom monsters
 			JSONArray custom_monsters = json.getJSONArray("custom_monsters");
@@ -255,12 +285,18 @@ public class SyncToWeb extends AppCompatActivity
 					}
 				}
 			}
-			resultsTv.setText("Sync to Web Successful!");
+
+			Toast toast = Toast.makeText(getApplicationContext(), "Successfully synced data to the web!", Toast.LENGTH_LONG);
+			toast.show();
 		}
 		catch (JSONException e)
 		{
-			resultsTv.setText("error decrypting json: " + e.toString());
+
+			Toast toast = Toast.makeText(getApplicationContext(), "Error syncing data!", Toast.LENGTH_LONG);
+			toast.show();
 		}
+		pdBar.setVisibility(View.INVISIBLE);
+		resultsTv.setVisibility(View.INVISIBLE);
 	}
 	
 	private SyncPayload addCustomMonster(JSONObject stats) throws JSONException
@@ -439,10 +475,7 @@ public class SyncToWeb extends AppCompatActivity
 		MonsterTokens.updateMonsterToken(getApplicationContext(), token);
 		return new SyncPayload(token.getUuid().toString(), token.getDbId());
 	}
-	
-	
-	
-	
+
 	private ArrayList<SyncPayload> syncMonsterTokens(JSONArray tokens) throws JSONException
 	{
 		ArrayList<SyncPayload> ids = new ArrayList<>();
@@ -736,36 +769,42 @@ public class SyncToWeb extends AppCompatActivity
 		{
 			JSONObject json = new JSONObject(data.getString(BUNDLE_MSG));
 			LinkData linkData = new LinkData();
-			
+
+			resultsTv.setText("Reading Player Data...");
 			JSONArray players_json = json.getJSONArray("players");
 			linkData.players = syncPlayers(players_json);
-			
+
+			resultsTv.setText("Reading Custom Monster Data...");
 			JSONArray monsters_json = json.getJSONArray("custom_monsters");
 			linkData.custom_monsters = syncCustomMonsters(monsters_json);
-			
+
+			resultsTv.setText("Reading Encounter Data...");
 			JSONArray encounter_json = json.getJSONArray("encounters");
 			linkData.encounters = syncEncounters(encounter_json);
-			
+
+			resultsTv.setText("Reading Monster Token Data...");
 			JSONArray token_json = json.getJSONArray("monster_tokens");
 			linkData.monster_tokens = syncMonsterTokens(token_json);
-			
+
+			resultsTv.setText("Reading Module Data...");
 			JSONArray module_json = json.getJSONArray("modules");
 			linkData.modules = syncModules(module_json);
-			
-			resultsTv.setText("Sync from Web Successful!");
+
 			uploadLinks(linkData);
 			
 		}
 		catch (JSONException e)
 		{
-			resultsTv.setText("error decrypting json: " + e.toString());
+			resultsTv.setVisibility(View.INVISIBLE);
+			pdBar.setVisibility(View.INVISIBLE);
+			Toast toast = Toast.makeText(getApplicationContext(), "Error syncing data", Toast.LENGTH_LONG);
+			toast.show();
 		}
 	}
 
 	private void refreshScreen()
 	{
 		String aToken = prefs.getString(PREF_ACCESS_TOKEN_KEY, null);
-		loadingPanel.setVisibility(View.GONE);
 		if(aToken == null)
 		{
 			loginContainer.setVisibility(View.VISIBLE);
@@ -784,6 +823,19 @@ public class SyncToWeb extends AppCompatActivity
 		try
 		{
 			json = new JSONObject(jsonString);
+			String oAuthAccessToken = json.getString("access_token");
+			prefs.edit().putString(PREF_ACCESS_TOKEN_KEY, oAuthAccessToken).apply();
+
+			String oAuthRefreshToken = json.getString("refresh_token");
+			prefs.edit().putString(PREF_REFRESH_TOKEN_KEY, oAuthRefreshToken).apply();
+
+			int oAuthExpiresIn = Integer.parseInt(json.getString("expires_in"));
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.SECOND, oAuthExpiresIn);
+			prefs.edit().putLong(PREF_TOKEN_EXPIRATION_KEY, cal.getTime().getTime()).apply();
+
+			Toast toast = Toast.makeText(getApplicationContext(), "Successfully logged in!", Toast.LENGTH_LONG);
+			toast.show();
 		}
 		catch (JSONException e)
 		{
@@ -791,41 +843,35 @@ public class SyncToWeb extends AppCompatActivity
 			prefs.edit().putString(PREF_ACCESS_TOKEN_KEY, null).apply();
 			prefs.edit().putString(PREF_REFRESH_TOKEN_KEY, null).apply();
 			prefs.edit().putString(PREF_TOKEN_EXPIRATION_KEY, null).apply();
+			Toast toast = Toast.makeText(getApplicationContext(), "Error authenticating", Toast.LENGTH_LONG);
+			toast.show();
+		}
+		pdBar.setVisibility(View.INVISIBLE);
+		resultsTv.setVisibility(View.INVISIBLE);
+	}
+
+	private void readClientSecret(String jsonString)
+	{
+		JSONObject json;
+		try
+		{
+			json = new JSONObject(jsonString);
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+			prefs.edit().putString(PREF_CLIENT_SECRET_KEY, null).apply();
 			return;
 		}
 		//access token
 		try
 		{
-			String oAuthAccessToken = json.getString("access_token");
-			prefs.edit().putString(PREF_ACCESS_TOKEN_KEY, oAuthAccessToken).apply();
+			String oAuthClientSecret = json.getString("data");
+			prefs.edit().putString(PREF_CLIENT_SECRET_KEY, oAuthClientSecret).apply();
 		}
 		catch (JSONException e)
 		{
-			prefs.edit().putString(PREF_ACCESS_TOKEN_KEY, null).apply();
-		}
-		//refhresh token
-		try
-		{
-			String oAuthRefreshToken = json.getString("refresh_token");
-			prefs.edit().putString(PREF_REFRESH_TOKEN_KEY, oAuthRefreshToken).apply();
-		}
-		catch (JSONException e)
-		{
-			prefs.edit().putString(PREF_REFRESH_TOKEN_KEY, null).apply();
-		}
-		//expiration
-		try
-		{
-			int oAuthExpiresIn = Integer.parseInt(json.getString("expires_in"));
-			Log.d("SyncToWeb", "oAuthExpiresIn=" + Integer.toString(oAuthExpiresIn));
-			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.SECOND, oAuthExpiresIn);
-			Log.d("SyncToWeb", "saving val=" + Long.toString(cal.getTime().getTime()));
-			prefs.edit().putLong(PREF_TOKEN_EXPIRATION_KEY, cal.getTime().getTime()).apply();
-		}
-		catch (JSONException e)
-		{
-			prefs.edit().putString(PREF_TOKEN_EXPIRATION_KEY, null).apply();
+			prefs.edit().putString(PREF_CLIENT_SECRET_KEY, null).apply();
 		}
 	}
 
@@ -839,20 +885,48 @@ public class SyncToWeb extends AppCompatActivity
 
 	private void refreshToken()
 	{
-		loadingPanel.setVisibility(View.VISIBLE);
-		resultsTv.setText("Start refreshToken\n");
-
 		Runnable aRunnable = new Runnable()
 		{
+			private void sendMessage(int action, String message)
+			{
+				Message msg = mHandler.obtainMessage();
+				Bundle rBundle = new Bundle();
+				rBundle.putInt(BUNDLE_ACTION, action);
+				rBundle.putString(BUNDLE_MSG, message);
+				msg.setData(rBundle);
+				mHandler.sendMessage(msg);
+			}
+
+			private String readString(InputStream in) throws IOException
+			{
+				BufferedReader is =
+						new BufferedReader(new InputStreamReader(in));
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = is.readLine()) != null)
+				{
+					sb.append(line);
+				}
+				return sb.toString();
+			}
 			@Override
 			public void run()
 			{
-				Message msg;
-				Bundle rBundle;
+				URL url;
+				HttpURLConnection conn;
+				String rsp;
+				int status;
 				try
 				{
-					URL url = new URL(webUrl + "/oauth/token");
-					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					//bring up the bar
+					pdBar.setVisibility(View.VISIBLE);
+					resultsTv.setVisibility(View.VISIBLE);
+					//show start
+					sendMessage(ACTION_UPDATE_MSG, "Reconnecting...");
+
+					url = new URL(webUrl + "/oauth/token");
+					conn = (HttpURLConnection)url.openConnection();
 					conn.setRequestMethod("POST");
 					conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 					conn.setRequestProperty("Accept","application/json");
@@ -862,7 +936,7 @@ public class SyncToWeb extends AppCompatActivity
 					JSONObject jsonParam = new JSONObject();
 					jsonParam.put("grant_type", oAuthGrantRefreh);
 					jsonParam.put("client_id", oAuthClientId);
-					jsonParam.put("client_secret", oAuthClientSecret);
+					jsonParam.put("client_secret", prefs.getString(PREF_CLIENT_SECRET_KEY, ""));
 					jsonParam.put("refresh_token", prefs.getString(PREF_REFRESH_TOKEN_KEY, ""));
 					jsonParam.put("scope", "");
 
@@ -870,73 +944,31 @@ public class SyncToWeb extends AppCompatActivity
 					os.writeBytes(jsonParam.toString());
 					os.flush();
 					os.close();
-					int status = conn.getResponseCode();
+					status = conn.getResponseCode();
 
-					if(status == HttpURLConnection.HTTP_OK)
-					{
-						BufferedReader is =
-								new BufferedReader(new InputStreamReader(conn.getInputStream()));
-						StringBuilder sb = new StringBuilder();
+					if(status != HttpURLConnection.HTTP_OK)
+						throw new SyncException(conn.getResponseMessage());
 
-						String line = null;
-						while ((line = is.readLine()) != null)
-						{
-							sb.append(line);
-						}
-						String rsp = sb.toString();
-						JSONObject json = new JSONObject(rsp);
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "JSON Response: " + rsp);
-						msg = mHandler.obtainMessage();
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-						//now read the token
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_LOAD_TOKEN);
-						rBundle.putString(BUNDLE_MSG, rsp);
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
-					else
-					{
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "Request returned error: " +
-						                            conn.getResponseMessage());
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
+					rsp = readString(conn.getInputStream());
+					sendMessage(ACTION_LOAD_TOKEN, rsp);
+
 					conn.disconnect();
 				}
 				catch (MalformedURLException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error with URL: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, "Malformed URL: " + e.getMessage());
 				}
 				catch (IOException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, e.getMessage());
 				}
 				catch (JSONException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error adding to json: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, e.getMessage());
+				}
+				catch(SyncException e)
+				{
+					sendMessage(ACTION_ERROR, e.getMessage());
 				}
 			}
 		};
@@ -947,21 +979,77 @@ public class SyncToWeb extends AppCompatActivity
 
 	public void attemptLogin(View v)
 	{
-		loadingPanel.setVisibility(View.VISIBLE);
+		InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
 		prefs.edit().putString(PREF_EMAIL_KEY, emailEt.getText().toString()).apply();
-		resultsTv.setText("Start attemptLogin\n");
 
 		Runnable aRunnable = new Runnable()
 		{
+			private void sendMessage(int action, String message)
+			{
+				Message msg = mHandler.obtainMessage();
+				Bundle rBundle = new Bundle();
+				rBundle.putInt(BUNDLE_ACTION, action);
+				rBundle.putString(BUNDLE_MSG, message);
+				msg.setData(rBundle);
+				mHandler.sendMessage(msg);
+			}
+
+			private String readString(InputStream in) throws IOException
+			{
+				BufferedReader is =
+						new BufferedReader(new InputStreamReader(in));
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = is.readLine()) != null)
+				{
+					sb.append(line);
+				}
+				return sb.toString();
+			}
+
 			@Override
 			public void run()
 			{
-				Message msg;
-				Bundle rBundle;
+				URL url;
+				HttpURLConnection conn;
+				String rsp;
+				int status;
 				try
 				{
-					URL url = new URL(webUrl + "/oauth/token");
-					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					//bring up the bar
+					sendMessage(ACTION_SHOW_PROGRESS, "");
+					//show start
+					sendMessage(ACTION_UPDATE_MSG, "Contacting Client...");
+
+					//get the client secret
+					url = new URL(webUrl + "/api/sync/client-secret/" + oAuthClientId);
+					conn = (HttpURLConnection)url.openConnection();
+					conn.setRequestMethod("GET");
+					conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+					conn.setRequestProperty("Accept","application/json");
+					conn.setDoInput(true);
+
+					status = conn.getResponseCode();
+
+					if(status != HttpURLConnection.HTTP_OK)
+						throw new SyncException(conn.getResponseMessage());
+
+					rsp = readString(conn.getInputStream());
+					Log.d("SyncToWeb", "rsp is " + rsp);
+
+					//read client secret
+					sendMessage(ACTION_READ_CLIENT_SECRET, rsp);
+					//and keep a copy for us
+					JSONObject json = new JSONObject(rsp);
+					String oAuthClientSecret = json.getString("client_secret");
+
+					//next, authenticate
+					sendMessage(ACTION_UPDATE_MSG, "Authenticating...");
+					url = new URL(webUrl + "/oauth/token");
+					conn = (HttpURLConnection)url.openConnection();
 					conn.setRequestMethod("POST");
 					conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 					conn.setRequestProperty("Accept","application/json");
@@ -980,73 +1068,32 @@ public class SyncToWeb extends AppCompatActivity
 					os.writeBytes(jsonParam.toString());
 					os.flush();
 					os.close();
-					int status = conn.getResponseCode();
+					status = conn.getResponseCode();
 
-					if(status == HttpURLConnection.HTTP_OK)
-					{
-						BufferedReader is =
-								new BufferedReader(new InputStreamReader(conn.getInputStream()));
-						StringBuilder sb = new StringBuilder();
+					if(status != HttpURLConnection.HTTP_OK)
+						throw new SyncException(conn.getResponseMessage());
 
-						String line = null;
-						while ((line = is.readLine()) != null)
-						{
-							sb.append(line);
-						}
-						String rsp = sb.toString();
-						JSONObject json = new JSONObject(rsp);
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "JSON Response: " + rsp);
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-						//now read the token
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_LOAD_TOKEN);
-						rBundle.putString(BUNDLE_MSG, rsp);
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
-					else
-					{
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "Request returned error: " +
-						                            conn.getResponseMessage());
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
+					rsp = readString(conn.getInputStream());
+					//now read the token
+					sendMessage(ACTION_LOAD_TOKEN, rsp);
+
 					conn.disconnect();
 				}
 				catch (MalformedURLException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error with URL: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, "Malformed URL: " + e.getMessage());
 				}
 				catch (IOException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, e.getMessage());
 				}
 				catch (JSONException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error adding to json: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, e.getMessage());
+				}
+				catch(SyncException e)
+				{
+					sendMessage(ACTION_ERROR, e.getMessage());
 				}
 			}
 		};
@@ -1056,23 +1103,48 @@ public class SyncToWeb extends AppCompatActivity
 
 	public void uploadData(View v)
 	{
-		loadingPanel.setVisibility(View.VISIBLE);
-		resultsTv.setText("Start uploadData\n");
 		final SyncData syncData = new SyncData(getApplicationContext());
 		Gson gson = new Gson();
 		final String sData = gson.toJson(syncData);
 
 		Runnable aRunnable = new Runnable()
 		{
+			private void sendMessage(int action, String message)
+			{
+				Message msg = mHandler.obtainMessage();
+				Bundle rBundle = new Bundle();
+				rBundle.putInt(BUNDLE_ACTION, action);
+				rBundle.putString(BUNDLE_MSG, message);
+				msg.setData(rBundle);
+				mHandler.sendMessage(msg);
+			}
+
+			private String readString(InputStream in) throws IOException
+			{
+				BufferedReader is =
+						new BufferedReader(new InputStreamReader(in));
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = is.readLine()) != null)
+				{
+					sb.append(line);
+				}
+				return sb.toString();
+			}
+
 			@Override
 			public void run()
 			{
-				Message msg;
-				Bundle rBundle;
+				URL url;
+				HttpURLConnection conn;
+				String rsp;
+				int status;
 				try
 				{
-					URL url = new URL(webUrl + "/api/sync/upload");
-					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					sendMessage(ACTION_UPDATE_MSG, "Sending data to web...");
+					url = new URL(webUrl + "/api/sync/upload");
+					conn = (HttpURLConnection)url.openConnection();
 					conn.setRequestMethod("POST");
 					conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 					conn.setRequestProperty("Accept","application/json");
@@ -1083,75 +1155,31 @@ public class SyncToWeb extends AppCompatActivity
 					BufferedOutputStream os = new BufferedOutputStream(conn.getOutputStream());
 					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 					
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "In uploadData, sending: " + sData);
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
-					
 					writer.write(sData);
 					writer.flush();
 					writer.close();
 					os.close();
 					conn.connect();
-					int status = conn.getResponseCode();
+					status = conn.getResponseCode();
 
 					if(status == HttpURLConnection.HTTP_OK)
-					{
-						BufferedReader is =
-								new BufferedReader(new InputStreamReader(conn.getInputStream()));
-						StringBuilder sb = new StringBuilder();
+						throw new SyncException(conn.getResponseMessage());
 
-						String line = null;
-						while ((line = is.readLine()) != null)
-						{
-							sb.append(line);
-						}
-						String rsp = sb.toString();
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "JSON Response: " + rsp);
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-						//now read the token
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_LINKS);
-						rBundle.putString(BUNDLE_MSG, rsp);
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
-					else
-					{
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "Request returned error: " +
-						                              conn.getResponseMessage());
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
+					rsp = readString(conn.getInputStream());
+					sendMessage(ACTION_UPDATE_LINKS, rsp);
 					conn.disconnect();
 				}
 				catch (MalformedURLException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error with URL: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, "Malformed URL: " + e.getMessage());
 				}
 				catch (IOException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, e.getMessage());
+				}
+				catch(SyncException e)
+				{
+					sendMessage(ACTION_ERROR, e.getMessage());
 				}
 			}
 		};
@@ -1161,83 +1189,76 @@ public class SyncToWeb extends AppCompatActivity
 
 	public void downloadData(View v)
 	{
-		loadingPanel.setVisibility(View.VISIBLE);
-		resultsTv.setText("Start downloadData\n");
 
 		Runnable aRunnable = new Runnable()
 		{
+			private void sendMessage(int action, String message)
+			{
+				Message msg = mHandler.obtainMessage();
+				Bundle rBundle = new Bundle();
+				rBundle.putInt(BUNDLE_ACTION, action);
+				rBundle.putString(BUNDLE_MSG, message);
+				msg.setData(rBundle);
+				mHandler.sendMessage(msg);
+			}
+
+			private String readString(InputStream in) throws IOException
+			{
+				BufferedReader is =
+						new BufferedReader(new InputStreamReader(in));
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = is.readLine()) != null)
+				{
+					sb.append(line);
+				}
+				return sb.toString();
+			}
+
 			@Override
 			public void run()
 			{
-				Message msg;
-				Bundle rBundle;
+				URL url;
+				HttpURLConnection conn;
+				String rsp;
+				int status;
 				try
 				{
-					URL url = new URL(webUrl + "/api/sync/download");
-					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					//bring up the bar
+					sendMessage(ACTION_SHOW_PROGRESS, "");
+					//show start
+					sendMessage(ACTION_UPDATE_MSG, "Contacting Web...");
+
+					url = new URL(webUrl + "/api/sync/download");
+					conn = (HttpURLConnection)url.openConnection();
 					conn.setRequestMethod("GET");
 					conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 					conn.setRequestProperty("Accept","application/json");
 					conn.setRequestProperty("authorization", "Bearer " + prefs.getString(PREF_ACCESS_TOKEN_KEY, ""));
 					conn.setDoInput(true);
 
-					int status = conn.getResponseCode();
+					status = conn.getResponseCode();
 
-					if(status == HttpURLConnection.HTTP_OK)
-					{
-						BufferedReader is =
-								new BufferedReader(new InputStreamReader(conn.getInputStream()));
-						StringBuilder sb = new StringBuilder();
+					if(status != HttpURLConnection.HTTP_OK)
+						throw new SyncException(conn.getResponseMessage());
 
-						String line = null;
-						while ((line = is.readLine()) != null)
-						{
-							sb.append(line);
-						}
-						String rsp = sb.toString();
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "JSON Response: " + rsp);
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-						//now read the sync data
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_LOAD_SYNC_DATA);
-						rBundle.putString(BUNDLE_MSG, rsp);
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
-					else
-					{
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "Request returned error: " +
-						                              conn.getResponseMessage());
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
+					rsp = readString(conn.getInputStream());
+					sendMessage(ACTION_UPDATE_MSG, "Syncing Data...");
+					sendMessage(ACTION_LOAD_SYNC_DATA, rsp);
 					conn.disconnect();
 				}
 				catch (MalformedURLException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error with URL: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, "Malformed URL: " + e.getMessage());
 				}
 				catch (IOException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, e.getMessage());
+				}
+				catch(SyncException e)
+				{
+					sendMessage(ACTION_ERROR, e.getMessage());
 				}
 			}
 		};
@@ -1253,15 +1274,42 @@ public class SyncToWeb extends AppCompatActivity
 		
 		Runnable aRunnable = new Runnable()
 		{
+			private void sendMessage(int action, String message)
+			{
+				Message msg = mHandler.obtainMessage();
+				Bundle rBundle = new Bundle();
+				rBundle.putInt(BUNDLE_ACTION, action);
+				rBundle.putString(BUNDLE_MSG, message);
+				msg.setData(rBundle);
+				mHandler.sendMessage(msg);
+			}
+
+			private String readString(InputStream in) throws IOException
+			{
+				BufferedReader is =
+						new BufferedReader(new InputStreamReader(in));
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = is.readLine()) != null)
+				{
+					sb.append(line);
+				}
+				return sb.toString();
+			}
+
 			@Override
 			public void run()
 			{
-				Message msg;
-				Bundle rBundle;
+				URL url;
+				HttpURLConnection conn;
+				String rsp;
+				int status;
 				try
 				{
-					URL url = new URL(webUrl + "/api/sync/db");
-					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+					sendMessage(ACTION_UPDATE_MSG, "Sending reply...");
+					url = new URL(webUrl + "/api/sync/db");
+					conn = (HttpURLConnection)url.openConnection();
 					conn.setRequestMethod("POST");
 					conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
 					conn.setRequestProperty("Accept","application/json");
@@ -1272,60 +1320,31 @@ public class SyncToWeb extends AppCompatActivity
 					BufferedOutputStream os = new BufferedOutputStream(conn.getOutputStream());
 					BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
 					
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "In uploadData, sending: " + sData);
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
-					
 					writer.write(sData);
 					writer.flush();
 					writer.close();
 					os.close();
 					
 					conn.connect();
-					int status = conn.getResponseCode();
+					status = conn.getResponseCode();
 					
-					if(status == HttpURLConnection.HTTP_OK)
-					{
-						
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "Update Links Sucess!");
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
-					else
-					{
-						msg = mHandler.obtainMessage();
-						rBundle = new Bundle();
-						rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-						rBundle.putString(BUNDLE_MSG, "Request returned error: " +
-						                              conn.getResponseMessage());
-						msg.setData(rBundle);
-						mHandler.sendMessage(msg);
-					}
+					if(status != HttpURLConnection.HTTP_OK)
+						throw new SyncException(conn.getResponseMessage());
+					sendMessage(ACTION_FINISH_UPDATE_LINKS, "Complete!");
+
 					conn.disconnect();
 				}
 				catch (MalformedURLException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error with URL: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, "Malformed URL: " + e.getMessage());
 				}
 				catch (IOException e)
 				{
-					msg = mHandler.obtainMessage();
-					rBundle = new Bundle();
-					rBundle.putInt(BUNDLE_ACTION, ACTION_UPDATE_MSG);
-					rBundle.putString(BUNDLE_MSG, "Error opening the connection: " + e.toString());
-					msg.setData(rBundle);
-					mHandler.sendMessage(msg);
+					sendMessage(ACTION_ERROR, e.getMessage());
+				}
+				catch(SyncException e)
+				{
+					sendMessage(ACTION_ERROR, e.getMessage());
 				}
 			}
 		};
