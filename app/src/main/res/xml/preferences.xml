@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/SettingsTxt">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="individual_initiative"
+            android:title="@string/UseIndividualMonsterInitiativeTxt" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="monster_hp"
+            android:title="@string/RollForMonsterHp" />
+    </PreferenceCategory>
+</PreferenceScreen>

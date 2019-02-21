@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.encounters.EditEncounterActor"></activity>
+
+        <activity android:name=".activities.encounters.EditEncounterActor" />
         <activity android:name=".activities.monsters.ViewSrMonster" />
         <activity android:name=".activities.sync.SyncToWeb" />
         <activity android:name=".activities.characters.PcCentral" />
@@ -49,8 +50,9 @@
         <activity android:name=".activities.encounters.AddEncounter" />
         <activity android:name=".activities.monsters.SelectMonster" />
         <activity android:name=".activities.encounters.EditEncounter" />
-        <activity android:name=".activities.parties.CreateParty"
-            android:windowSoftInputMode="stateVisible"/>
+        <activity
+            android:name=".activities.parties.CreateParty"
+            android:windowSoftInputMode="stateVisible" />
         <activity android:name=".activities.characters.SelectCharacter" />
         <activity android:name=".activities.players.CreatePlayerAndCharacter" />
         <activity android:name=".activities.players.SelectPlayer" />
@@ -79,6 +81,7 @@
         <activity android:name=".dice.DiceRollerDialog" />
         <activity android:name=".activities.custom_monsters.EditCustomMonster" />
         <activity android:name=".activities.custom_monsters.ManageCustomMonsterAbility" />
+        <activity android:name=".activities.preferences.EncountersPreferences" android:label="Preferences" />
     </application>
 
 </manifest>

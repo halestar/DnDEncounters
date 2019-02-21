@@ -17,7 +17,7 @@ public class PlaySessionManager
 
     public static PlaySession getCurrentSession(Context context)
     {
-        PlaySession activeSession;
+        PlaySession activeSession = null;
         try
         {
             File fout = new File(context.getFilesDir(), currentFname);

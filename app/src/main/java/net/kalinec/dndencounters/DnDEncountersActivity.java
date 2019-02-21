@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import net.kalinec.dndencounters.activities.preferences.EncountersPreferences;
 import net.kalinec.dndencounters.activities.spells.SearchSpells;
 import net.kalinec.dndencounters.activities.sync.SyncToWeb;
 import net.kalinec.dndencounters.dice.DiceParser;
@@ -41,9 +42,9 @@ public class DnDEncountersActivity extends AppCompatActivity {
             startActivityForResult(myIntent, DiceRollerDialog.REQUEST_DICE_ROLL);
             return true;
         }
-        else if(id == R.id.action_sync_to_web)
+        else if(id == R.id.action_preferences)
         {
-            Intent myIntent = new Intent(this, SyncToWeb.class);
+            Intent myIntent = new Intent(this, EncountersPreferences.class);
             startActivity(myIntent);
             return true;
         }

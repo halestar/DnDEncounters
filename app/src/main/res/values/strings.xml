@@ -291,4 +291,8 @@
     <string name="AddPPCTxt">Add New Player and Character</string>
     <string name="AddPCTxt">Add New Character</string>
     <string name="AddExistingPCTxt">Add Existing Character</string>
+    <string name="SettingsTxt">Settings</string>
+    <string name="AssignMnosterInitTxt">Assign Monster Initiative</string>
+    <string name="RollMonsterHpSetting">Roll for Inidividual Monster\'s HP</string>
+    <string name="PreferencesTxt">Preferences</string>
 </resources>

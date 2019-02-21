@@ -1,8 +1,10 @@
 package net.kalinec.dndencounters.activities.adventure_encounters;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +46,10 @@ public class SetupEncounter extends DnDEncountersActivity {
         monsterTokensCompletedIconTv = findViewById(R.id.monsterTokensCompletedIconTv);
         playerInitiativeCompletedIconTv = findViewById(R.id.playerInitiativeCompletedIconTv);
 
-        individualInitiative = false;
+        SharedPreferences prefs =
+                PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+
+        individualInitiative = prefs.getBoolean("individual_initiative", false);
         Switch assignIndividualMonsterInitiativeSw
                 = findViewById(R.id.assignIndividualMonsterInitiativeSw);
         assignIndividualMonsterInitiativeSw.setChecked(individualInitiative);
@@ -55,7 +60,7 @@ public class SetupEncounter extends DnDEncountersActivity {
             }
         });
 
-        rollForHp = false;
+        rollForHp = prefs.getBoolean("monster_hp", false);
         Switch rollMonsterHp = findViewById(R.id.rollMonsterHp);
         rollMonsterHp.setChecked(rollForHp);
         rollMonsterHp.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

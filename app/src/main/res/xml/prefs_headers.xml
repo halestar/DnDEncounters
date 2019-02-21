@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<preference-headers
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header
+        android:fragment="net.kalinec.dndencounters.activities.preferences.EncountersPreferenceFragment"
+        android:title="Encounter Settings"
+        android:summary="Encounters defaults" />
+    <header android:title="Sync to Web"
+        android:summary="Sync the app from/to the web app.">
+        <intent android:targetPackage="net.kalinec.dndencounters"
+            android:targetClass="net.kalinec.dndencounters.activities.sync.SyncToWeb" />
+    </header>
+
+</preference-headers>
